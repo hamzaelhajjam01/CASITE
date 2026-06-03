@@ -9,7 +9,7 @@ export async function connectDB() {
     if (!uri) {
         throw new Error('MONGODB_URI is not set in environment variables');
     }
-    client = new MongoClient(uri);
+    client = new MongoClient(uri, { tls: true, tlsAllowInvalidCertificates: false });
     await client.connect();
     db = client.db(dbName);
     console.log(`✓ Connected to MongoDB Atlas — database: "${dbName}"`);

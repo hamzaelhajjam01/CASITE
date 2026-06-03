@@ -33,7 +33,8 @@ const packages = [
     },
 ];
 for (const pkg of packages) {
-    await db.collection('packages').updateOne({ slug: pkg.slug }, { $set: pkg, $setOnInsert: { created_at: new Date() } }, { upsert: true });
+    const { created_at, ...rest } = pkg;
+    await db.collection('packages').updateOne({ slug: pkg.slug }, { $set: rest, $setOnInsert: { created_at } }, { upsert: true });
 }
 console.log('✓ Packages seeded (2)');
 // ─── Pricing Rules ────────────────────────────────────────────────
@@ -49,7 +50,8 @@ const rules = [
     { rule_key: 'term_discount_12m', label: 'Prepaid 12-Month Discount', rule_type: 'term_discount', context: 'term', match_value: '12m', multiplier: 0.75, is_active: true, created_at: new Date(), updated_at: new Date() },
 ];
 for (const rule of rules) {
-    await db.collection('pricing_rules').updateOne({ rule_key: rule.rule_key }, { $set: rule, $setOnInsert: { created_at: new Date() } }, { upsert: true });
+    const { created_at, ...rest } = rule;
+    await db.collection('pricing_rules').updateOne({ rule_key: rule.rule_key }, { $set: rest, $setOnInsert: { created_at } }, { upsert: true });
 }
 console.log('✓ Pricing rules seeded (9)');
 // ─── Coverage Rows ────────────────────────────────────────────────
@@ -64,7 +66,8 @@ const coverageRows = [
     { sort_order: 8, name: 'Loss of Use', description: 'Rental car after a covered claim', basic_value: 'Not included', full_value: 'Up to $900 / 30 days', is_active: true, created_at: new Date(), updated_at: new Date() },
 ];
 for (const row of coverageRows) {
-    await db.collection('coverage_rows').updateOne({ sort_order: row.sort_order, name: row.name }, { $set: row, $setOnInsert: { created_at: new Date() } }, { upsert: true });
+    const { created_at, ...rest } = row;
+    await db.collection('coverage_rows').updateOne({ sort_order: row.sort_order, name: row.name }, { $set: rest, $setOnInsert: { created_at } }, { upsert: true });
 }
 console.log('✓ Coverage rows seeded (8)');
 await closeDB();

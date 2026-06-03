@@ -56,6 +56,7 @@ command -v certbot &>/dev/null || error "certbot not found. Install it first."
 command -v pm2     &>/dev/null || error "pm2 not found. Install it first (npm i -g pm2)."
 command -v node    &>/dev/null || error "node not found."
 
+DOMAIN_LOWER="${DOMAIN,,}"
 NGINX_CONF="/etc/nginx/sites-available/${DOMAIN}"
 NGINX_LINK="/etc/nginx/sites-enabled/${DOMAIN}"
 
@@ -188,7 +189,7 @@ if [[ "$SKIP_SSL" == false ]]; then
     --non-interactive \
     --agree-tos \
     --email  "$EMAIL" \
-    --domains "${DOMAIN},www.${DOMAIN}" \
+    --domains "${DOMAIN_LOWER},www.${DOMAIN_LOWER}" \
     --keep-until-expiring
 
   success "Certificate ready"
@@ -219,8 +220,8 @@ server {
     server_name ${DOMAIN} www.${DOMAIN};
 
     # TLS (managed by Certbot)
-    ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/${DOMAIN_LOWER}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN_LOWER}/privkey.pem;
     include             /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
 
@@ -296,5 +297,5 @@ else
 fi
 echo -e "  PM2:     pm2 status  /  pm2 logs ${APP_NAME}"
 echo -e "  Nginx:   /etc/nginx/sites-available/${DOMAIN}"
-[[ "$SKIP_SSL" == false ]] && echo -e "  Certs:   /etc/letsencrypt/live/${DOMAIN}/"
+[[ "$SKIP_SSL" == false ]] && echo -e "  Certs:   /etc/letsencrypt/live/${DOMAIN_LOWER}/"
 echo ""

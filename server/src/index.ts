@@ -18,7 +18,7 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   credentials: true,
 }));
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 
 // ─── Health check ─────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
@@ -47,20 +47,36 @@ app.use((
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// ─── Boot: connect MongoDB → create indexes → listen ─────────────
+// ─── Boot: listen first, then connect MongoDB ─────────────────────
 const PORT = Number(process.env.PORT) || 3001;
 
 async function start() {
-  await connectDB();
-  await createIndexes();
-
-  app.listen(PORT, () => {
-    console.log(`\n🚀 PolarGuard API → http://localhost:${PORT}`);
-    console.log(`   Health:  GET  /api/health`);
-    console.log(`   Public:  GET  /api/packages`);
-    console.log(`   Public:  POST /api/quote/calculate`);
-    console.log(`   Admin:   POST /api/auth/login\n`);
+  // Start HTTP server immediately so notify/payment works even if DB is slow
+  await new Promise<void>((resolve) => {
+    app.listen(PORT, () => {
+      console.log(`\n🚀 PolarGuard API → http://localhost:${PORT}`);
+      console.log(`   Health:  GET  /api/health`);
+      console.log(`   Public:  GET  /api/packages`);
+      console.log(`   Public:  POST /api/quote/calculate`);
+      console.log(`   Admin:   POST /api/auth/login\n`);
+      resolve();
+    });
   });
+
+  // Connect MongoDB after HTTP is up — retry on failure
+  const connectWithRetry = async (attempt = 1): Promise<void> => {
+    try {
+      await connectDB();
+      await createIndexes();
+    } catch (err) {
+      console.error(`[mongodb] connection attempt ${attempt} failed:`, (err as Error).message);
+      const delay = Math.min(attempt * 5000, 30000);
+      console.log(`[mongodb] retrying in ${delay / 1000}s…`);
+      setTimeout(() => connectWithRetry(attempt + 1), delay);
+    }
+  };
+
+  connectWithRetry();
 }
 
 start().catch((err) => {

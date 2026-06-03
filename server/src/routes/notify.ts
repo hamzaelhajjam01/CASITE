@@ -58,27 +58,28 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
     const base64Data = d.receipt_base64.replace(/^data:[^;]+;base64,/, '');
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    // ── Send photo via Telegram Bot API ───────────────────────
-    const form = new FormData();
-    form.append('chat_id', chatId);
-    form.append('caption', caption);
-    form.append('parse_mode', 'Markdown');
-    form.append(
-      'photo',
-      new Blob([imageBuffer], { type: 'image/jpeg' }),
-      d.receipt_name || 'receipt.jpg',
-    );
+    const mimeType = d.receipt_base64.match(/^data:([^;]+);/)?.[1] || 'image/jpeg';
+    const fileName = d.receipt_name || 'receipt.jpg';
 
-    const tgRes = await fetch(
-      `https://api.telegram.org/bot${botToken}/sendPhoto`,
-      { method: 'POST', body: form },
-    );
+    const sendViaMethod = async (method: 'sendPhoto' | 'sendDocument', fieldName: string) => {
+      const form = new FormData();
+      form.append('chat_id', chatId);
+      form.append('caption', caption);
+      form.append('parse_mode', 'Markdown');
+      form.append(fieldName, new Blob([imageBuffer], { type: mimeType }), fileName);
+      const res = await fetch(`https://api.telegram.org/bot${botToken}/${method}`, { method: 'POST', body: form });
+      return res.json() as Promise<{ ok: boolean; description?: string }>;
+    };
 
-    const tgBody = await tgRes.json() as { ok: boolean; description?: string };
+    // Try sendPhoto first; fall back to sendDocument for unsupported formats
+    let tgBody = await sendViaMethod('sendPhoto', 'photo');
+    if (!tgBody.ok) {
+      console.error('[telegram] sendPhoto failed:', tgBody.description, '— retrying as document');
+      tgBody = await sendViaMethod('sendDocument', 'document');
+    }
 
     if (!tgBody.ok) {
-      console.error('[telegram] sendPhoto failed:', tgBody.description);
-      // Still return 200 to the client — don't block the UX
+      console.error('[telegram] sendDocument also failed:', tgBody.description);
     }
 
     res.json({ ok: true, telegram: tgBody.ok });

@@ -585,10 +585,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
   // Use API quote; fall back to local calc while loading or on error
   const [apiPrice, setApiPrice] = useState<number | null>(null);
   const [apiLabel, setApiLabel] = useState<string | null>(null);
-  const [priceLoading, setPriceLoading] = useState(true);
-
   useEffect(() => {
-    setPriceLoading(true);
     const dob = driver.dob || '1990-01-01';
     calculateQuote({
       term: coverage.term as '1m'|'3m'|'6m'|'12m',
@@ -602,7 +599,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
       setApiLabel(result.term_label);
     }).catch(() => {
       // fall back silently
-    }).finally(() => setPriceLoading(false));
+    });
   }, [coverage, driver, extraVehicles]);
 
   const localPrice = calculatePrice(coverage.term, coverage.type, coverage.deductible, driver.license, driver.dob, extraVehicles, basePrices);
