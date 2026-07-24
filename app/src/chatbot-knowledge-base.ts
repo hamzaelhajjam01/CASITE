@@ -22,9 +22,9 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
   {
     id: 'about-1',
     category: 'About PolarGuard',
-    intents: ['who are you', 'what is polarguard', 'about polarguard', 'tell me about you'],
+    intents: ['who are you', 'what is polarguard', 'about polarguard', 'tell me about you', 'who underwrites', 'is this real insurance', 'td insurance', 'who is the underwriter', 'is polarguard the insurer'],
     question: 'Who is PolarGuard Insurance?',
-    answer: `PolarGuard Insurance is an independent Canadian auto brokerage specializing in short-term prepaid auto insurance. We operate as a licensed insurance broker and offer 3-month prepaid quote previews with same-day broker review. We serve drivers across Canada who need flexible, short-term coverage without long-term commitments.`,
+    answer: `PolarGuard Insurance is an independent Canadian auto brokerage specializing in prepaid VIN-based auto insurance. We're a licensed broker — your policy is actually underwritten by TD Insurance (TD General Insurance Company), a federally regulated Canadian insurer. You receive an official TD pink card as your proof of insurance, accepted at provincial registries across Canada. We offer 1, 3, 6, or 12-month prepaid terms, all reviewed and matched by a licensed broker before activation.`,
     followUp: ['What coverage do you offer?', 'How do I get a quote?', 'Who can get coverage?']
   },
 
@@ -33,14 +33,15 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
     category: 'About PolarGuard',
     intents: ['what do you offer', 'what services', 'what can you do', 'products'],
     question: 'What services does PolarGuard offer?',
-    answer: `We specialize in short-term auto insurance (1-3 months) for Canadian drivers. Our services include:
+    answer: `We specialize in prepaid VIN-based auto insurance for Canadian drivers, underwritten by TD Insurance. Our services include:
 • Quick VIN-based quotes (under 5 minutes)
-• Same-day policy activation
-• Full coverage options including liability, collision, and comprehensive
-• No background checks required
-• Low-risk driver rates
-• Flexible 3-month prepaid policies
-• 24/7 broker support`,
+• Flexible terms: 1, 3, 6, or 12 months prepaid (save 15% on 6 months, 25% on 12 months)
+• Two coverage tiers: Basic (liability) or Full (liability + collision + comprehensive)
+• No background checks required on short-term (1-3 month) policies
+• Pay by Interac e-Transfer — broker matches your payment in 15-25 minutes
+• Official TD pink card once payment is verified
+• Accident Forgiveness and a Disappearing Deductible
+• 24/7 roadside assistance`,
     followUp: ['How much does it cost?', 'What coverage options do I have?', 'How do I get started?']
   },
 
@@ -51,14 +52,15 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
     question: 'Why should I choose PolarGuard?',
     answer: `Here are the key reasons to choose PolarGuard:
 
-✓ Fast: Get a quote in under 5 minutes, activate same-day
-✓ No Background Checks: Low-risk drivers aren't penalized for past history
-✓ Flexible: 3-month prepaid policies - no long-term commitment
-✓ Same-Day Activation: Drive legally from the moment you activate
+✓ Fast: Get a quote in under 5 minutes, activate in 15-25 minutes after payment
+✓ No Background Checks: Short-term (1-3 month) policies skip the driver history pull
+✓ Flexible Terms: 1, 3, 6, or 12-month prepaid — save 15-25% on longer terms
+✓ Accident Forgiveness: Your first at-fault accident won't raise your premium
+✓ Disappearing Deductible: Drops every claim-free year, down to $0 after 5 years
 ✓ Clean Slate: Previous cancellations or lapses don't count against you
-✓ Best Rates: Competitive pricing for short-term coverage
-✓ Easy Process: Just your VIN and a few details
-✓ Licensed Broker: Regulated and trusted in Canada`,
+✓ Backed by TD: Underwritten by TD Insurance, a major Canadian insurer
+✓ Easy Process: Just your VIN, license class, and postal code to start
+✓ Licensed Broker: Every application is reviewed before activation`,
     followUp: ['How much does it cost?', 'How do I get a quote?']
   },
 
@@ -71,15 +73,13 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
     category: 'Pricing & Quotes',
     intents: ['how much', 'cost', 'price', 'expensive', 'affordable', 'rates'],
     question: 'How much does insurance cost?',
-    answer: `Insurance costs vary based on:
-• Vehicle type and value
-• Coverage level (liability, collision, comprehensive)
-• Deductible amount
-• Driver age and experience
-• Location
-• Usage patterns
+    answer: `Your price depends on:
+• Coverage tier — Basic (liability) or Full (liability + collision + comprehensive)
+• Term length — 1, 3, 6, or 12 months (longer terms save 15-25%)
+• Deductible — $500 or $1,000
+• Vehicle, driver profile, and postal code/province
 
-Example: A 2015 Toyota Civic with comprehensive coverage typically costs between $300-450/month. Get your exact quote in under 5 minutes by entering your VIN.`,
+Example (3-month prepaid term): Basic coverage around $481, Full coverage around $722 — paid once, no monthly billing. Get your exact quote in under 5 minutes by entering your VIN.`,
     followUp: ['Get a quote', 'What coverage options are available?', 'Can I customize my coverage?']
   },
 
@@ -90,14 +90,14 @@ Example: A 2015 Toyota Civic with comprehensive coverage typically costs between
     question: 'How do I get a quote?',
     answer: `Getting a quote from PolarGuard is simple:
 
-1. Enter your 17-character VIN (Vehicle Identification Number)
-2. Add your driver information
-3. Choose your coverage level
-4. Review your personalized quote
-5. Our broker reviews your details within 24 hours
-6. Activate immediately if approved
+1. Enter your 17-character VIN — we decode your vehicle automatically
+2. Add your license class (G/G2/G1), date of birth, and postal code
+3. Choose your coverage tier (Basic or Full), deductible, and term (1/3/6/12 months)
+4. Review your quote preview and fill in your name and address for your pink card
+5. Pay by Interac e-Transfer and upload your payment screenshot
+6. A licensed broker matches your payment and unlocks your TD pink card — usually in 15-25 minutes
 
-That's it! The entire process takes under 5 minutes. No hidden fees, no surprises. Your quote is valid for 30 days.
+That's it! Getting to a quote preview takes under 5 minutes. Note: your quote preview holds for about 30 minutes, so it's best to complete payment before it expires.
 
 👉 Ready to start? Click "Get My Pink Slip" to begin!`,
     followUp: ['Where do I find my VIN?', 'What information do I need?', 'How long does it take?']
@@ -135,26 +135,29 @@ The good news: With PolarGuard, previous cancellations and lapses don't count ag
   {
     id: 'price-4',
     category: 'Pricing & Quotes',
-    intents: ['customize quote', 'adjust coverage', 'change deductible', 'lower premium'],
+    intents: ['customize quote', 'adjust coverage', 'change deductible', 'lower premium', 'customize my coverage', 'customize coverage', 'lower my premium'],
     question: 'Can I customize my insurance coverage and price?',
     answer: `Absolutely! You have full control over your coverage:
 
 🎯 CHOOSE YOUR DEDUCTIBLE:
-• $250 - Higher premium, less out-of-pocket
-• $500 - Balanced option
-• $1,000 - Lower premium, more out-of-pocket
+• $500 - Lower out-of-pocket if you claim
+• $1,000 - Saves about 10% on your premium
 
-📋 CHOOSE YOUR COVERAGE:
-• Liability Only (basic legal requirement)
-• Liability + Collision (protects your vehicle)
-• Liability + Comprehensive (adds theft, weather protection)
-• Full Coverage (liability + collision + comprehensive)
+📋 CHOOSE YOUR TIER:
+• Basic - Third-party liability, direct compensation for property damage, and uninsured automobile protection
+• Full (recommended) - Everything in Basic, plus collision, comprehensive, glass/windshield, and loss-of-use coverage
+
+📅 CHOOSE YOUR TERM:
+• 1 month - standard rate plus a short-term surcharge (~41%)
+• 3 months - standard rate
+• 6 months - save 15%
+• 12 months - save 25%
 
 💡 TIPS TO LOWER YOUR PREMIUM:
-1. Increase your deductible
-2. Choose liability-only coverage (if vehicle is older)
-3. Bundle multiple vehicles
-4. Ask about discounts you may qualify for
+1. Choose the $1,000 deductible
+2. Pick a longer term (6 or 12 months) for the built-in discount
+3. Choose Basic if you don't need collision/comprehensive
+4. Bundle multiple vehicles for a 20% discount
 
 Try different combinations in the quote tool!`,
     followUp: ['What does liability cover?', 'Should I get comprehensive?', 'What is a deductible?']
@@ -167,36 +170,37 @@ Try different combinations in the quote tool!`,
   {
     id: 'coverage-1',
     category: 'Coverage',
-    intents: ['what coverage', 'coverage options', 'what is covered', 'coverage types'],
+    intents: ['what coverage', 'coverage options', 'what is covered', 'coverage types', 'what should i choose', 'which should i choose', 'which coverage should i choose', 'do i need both', 'learn about coverage', 'what do i have in my quote'],
     question: 'What coverage options are available?',
-    answer: `We offer three main coverage types:
+    answer: `We offer two coverage tiers — pick the one that fits your needs:
 
-1️⃣ LIABILITY COVERAGE (Required by law)
-   • Covers injuries you cause to others
-   • Covers damage to others' property
-   • Cost: Starting at $40-60/month
-   • Mandatory in Canada
+1️⃣ BASIC
+   • Third-Party Liability: $1,000,000
+   • Accident Benefits: provincial minimums
+   • Direct Compensation - Property Damage: included, $0 deductible
+   • Uninsured Automobile: up to $200,000
+   • Collision, comprehensive, glass, and loss of use: not included
 
-2️⃣ COLLISION COVERAGE (Optional)
-   • Covers damage to YOUR vehicle from accidents
-   • Covers impact with other vehicles
-   • Cost: $60-150/month
-   • For financed or valuable vehicles
+2️⃣ FULL (recommended)
+   • Third-Party Liability: $2,000,000
+   • Accident Benefits: enhanced — up to $1M medical, $1,000/week income replacement
+   • Direct Compensation - Property Damage: included, $0 deductible
+   • Uninsured Automobile: up to $200,000
+   • Collision: included ($500 or $1,000 deductible)
+   • Comprehensive: included ($500 or $1,000 deductible), theft/fire/vandalism/hail/animal strike
+   • Glass/Windshield: included under comprehensive
+   • Loss of Use (rental after a covered claim): up to $900 / 30 days
 
-3️⃣ COMPREHENSIVE COVERAGE (Optional)
-   • Covers non-collision damage (theft, weather, vandalism)
-   • Includes protection from uninsured drivers
-   • Cost: $30-80/month
-   • Recommended for newer vehicles
+Both tiers also include Accident Forgiveness and a Disappearing Deductible.
 
-💡 Most drivers choose Full Coverage for maximum protection.`,
+💡 Most drivers choose Full for complete protection, especially on financed or newer vehicles.`,
     followUp: ['What should I choose?', 'What is a deductible?', 'Can I just get liability?']
   },
 
   {
     id: 'coverage-2',
     category: 'Coverage',
-    intents: ['liability', 'liability coverage', 'what does liability cover'],
+    intents: ['liability', 'liability coverage', 'what does liability cover', 'change my limits', 'increase my limits', 'liability limits'],
     question: 'What does liability coverage include?',
     answer: `Liability coverage covers:
 
@@ -216,7 +220,7 @@ Try different combinations in the quote tool!`,
 
 💡 KEY FACTS:
    • Legally required in every Canadian province
-   • Minimum limits vary by province ($200,000 is standard)
+   • PolarGuard offers $1,000,000 in liability on Basic and $2,000,000 on Full
    • Only covers damage YOU cause to others
    • Failure to carry it results in fines and license suspension
 
@@ -246,13 +250,12 @@ Think of it as protecting your finances if you're responsible for an accident. T
 
 💰 DEDUCTIBLE:
    • You pay this out-of-pocket when you claim
-   • Higher deductible = lower monthly premium
-   • Common deductibles: $250, $500, $1,000
+   • Higher deductible = lower premium (about 10% less)
+   • Choose $500 or $1,000
+   • Collision is included with our Full coverage tier (not Basic)
 
 💡 EXAMPLE:
-   You hit a pole and cause $4,000 damage. With $500 collision deductible:
-   • Your insurance pays: $3,500
-   • You pay: $500`,
+   You hit a pole and cause $4,200 damage. With $500 deductible, your insurance pays $3,700 and you pay $500. With $1,000 deductible, insurance pays $3,200 and you pay $1,000.`,
     followUp: ['Should I get comprehensive too?', 'What deductible should I choose?', 'What is a deductible?']
   },
 
@@ -279,8 +282,9 @@ Think of it as protecting your finances if you're responsible for an accident. T
    • Maintenance items
 
 💰 DEDUCTIBLE:
-   • Usually lower than collision
-   • Same deductible choices: $250, $500, $1,000
+   • Same choices as collision: $500 or $1,000
+   • Comprehensive is included with our Full coverage tier (not Basic)
+   • Windshield/glass claims are included under comprehensive
 
 💡 EXAMPLE:
    Your car is damaged by hail. Damage is $3,500. With $500 comprehensive deductible:
@@ -300,38 +304,29 @@ Canadian winters & wildlife make this coverage valuable!`,
 
 💡 HOW IT WORKS:
 
-EXAMPLE: You have a car accident
-• Total damage: $5,000
-• Your deductible: $500
-• Your insurance pays: $4,500
-• You pay: $500
+EXAMPLE: You have a $4,200 repair bill
+• With $500 deductible: insurer pays $3,700, you pay $500
+• With $1,000 deductible: insurer pays $3,200, you pay $1,000
 
-🎯 DEDUCTIBLE OPTIONS:
-
-$250 DEDUCTIBLE:
-   ✓ Lowest out-of-pocket per claim
-   ✓ Higher monthly premium
-   ✓ Best if you think you might claim
+🎯 DEDUCTIBLE OPTIONS (Full coverage tier only):
 
 $500 DEDUCTIBLE:
-   ✓ Middle ground - most popular choice
-   ✓ Moderate monthly premium
-   ✓ Balanced protection and savings
+   ✓ Lower out-of-pocket if you ever claim
+   ✓ Adds about $80 per term to your premium vs. $1,000
 
 $1,000 DEDUCTIBLE:
-   ✓ Lowest monthly premium
-   ✓ Highest out-of-pocket per claim
-   ✓ Best if you're a careful driver
+   ✓ Saves about 10% on your premium
+   ✓ Higher out-of-pocket per claim
 
 ⚠️ IMPORTANT FACTS:
-   • You choose your deductible when getting a quote
-   • Deductible applies to EACH claim
-   • Applies to collision AND comprehensive coverage separately
+   • You choose your deductible when getting your quote
+   • It's not an extra charge — it's only what you'd pay if you ever file a claim
+   • The Disappearing Deductible feature lowers it further each claim-free year, down to $0 after 5 years
+   • Deductible only applies to collision and comprehensive claims (Direct Compensation-Property Damage has $0 deductible)
 
 💭 WHICH SHOULD YOU CHOOSE?
-   • Good driving record? Try $500-$1,000
-   • New driver or worried? Go with $250
-   • Budget-conscious? Use $1,000`,
+   • Want lower out-of-pocket if something happens? Go with $500
+   • Want the lowest premium and rarely claim? Go with $1,000`,
     followUp: ['What deductible should I choose?', 'How much will I pay monthly?', 'Get a quote']
   },
 
@@ -342,16 +337,16 @@ $1,000 DEDUCTIBLE:
   {
     id: 'eligibility-1',
     category: 'Eligibility',
-    intents: ['who can get coverage', 'am i eligible', 'can i qualify', 'requirements'],
+    intents: ['who can get coverage', 'am i eligible', 'can i qualify', 'requirements', 'how do i check my eligibility', 'check my eligibility'],
     question: 'Who can get coverage from PolarGuard?',
     answer: `PolarGuard serves most Canadian drivers!
 
 ✅ YOU LIKELY QUALIFY IF:
-   • You're 18+ years old with a valid driver's license
+   • You're 18+ years old with a valid driver's license (G/G2/G1 or equivalent)
    • You live in Canada (any province/territory)
    • Your vehicle is registered in Canada
    • You have a valid VIN
-   • You want short-term coverage (1-3 months)
+   • You want a 1, 3, 6, or 12-month prepaid term
 
 🚗 VEHICLES WE COVER:
    • Sedans and coupes
@@ -472,41 +467,39 @@ Ready to close that gap and get back on the road legally?`,
   {
     id: 'process-1',
     category: 'Process',
-    intents: ['how does it work', 'process', 'steps', 'how do i start'],
+    intents: ['how does it work', 'process', 'steps', 'how do i start', 'how do i activate', 'how do i get started', 'get started'],
     question: 'How does the PolarGuard process work?',
-    answer: `Getting insured with PolarGuard takes just 3 simple steps:
+    answer: `Getting insured with PolarGuard takes 3 simple steps:
 
-⏱️ TOTAL TIME: Under 5 minutes to quote, same-day activation
+⏱️ TOTAL TIME: Under 5 minutes to a quote preview, 15-25 minutes to activation after payment
 
-STEP 1️⃣: GET YOUR QUOTE (2-3 minutes)
-   1. Enter your VIN
-   2. Add your driver information
-   3. Choose your coverage and deductible
-   4. See your personalized quote
-   5. Quote is valid for 30 days
+STEP 1️⃣: GET YOUR QUOTE PREVIEW (2-3 minutes)
+   1. Enter your VIN — we auto-decode your vehicle
+   2. Add your license class, date of birth, and postal code
+   3. Choose your coverage tier (Basic or Full), deductible ($500/$1,000), and term (1/3/6/12 months)
+   4. Fill in your name and address for your TD pink card
+   5. Your quote preview holds for about 30 minutes
 
-STEP 2️⃣: BROKER REVIEW (within 24 hours)
-   • Our licensed broker reviews your application
-   • We verify your information
-   • Usually approved same-day
-   • Final price confirmed
+STEP 2️⃣: PAY BY INTERAC E-TRANSFER
+   • Send the e-Transfer for your exact quoted amount
+   • Upload a screenshot of the transfer confirmation
+   • No credit card needed
 
-STEP 3️⃣: ACTIVATE YOUR POLICY
-   • Review final documents
-   • Complete payment
-   • Get your digital pink slip
-   • Coverage becomes active immediately
+STEP 3️⃣: BROKER MATCH & ACTIVATION (15-25 minutes)
+   • A licensed broker matches your e-Transfer to your application
+   • Your TD pink card unlocks once payment is verified
+   • Download your pink card — you're covered
 
 📱 YOU'LL GET:
-   ✓ Digital pink slip (proof of insurance)
-   ✓ Policy documents (digital)
+   ✓ Official TD pink card (proof of insurance)
+   ✓ Digital policy documents
    ✓ Broker contact info
-   ✓ Emergency roadside support (included)
+   ✓ 24/7 roadside assistance included
 
 🎯 KEY ADVANTAGES:
-   ✓ No 24-48 hour wait - activate same-day
-   ✓ No complex forms - just VIN and basic info
-   ✓ No background checks
+   ✓ Activation in 15-25 minutes, not days
+   ✓ No complex forms - just VIN, license, and postal code to start
+   ✓ No background checks on 1-3 month terms
    ✓ No hidden fees
    ✓ No long-term commitment
 
@@ -566,37 +559,31 @@ Once you have your VIN, you're ready for your quote!`,
     category: 'Process',
     intents: ['what info do i need', 'information needed', 'what do you need', 'what information do i need', 'what do i need', 'documents needed', 'what do i need to apply'],
     question: 'What information do I need to get a quote?',
-    answer: `Getting a quote requires minimal information:
+    answer: `We collect information in stages, so you don't have to fill out a giant form up front:
 
-🚗 VEHICLE INFORMATION:
-   ✓ VIN (17-character code)
-   ✓ License plate number (optional)
-   ✓ Garage address or where car is parked
+🚗 STEP 1 - VEHICLE:
+   ✓ Your VIN (17-character code) — we decode the vehicle for you
 
-👤 DRIVER INFORMATION:
-   ✓ Full legal name
+👤 STEP 2 - DRIVER:
+   ✓ License class (G/G2/G1 or equivalent)
    ✓ Date of birth
-   ✓ Driver's license number
-   ✓ Email address
-   ✓ Phone number
+   ✓ Postal code (confirms your province)
 
-🔒 SAFETY & HISTORY:
-   ✓ Driving record disclosure
-   ✓ Any accidents in last 3 years?
-   ✓ Any traffic violations?
-   ✓ Any insurance claims?
-   ✓ Any policy cancellations?
+📋 STEP 3 - COVERAGE:
+   ✓ Coverage tier (Basic or Full)
+   ✓ Deductible ($500 or $1,000)
+   ✓ Term (1, 3, 6, or 12 months)
 
-📋 COVERAGE PREFERENCES:
-   ✓ What coverage do you want?
-   ✓ What deductible?
-   ✓ Annual mileage estimate
-   ✓ Primary use (commute, leisure)
+🪪 STEP 4 - PINK CARD DETAILS (at quote preview):
+   ✓ Full legal name
+   ✓ Street address, city, and postal code
+
+📧 STEP 5 - AFTER PAYMENT:
+   ✓ Email and phone number — collected when you upload your e-Transfer screenshot, so we can send your pink card and confirmation
 
 ⏱️ HOW LONG IT TAKES:
-   • Gathering info: 2-3 minutes
-   • Filling out form: 1-2 minutes
-   • Getting quote: instant
+   • Quote preview: under 5 minutes
+   • Payment + broker match: 15-25 minutes
 
 Start your quote now - we make it simple!`,
     followUp: ['Get a quote', 'Where do I find my VIN?', 'What coverage should I choose?']
@@ -607,35 +594,28 @@ Start your quote now - we make it simple!`,
     category: 'Process',
     intents: ['how fast', 'how long', 'activation time', 'when can i drive', 'same day'],
     question: 'How quickly can I get coverage?',
-    answer: `PolarGuard is built for speed. Here's the timeline:
+    answer: `PolarGuard is built for speed. Here's the real timeline:
 
 ⚡ THE FAST TRACK:
 
 IMMEDIATE (Right now):
-   • Get your quote online: 2-3 minutes
+   • Get your quote preview online: 2-3 minutes
    • See your exact price instantly
-   • Quote valid for 30 days
+   • Quote preview holds for about 30 minutes — pay before it expires!
 
-WITHIN 2-4 HOURS:
-   • Broker reviews your application
-   • Usually approved with no issues
-   • You're notified by email/phone
-
-SAME-DAY (usually):
-   • Complete payment
-   • Receive digital pink slip
-   • Coverage is active
-   • You can drive immediately!
+AFTER YOU PAY:
+   • Send your Interac e-Transfer and upload the screenshot
+   • A licensed broker matches your payment to your application
+   • Typical match + activation time: 15-25 minutes
 
 ✅ TYPICAL TIMELINE:
-   • 2:00 PM: You submit application
-   • 3:30 PM: Broker approves
-   • 3:45 PM: You complete payment
-   • 4:00 PM: Coverage is active
-   • 4:05 PM: You're driving legally!
+   • 2:00 PM: You get your quote preview and pay by e-Transfer
+   • 2:05 PM: You upload your payment screenshot
+   • 2:20 PM: Broker matches your payment
+   • 2:20 PM: Your TD pink card unlocks — you're covered!
 
 🎯 BOTTOM LINE:
-   Most drivers are activated within 24 hours. Many within a few hours. Same-day is the goal!
+   Most drivers are covered in under 30 minutes from quote to pink card.
 
 Ready to apply? Get started now!`,
     followUp: ['Get a quote', 'What information do I need?', 'How do I activate?']
@@ -702,7 +682,7 @@ Have you been in an accident? Contact us right away!`,
   {
     id: 'claims-2',
     category: 'Claims',
-    intents: ['not at fault claim', 'other driver fault', 'my insurance cost', 'other driver is at fault', 'other driver caused', 'not my fault', 'wasnt my fault', 'hit my car', 'somebody hit my car', 'someone hit my car', 'if the other driver'],
+    intents: ['not at fault claim', 'other driver fault', 'my insurance cost', 'other driver is at fault', 'other driver caused', 'not my fault', 'wasnt my fault', 'hit my car', 'somebody hit my car', 'someone hit my car', 'if the other driver', 'not at fault', 'im not at fault', 'theyre uninsured', 'other driver uninsured', 'uninsured driver', 'if theyre uninsured', 'partially at fault', 'both at fault', 'shared fault', 'both were at fault'],
     question: 'What happens if the other driver is at fault?',
     answer: `Great news - if the other driver caused the accident, the process is more favorable for you:
 
@@ -766,9 +746,9 @@ This is why it's important to get the other driver's info!`,
    • Insurance pays: $4,000
 
 🎯 DEDUCTIBLE AMOUNTS:
-   • $250 deductible = You pay $250 per claim
    • $500 deductible = You pay $500 per claim
    • $1,000 deductible = You pay $1,000 per claim
+   • Disappearing Deductible: drops each claim-free year, down to $0 after 5 years
 
 ⚠️ IMPORTANT DEDUCTIBLE FACTS:
    • Applies PER claim (multiple claims = multiple deductibles)
@@ -812,72 +792,64 @@ Ready to file a claim?`,
   {
     id: 'policy-1',
     category: 'Policies',
-    intents: ['term length', 'how long', 'policy length', 'coverage length', '3 month', 'how long is my policy', 'length of my policy', 'how long does my policy last', 'what happens after 3 months', 'how do i renew', 'renew my policy', 'renewal'],
+    intents: ['term length', 'how long', 'policy length', 'coverage length', '3 month', 'how long is my policy', 'length of my policy', 'how long does my policy last', 'what happens after 3 months', 'how do i renew', 'renew my policy', 'renewal', 'can i renew'],
     question: 'How long is my insurance policy?',
-    answer: `PolarGuard offers flexible 3-month prepaid policies:
+    answer: `PolarGuard offers flexible prepaid terms — you choose the length:
 
-📅 POLICY LENGTH:
-   Standard: 3 months (90 days)
-   You can renew every 3 months
-   No long-term commitment
-   Easy to cancel if needed
+📅 TERM OPTIONS:
+   • 1 month — good for a quick plate renewal or short-term need (small surcharge, ~41% vs the 3-month rate)
+   • 3 months — our standard term
+   • 6 months — save 15% vs. paying month-to-month at the 3-month rate
+   • 12 months — save 25%, our best value
+
+You pay once for the full term — no monthly billing, no long-term contract.
 
 🔄 RENEWAL OPTIONS:
 
 CONTINUE WITH US:
-   • Simply pay for another 3 months
-   • Same coverage (if unchanged)
-   • Takes 2 minutes online
+   • Get a fresh quote and pay for your next term
+   • Same or updated coverage, your choice
 
 SWITCH TO ANOTHER INSURER:
-   • Cancel after 3 months (no penalty)
+   • Cancel anytime (no penalty)
    • No early termination fees
-   • Instant cancellation
    • No lock-in contract
 
-✅ ADVANTAGES OF 3-MONTH POLICY:
+✅ ADVANTAGES OF PREPAID TERMS:
 
-   ✓ No 12-month commitment
-   ✓ Easy to cancel
-   ✓ Easy to switch coverage
-   ✓ Easy to switch insurers
-   ✓ Test drive us risk-free
-   ✓ Perfect for temporary needs
-   ✓ Rates reviewed every 3 months
+   ✓ No long-term commitment
+   ✓ Easy to switch terms or insurers
+   ✓ Longer terms save you real money (15-25%)
+   ✓ Perfect for temporary or ongoing needs alike
 
 📝 POLICY TIMELINE:
 
-DAY 1: Coverage begins
-DAYS 1-90: Your policy is active
-DAY 90: Policy ends
-DAY 90+: What's next?
-   • RENEW: Pay for next 3 months
+DAY 1: Coverage begins after payment is verified
+DURING TERM: Your policy is active for the full 1/3/6/12 months you chose
+END OF TERM: What's next?
+   • RENEW: Get a new quote and pay for your next term
    • CANCEL: No cancellation fee
    • DO NOTHING: Coverage stops (becomes uninsured - illegal!)
 
 ⚠️ DON'T LET COVERAGE LAPSE:
-   • Driving uninsured = illegal
-   • Fines up to $50,000+
-   • License suspension
+   • Driving uninsured is illegal
+   • Fines and license suspension can apply
 
-Ready to get your 3-month policy started?`,
+Ready to pick your term and get started?`,
     followUp: ['Can I renew?', 'Can I cancel early?', 'What happens after 3 months?']
   },
 
   {
     id: 'policy-2',
     category: 'Policies',
-    intents: ['cancel policy', 'early cancellation', 'termination', 'stop insurance', 'cancel anytime', 'cancel my policy', 'how do i cancel', 'can i cancel', 'cancel whenever', 'want to cancel'],
+    intents: ['cancel policy', 'early cancellation', 'termination', 'stop insurance', 'cancel anytime', 'cancel my policy', 'how do i cancel', 'can i cancel', 'cancel whenever', 'want to cancel', 'pause coverage', 'pause my policy', 'can i pause'],
     question: 'Can I cancel my policy anytime?',
     answer: `Yes! PolarGuard policies have no early cancellation penalties:
 
 ✅ CANCELLATION FLEXIBILITY:
 
 You can cancel:
-   • After 1 month with no fee
-   • After 2 months with no fee
-   • After 3 months with no fee
-   • Anytime - no penalties
+   • Anytime during your term - no penalties
    • No termination fees
    • No cancellation charges
 
@@ -896,11 +868,7 @@ OPTION 2 - EMAIL:
 
 💰 REFUNDS:
 
-You get a prorated refund:
-   Example:
-   • 3-month policy cost: $1,200
-   • Cancel after 1 month: Used $400
-   • Refund: $800
+You get a prorated refund based on unused time in your term. For example, on a $722 3-month Full-coverage term, cancelling after 1 month refunds roughly two-thirds of what you paid.
 
 🔄 SWITCHING INSURERS:
 
@@ -924,74 +892,45 @@ SCENARIO 2: "I'm selling my car"
    • Easy process
 
 This is one of our biggest advantages!`,
-    followUp: ['How much will my refund be?', 'Can I pause coverage?', 'What\'s your guarantee?']
+    followUp: ['How much will my refund be?', 'Can I pause coverage?', 'How do I renew?']
   },
 
   {
     id: 'policy-3',
     category: 'Policies',
-    intents: ['discount', 'how to get discount', 'save money', 'discount codes'],
+    intents: ['discount', 'how to get discount', 'save money', 'discount codes', 'what else can i do to save', 'how else can i save'],
     question: 'What discounts are available?',
-    answer: `PolarGuard offers several ways to save:
+    answer: `PolarGuard's biggest savings come from term length and bundling:
 
 💰 AVAILABLE DISCOUNTS:
 
-GOOD DRIVER DISCOUNT:
-   • 3+ years without accidents
-   • Reduces premium 5-10%
-   • Automatic when qualifying
-
-VEHICLE SAFETY FEATURES:
-   • Anti-theft devices
-   • ABS brakes
-   • Air bags
-   • Electronic stability control
-   • Reduces premium 5-15%
-
-DEFENSIVE DRIVING COURSE:
-   • Take approved course
-   • Reduces premium 5-10%
-   • Takes 4-8 hours
+LONGER TERM (built-in, automatic):
+   • 6-month term: save 15% vs. the standard 3-month rate
+   • 12-month term: save 25% vs. the standard 3-month rate
 
 MULTI-VEHICLE BUNDLE:
-   • 2+ vehicles insured
-   • 10-15% discount per vehicle
+   • Insure 2+ vehicles with us
+   • Flat 20% discount on your policies
+   • Great for families adding teen drivers without the sticker shock
 
-LOW MILEAGE DISCOUNT:
-   • Annual mileage <8,000 km
-   • Premium reduced 5-10%
-
-ANNUAL PAYMENT:
-   • Pay 12 months upfront
-   • 3-5% discount
+HIGHER DEDUCTIBLE:
+   • Choose $1,000 instead of $500
+   • Saves about 10% on your premium
 
 🔄 HOW TO GET DISCOUNTS:
 
-AUTOMATIC:
-   • Good driver status
-   • Safety features
-   • Just qualify and you get it
+   • Term and deductible discounts apply automatically when you choose them in your quote
+   • Multi-vehicle bundling: mention your other vehicle(s) when you quote, or call our broker: 587-875-8875
 
-MENTION IN QUOTE:
-   • Tell us about features
-   • Tell us about safety course
-   • We apply if you qualify
-
-📊 DISCOUNT EXAMPLES:
-
-EXAMPLE 1: Good driver + vehicle bundle
-   • Base rate: $120/month
-   • Good driver discount: -$10
-   • Multi-vehicle: -$15
-   • Your rate: $95/month
-   • Savings: $25/month ($300/year)
+📊 EXAMPLE:
+   Full coverage, 3-month standard rate: $722
+   → Choose 12-month term instead: save 25%
+   → Add a second vehicle: save 20% more on top
 
 💡 BEST WAY TO SAVE:
-   1. Maintain clean driving record
-   2. Add vehicle safety features
-   3. Take defensive driving course
-   4. Bundle multiple vehicles
-   5. Keep mileage low
+   1. Pick a 6 or 12-month term instead of 1 or 3 months
+   2. Choose the $1,000 deductible if you rarely claim
+   3. Bundle multiple vehicles for 20% off
 
 Get your quote and see your savings!`,
     followUp: ['Get a quote', 'Do I qualify for any discounts?', 'What else can I do to save?']
@@ -1004,7 +943,7 @@ Get your quote and see your savings!`,
   {
     id: 'support-1',
     category: 'Support',
-    intents: ['phone number', 'contact us', 'how to reach', 'support hours', 'customer service'],
+    intents: ['phone number', 'contact us', 'how to reach', 'support hours', 'customer service', 'contact support', 'how do i contact support'],
     question: 'How do I contact PolarGuard support?',
     answer: `Multiple ways to reach our team:
 
@@ -1045,7 +984,7 @@ Have a question? Reach out - we're here to help!`,
   {
     id: 'support-2',
     category: 'Support',
-    intents: ['general question', 'need help', 'lost', 'confused', 'where to start', 'where do i start', 'i have questions', 'where should i start'],
+    intents: ['general question', 'need help', 'lost', 'confused', 'where to start', 'where do i start', 'i have questions', 'where should i start', 'i have a question'],
     question: 'I have questions - where do I start?',
     answer: `Great question! Here are your options:
 
@@ -1118,12 +1057,13 @@ What would you like to know? Or call us directly: 587-875-8875`,
     category: 'Eligibility',
     intents: ['background check', 'credit check', 'credit score', 'do you check my credit', 'criminal record'],
     question: 'Do you check my credit or run a background check?',
-    answer: `No credit checks, no background checks.
+    answer: `No credit checks, and no background/driver-history pull on short-term (1-3 month) policies.
 
 ✅ WHAT WE DON'T DO:
    • Credit checks or credit scores
    • Criminal background checks
    • Employment verification
+   • Driver history pull on 1-3 month terms — you're rated as a clean, low-risk driver regardless of past history
 
 🎯 WHAT WE DO CHECK:
    • Your driving record (as you disclose it)
@@ -1254,6 +1194,60 @@ If a payment just failed, don't wait — call us before it lapses so we can help
 
 Just visit polarguardbrokerage.ca from any phone, tablet, or computer — no download needed.`,
     followUp: ['Get a quote', 'How do I contact support?', 'How do I file a claim?']
+  },
+
+  {
+    id: 'payment-1',
+    category: 'Process',
+    intents: ['how do i pay', 'payment method', 'e-transfer', 'interac', 'how to pay', 'can i pay by credit card', 'credit card payment', 'do you accept credit card', 'how does payment work', 'ways to pay'],
+    question: 'How do I pay for my policy?',
+    answer: `We use Interac e-Transfer — no credit card needed:
+
+💸 HOW IT WORKS:
+   1. After your quote preview, you'll see the exact amount to send
+   2. Send an Interac e-Transfer for that amount
+   3. Upload a screenshot of your e-Transfer confirmation
+   4. A licensed broker matches your payment to your application
+   5. Once verified, your TD pink card unlocks — usually within 15-25 minutes
+
+⚠️ IMPORTANT:
+   • We don't currently accept credit or debit card payment directly
+   • Your quote preview holds for about 30 minutes, so send your e-Transfer promptly
+   • Make sure your screenshot clearly shows the amount, date, and reference number
+
+Questions about a payment? Call our broker: 587-875-8875`,
+    followUp: ['How long does it take to activate?', 'Get a quote', 'What information do I need?']
+  },
+
+  {
+    id: 'coverage-6',
+    category: 'Coverage',
+    intents: ['accident forgiveness', 'first accident', 'will my rate go up', 'does an accident raise my rate', 'first at fault accident'],
+    question: 'What is Accident Forgiveness?',
+    answer: `Accident Forgiveness means your first at-fault accident won't increase your premium.
+
+✓ We believe in second chances — one at-fault accident, on its own, won't drive your rate up at renewal.
+✓ It applies automatically — no enrollment needed.
+✓ It's included on our policies at no extra cost.
+
+This is separate from your deductible — you'd still pay your deductible on the claim itself, but your future premium is protected.`,
+    followUp: ['What is a deductible?', 'What if the other driver is at fault?', 'Get a quote']
+  },
+
+  {
+    id: 'coverage-7',
+    category: 'Coverage',
+    intents: ['disappearing deductible', 'deductible drops', 'claim free discount', 'lower deductible over time', 'does my deductible go down'],
+    question: 'What is the Disappearing Deductible?',
+    answer: `Your deductible drops every year you stay claim-free — down to $0 after 5 years.
+
+📉 HOW IT WORKS:
+   • Start with your chosen deductible ($500 or $1,000)
+   • Each claim-free year, it shrinks
+   • After 5 consecutive claim-free years, it can reach $0
+
+Safe driving pays off — literally. It's included automatically, no extra cost or enrollment needed.`,
+    followUp: ['What is a deductible?', 'What is Accident Forgiveness?', 'Get a quote']
   }
 ];
 

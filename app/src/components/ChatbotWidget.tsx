@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Loader } from 'lucide-react';
+import { MessageCircle, X, Send } from 'lucide-react';
 import {
   CHATBOT_QA_DATABASE,
   findAnswerByIntent,
@@ -37,7 +37,7 @@ export default function ChatbotWidget() {
       const greeting: Message = {
         id: '0',
         type: 'bot',
-        content: `👋 Welcome to PolarGuard Insurance! I'm here to help with any questions about our coverage, pricing, process, claims, or eligibility.
+        content: `👋 Hi, I'm Edward from PolarGuard Insurance! I'm here to help with any questions about our coverage, pricing, process, claims, or eligibility.
 
 What can I help you with today? Feel free to ask about:
 • Getting a quote
@@ -172,7 +172,7 @@ Try asking in a different way, or pick one of the topics above!`,
           aria-label="Open chat"
         >
           <MessageCircle size={18} strokeWidth={2} />
-          Ask PolarGuard
+          Chat with Edward
         </button>
       )}
 
@@ -184,8 +184,8 @@ Try asking in a different way, or pick one of the topics above!`,
             <div className="flex items-center gap-2">
               <MessageCircle size={20} />
               <div>
-                <h3 className="font-semibold text-[14px]">PolarGuard Support</h3>
-                <p className="text-[12px] opacity-90">Always here to help</p>
+                <h3 className="font-semibold text-[14px]">Edward · PolarGuard</h3>
+                <p className="text-[12px] opacity-90">Your insurance assistant</p>
               </div>
             </div>
             <button
@@ -248,10 +248,20 @@ Try asking in a different way, or pick one of the topics above!`,
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white text-gray-900 border border-gray-200 rounded-lg rounded-bl-none p-3">
-                  <div className="flex items-center gap-2">
-                    <Loader size={16} className="animate-spin" />
-                    <span className="text-[14px]">Thinking...</span>
+                <div className="bg-white text-gray-900 border border-gray-200 rounded-lg rounded-bl-none px-4 py-3">
+                  <div className="flex items-center gap-1.5" aria-label="Edward is typing">
+                    <span
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: '0ms' }}
+                    />
+                    <span
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: '150ms' }}
+                    />
+                    <span
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: '300ms' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -295,7 +305,7 @@ Try asking in a different way, or pick one of the topics above!`,
                 type="text"
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
-                placeholder="Ask me anything..."
+                placeholder="Ask Edward anything..."
                 className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#168A5A]/20 focus:border-[#168A5A]"
                 disabled={isLoading}
               />
