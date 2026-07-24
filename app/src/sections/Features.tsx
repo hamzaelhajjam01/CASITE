@@ -64,7 +64,7 @@ export default function Features() {
 
   return (
     <section
-      id="coverage"
+      id="features"
       ref={sectionRef}
       className="bg-pg-bg py-24 lg:py-[120px]"
     >

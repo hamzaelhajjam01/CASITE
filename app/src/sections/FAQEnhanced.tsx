@@ -29,7 +29,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'How do I activate?',
-    answer: 'Pay by Interac e-Transfer, credit card, or debit. Send the payment confirmation screenshot to our team via WhatsApp or email. A broker reviews and activates your policy the same day — usually within 2 hours during business hours.',
+    answer: 'Pay by Interac e-Transfer only — we don\'t currently accept credit or debit cards. Upload your e-Transfer screenshot and a licensed broker matches it to your application, usually within 15-25 minutes. Your quote preview holds for about 30 minutes, so it\'s best to pay before it expires.',
   },
   {
     question: 'Can I choose basic or full coverage?',

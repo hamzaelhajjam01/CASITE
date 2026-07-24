@@ -22,13 +22,13 @@ const costFeatures = [
   },
   {
     icon: Building2,
-    title: 'Shopped across insurers',
-    desc: 'We place your file with TD and compare against partners to lock in the lowest legal rate.',
+    title: 'Backed by TD Insurance',
+    desc: 'We place your policy with TD Insurance, a major Canadian insurer, and a licensed broker reviews every application before activation.',
   },
   {
     icon: Gauge,
-    title: 'Bundle & telematics credits',
-    desc: 'We apply every available discount: telematics, multi-vehicle, winter tires, claims-free.',
+    title: 'Bundle & term credits',
+    desc: 'We apply every real discount you qualify for: longer prepaid terms, multi-vehicle bundling, and your deductible choice.',
   },
 ];
 

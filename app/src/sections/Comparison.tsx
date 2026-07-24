@@ -12,7 +12,7 @@ const comparisonData = [
   { feature: 'Disappearing deductible', traditional: false, polar: true },
   { feature: '24/7 roadside assistance', traditional: false, polar: true },
   { feature: 'Online claims filing', traditional: 'Limited', polar: 'Full digital', isText: true },
-  { feature: 'Bundle discount', traditional: '5–10%', polar: 'Up to 25%', isText: true },
+  { feature: 'Multi-vehicle discount', traditional: '5–10%', polar: 'Flat 20%', isText: true },
   { feature: 'Claims response time', traditional: '3–5 days', polar: '24 hours', isText: true },
   { feature: 'Canadian-owned', traditional: 'Varies', polar: true },
 ];

@@ -31,7 +31,7 @@ export default function CTABanner() {
 
   return (
     <section
-      id="quote"
+      id="cta-banner"
       ref={sectionRef}
       className="bg-pg-dark py-20 lg:py-[100px]"
     >
