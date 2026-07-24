@@ -652,7 +652,7 @@ Ready to apply? Get started now!`,
 📞 FILING THE CLAIM (Within 48 hours):
 
 CALL US IMMEDIATELY:
-   ☎️ PolarGuard Broker: 587-875-8875
+   ☎️ PolarGuard Broker: +1 (579) 987-7798
    ☎️ Available: 24/7
    ☎️ Have ready: Policy number, driver license, claim details
 
@@ -856,7 +856,7 @@ You can cancel:
 🎯 HOW TO CANCEL:
 
 OPTION 1 - PHONE:
-   ☎️ Call our broker: 587-875-8875
+   ☎️ Call our broker: +1 (579) 987-7798
    • Say you want to cancel
    • We process immediately
    • Confirmation emailed
@@ -920,7 +920,7 @@ HIGHER DEDUCTIBLE:
 🔄 HOW TO GET DISCOUNTS:
 
    • Term and deductible discounts apply automatically when you choose them in your quote
-   • Multi-vehicle bundling: mention your other vehicle(s) when you quote, or call our broker: 587-875-8875
+   • Multi-vehicle bundling: mention your other vehicle(s) when you quote, or call our broker: +1 (579) 987-7798
 
 📊 EXAMPLE:
    Full coverage, 3-month standard rate: $722
@@ -948,7 +948,7 @@ Get your quote and see your savings!`,
     answer: `Multiple ways to reach our team:
 
 ☎️ PHONE (Fastest):
-   Main Line: 587-875-8875
+   Main Line: +1 (579) 987-7798
    Hours: Monday-Friday 9 AM - 6 PM MT
    Saturdays: 10 AM - 4 PM MT
 
@@ -961,7 +961,7 @@ Get your quote and see your savings!`,
    Fastest response time
 
 📱 WhatsApp:
-   +1 (587) 875-8875
+   +1 (579) 987-7798
    Available during business hours
 
 🚨 EMERGENCY (24/7):
@@ -997,26 +997,26 @@ Have a question? Reach out - we're here to help!`,
 
 📋 IF YOU WANT TO LEARN ABOUT COVERAGE:
    1. Ask in this chat (I'm here to help!)
-   2. Call our broker: 587-875-8875
+   2. Call our broker: +1 (579) 987-7798
    3. Visit our FAQ section
 
 💳 IF YOU HAVE BILLING QUESTIONS:
    1. Check your email for invoice
-   2. Call 587-875-8875
+   2. Call +1 (579) 987-7798
    3. Login to check payment history
 
 🚗 IF YOU WERE IN AN ACCIDENT:
-   1. Call immediately: 587-875-8875
+   1. Call immediately: +1 (579) 987-7798
    2. Have policy number ready
    3. 24/7 emergency line available
 
 ✓ IF YOU WANT TO RENEW:
-   1. Call: 587-875-8875
+   1. Call: +1 (579) 987-7798
    2. Online: Policy management portal
    3. Email: support@polarguard.ca
 
 ❌ IF YOU WANT TO CANCEL:
-   1. Call: 587-875-8875
+   1. Call: +1 (579) 987-7798
    2. Online: Policy management
    3. Email: support@polarguard.ca
    → Easy process, no penalties!
@@ -1044,7 +1044,7 @@ I can help with:
 • Claims & accidents
 • Policy terms & cancellation
 
-What would you like to know? Or call us directly: 587-875-8875`,
+What would you like to know? Or call us directly: +1 (579) 987-7798`,
     followUp: ['Get a quote', 'What coverage do I need?', 'How much does it cost?']
   },
 
@@ -1100,7 +1100,7 @@ This is one of the biggest reasons drivers with credit issues or past problems c
    • Liability to others
    • Glass/windshield (often $0 deductible)
 
-Have a specific situation in mind? Ask me directly, or call our broker: 587-875-8875.`,
+Have a specific situation in mind? Ask me directly, or call our broker: +1 (579) 987-7798.`,
     followUp: ['What does comprehensive cover?', 'What is a deductible?', 'Get a quote']
   },
 
@@ -1148,7 +1148,7 @@ Have your loan or lease documents handy when you get your quote so we can add th
    • Trailers (as standalone policies)
    • Commercial/business-use fleets
 
-If you're not sure whether your vehicle qualifies, tell me the make and model — or call our broker: 587-875-8875.`,
+If you're not sure whether your vehicle qualifies, tell me the make and model — or call our broker: +1 (579) 987-7798.`,
     followUp: ['Who can get coverage?', 'How much does it cost?', 'Get a quote']
   },
 
@@ -1171,7 +1171,7 @@ If you're not sure whether your vehicle qualifies, tell me the make and model �
 ✅ HOW TO AVOID THIS:
    • Keep your card/payment method up to date
    • Set a reminder before your renewal date
-   • Contact us proactively if you expect a payment issue: 587-875-8875
+   • Contact us proactively if you expect a payment issue: +1 (579) 987-7798
 
 If a payment just failed, don't wait — call us before it lapses so we can help fix it without a coverage gap.`,
     followUp: ['Can I cancel anytime?', 'How do I renew?', 'Contact support']
@@ -1215,7 +1215,7 @@ Just visit polarguardbrokerage.ca from any phone, tablet, or computer — no dow
    • Your quote preview holds for about 30 minutes, so send your e-Transfer promptly
    • Make sure your screenshot clearly shows the amount, date, and reference number
 
-Questions about a payment? Call our broker: 587-875-8875`,
+Questions about a payment? Call our broker: +1 (579) 987-7798`,
     followUp: ['How long does it take to activate?', 'Get a quote', 'What information do I need?']
   },
 

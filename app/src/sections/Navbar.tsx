@@ -101,10 +101,10 @@ export default function Navbar() {
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="tel:587-875-8875"
+            href="tel:+15799877798"
             className="inline-flex items-center gap-2 font-inter text-[14px] font-medium px-5 py-2.5 rounded-full text-[#168A5A] border border-[#E6E8EB] hover:border-[#168A5A] hover:bg-[#F0FDF4] transition-all duration-300"
           >
-            <Phone size={16} strokeWidth={2} /> 587-875-8875
+            <Phone size={16} strokeWidth={2} /> +1 (579) 987-7798
           </a>
           <a
             href="#quote"
@@ -144,11 +144,11 @@ export default function Navbar() {
             })}
             <div className="flex flex-col gap-3 pt-4 border-t border-[#E6E8EB] mt-2">
               <a
-                href="tel:587-875-8875"
+                href="tel:+15799877798"
                 className="inline-flex items-center justify-center gap-2 font-inter text-[14px] font-medium text-[#168A5A] px-5 py-2.5 rounded-full border border-[#E6E8EB] hover:bg-[#F0FDF4] text-center"
                 onClick={handleMobileClick}
               >
-                <Phone size={16} strokeWidth={2} /> 587-875-8875
+                <Phone size={16} strokeWidth={2} /> +1 (579) 987-7798
               </a>
               <a
                 href="#quote"

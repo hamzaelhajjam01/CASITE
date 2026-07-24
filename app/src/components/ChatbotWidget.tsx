@@ -101,7 +101,7 @@ Would you like to know about:
 • **Contact us** - Reach our broker directly
 
 Or you can:
-📞 Call us: 587-875-8875
+📞 Call us: +1 (579) 987-7798
 📧 Email: support@polarguard.ca
 
 Try asking in a different way, or pick one of the topics above!`,
