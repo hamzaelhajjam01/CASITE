@@ -114,7 +114,28 @@ Try asking in a different way, or pick one of the topics above!`,
     }, 500);
   };
 
+  // "Get a quote" is a call-to-action, not a question — send the visitor straight
+  // to the real "Build your prepaid quote" section (id="quote") instead of just
+  // explaining the process in text.
+  const scrollToQuoteSection = () => {
+    setIsOpen(false);
+    setTimeout(() => {
+      document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
+  };
+
   const handleFollowUp = (followUpQuestion: string) => {
+    if (followUpQuestion.trim().toLowerCase() === 'get a quote') {
+      const userMsg: Message = {
+        id: Date.now().toString(),
+        type: 'user',
+        content: followUpQuestion,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, userMsg]);
+      scrollToQuoteSection();
+      return;
+    }
     handleSendMessage(followUpQuestion);
   };
 
