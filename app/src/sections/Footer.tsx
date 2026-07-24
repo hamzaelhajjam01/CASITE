@@ -1,4 +1,5 @@
 import { Phone, MessageCircle, ArrowUp } from 'lucide-react';
+import ChatbotWidget from '../components/ChatbotWidget';
 
 // ─── Column Data ────────────────────────────────────────────
 const productLinks = [
@@ -152,11 +153,8 @@ export default function Footer() {
         </div>
       </footer>
 
-      {/* Floating Chat Button */}
-      <button className="fixed bottom-6 right-6 z-50 bg-[#168A5A] hover:bg-[#1FA36A] text-white font-inter text-[14px] font-semibold px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-        <MessageCircle size={18} strokeWidth={2} />
-        Ask PolarGuard
-      </button>
+      {/* Live Chatbot */}
+      <ChatbotWidget />
     </>
   );
 }
