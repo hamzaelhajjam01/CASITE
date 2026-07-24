@@ -86,11 +86,11 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="tel:1-800-POLAR-1"
+                    href="tel:+15799877798"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"
                   >
                     <Phone size={14} strokeWidth={2} />
-                    1-800-POLAR-1
+                    +1 (579) 987-7798
                   </a>
                 </li>
                 <li>
