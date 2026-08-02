@@ -148,7 +148,7 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
       console.error('[telegram] sendDocument also failed:', tgBody.description);
     }
 
-    res.json({ ok: true, telegram: tgBody.ok });
+    res.json({ ok: true, telegram: tgBody.ok, telegram_error: tgBody.description });
   } catch (err) {
     next(err);
   }
