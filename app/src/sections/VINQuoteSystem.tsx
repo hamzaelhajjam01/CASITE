@@ -2,10 +2,10 @@ import { useState, useEffect, type CSSProperties } from 'react';
 import {
   Check, ChevronRight, ChevronLeft, Plus, Trash2, Car, User, Shield,
   Copy, Upload, Lock, Sparkles, Calendar, CheckCircle2, Circle,
-  AlertTriangle, X, Eye, Loader2
+  AlertTriangle, X, Eye, Loader2, Edit2
 } from 'lucide-react';
 import { verifyVIN } from '../api/vinaudit';
-import { fetchPackages, fetchSettings, calculateQuote, notifyPayment, type PackageData, type SiteSettings } from '../api/packages';
+import { fetchPackages, fetchSettings, calculateQuote, notifyPayment, checkPolicyStatus, type PackageData, type SiteSettings } from '../api/packages';
 
 // ─── Types ──────────────────────────────────────────────────
 interface VehicleData { vin: string; year: string; make: string; model: string; }
@@ -64,9 +64,18 @@ const POSTAL_PROVINCE_MAP: Record<string, { code: string; name: string }> = {
 const INVALID_POSTAL_FIRST_LETTERS = new Set(['D', 'F', 'I', 'O', 'Q', 'U', 'W', 'Z']);
 const POSTAL_FORMAT_REGEX = /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i;
 
+function cleanPostalCode(postal: string): string {
+  if (!postal) return '';
+  let clean = postal.trim().toUpperCase();
+  // Strip optional 2-letter province prefix (e.g. AB, ON, BC, QC, etc.) if typed before postal code
+  clean = clean.replace(/^(?:AB|ON|BC|QC|MB|SK|NS|NB|PE|NL|YT|NT|NU)[,\s\-\:]+/i, '');
+  return clean;
+}
+
 function validatePostalCode(postal: string): { valid: boolean; province: { code: string; name: string } | null; error: string | null } {
   if (!postal || postal.trim().length === 0) return { valid: false, province: null, error: null };
-  const clean = postal.trim().toUpperCase();
+  const clean = cleanPostalCode(postal);
+  if (clean.length === 0) return { valid: false, province: null, error: null };
   const firstChar = clean[0];
 
   // Check for invalid first letters (never used in Canadian postal codes)
@@ -322,7 +331,26 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
   const postalValidation = validatePostalCode(driver.postal);
   const postalValid = postalValidation.valid;
   const licenseValid = driver.license !== '';
-  const dobValid = driver.dob !== '';
+  // Age calculation and 18+ restriction
+  const userAge = (() => {
+    if (!driver.dob) return null;
+    const dob = new Date(driver.dob);
+    if (isNaN(dob.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+    return age;
+  })();
+
+  const isUnder18 = userAge !== null && userAge < 18;
+  const dobValid = driver.dob !== '' && userAge !== null && userAge >= 18;
+
+  const maxDate18 = (() => {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() - 18);
+    return d.toISOString().split('T')[0];
+  })();
 
   // Detect province on input (first 3 chars enough to determine province from first letter)
   const detectProvince = (postal: string) => {
@@ -349,10 +377,10 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="font-inter text-[12px] text-[#5F6368]">Progress</span>
-          <span className="font-inter text-[12px] font-semibold text-[#168A5A]">{[driver.postal, driver.license, driver.dob].filter(Boolean).length}/3</span>
+          <span className="font-inter text-[12px] font-semibold text-[#168A5A]">{[driver.postal, driver.license, driver.dob && dobValid].filter(Boolean).length}/3</span>
         </div>
         <div className="w-full h-[6px] bg-[#E6E8EB] rounded-full overflow-hidden">
-          <div className="h-full bg-[#168A5A] rounded-full transition-all duration-500" style={{ width: `${([driver.postal, driver.license, driver.dob].filter(Boolean).length / 3) * 100}%` }} />
+          <div className="h-full bg-[#168A5A] rounded-full transition-all duration-500" style={{ width: `${([driver.postal, driver.license, driver.dob && dobValid].filter(Boolean).length / 3) * 100}%` }} />
         </div>
       </div>
       {/* Q1 Postal */}
@@ -366,7 +394,7 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
             type="text"
             value={driver.postal}
             onChange={e => {
-              const val = e.target.value.toUpperCase().slice(0, 7);
+              const val = e.target.value.toUpperCase().slice(0, 12);
               setDriver({ postal: val });
               detectProvince(val);
             }}
@@ -423,15 +451,31 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
           <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${licenseValid ? 'bg-[#111]' : 'bg-[#E6E8EB]'}`}>
             <span className={`font-inter text-[13px] font-bold ${licenseValid ? 'text-white' : 'text-[#9AA0A6]'}`}>3</span>
           </div>
-          <h4 className="font-inter text-[15px] font-semibold text-[#111]">What&apos;s your date of birth?</h4>
+          <h4 className="font-inter text-[15px] font-semibold text-[#111]">What&apos;s your date of birth? (Must be 18+)</h4>
         </div>
         <div className="ml-11">
           <div className="relative">
             <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9AA0A6]" />
-            <input type="date" value={driver.dob} onChange={e => setDriver({ dob: e.target.value })}
-              className="w-full h-[52px] pl-12 pr-5 rounded-[12px] border border-[#E6E8EB] bg-[#FAFAFA] font-inter text-[14px] outline-none focus:border-[#168A5A] focus:bg-white transition-all" />
+            <input
+              type="date"
+              max={maxDate18}
+              value={driver.dob}
+              onChange={e => setDriver({ dob: e.target.value })}
+              className={`w-full h-[52px] pl-12 pr-5 rounded-[12px] border bg-[#FAFAFA] font-inter text-[14px] outline-none transition-all ${
+                isUnder18
+                  ? 'border-[#DC2626] focus:border-[#DC2626] focus:bg-white'
+                  : dobValid
+                  ? 'border-[#168A5A] focus:border-[#168A5A] focus:bg-white'
+                  : 'border-[#E6E8EB] focus:border-[#168A5A] focus:bg-white'
+              }`}
+            />
           </div>
-          <p className="font-inter text-[12px] text-[#8B949E] mt-2">Used to calculate your age-based rate (under 25 pays a higher premium).</p>
+          <p className="font-inter text-[12px] text-[#8B949E] mt-2">Drivers must be at least 18 years old. Under 25 pays an age-based rate premium.</p>
+          {isUnder18 && (
+            <span className="inline-block mt-2 bg-[#FEF2F2] text-[#DC2626] font-inter text-[12px] font-semibold px-3 py-1 rounded-full">
+              Must be at least 18 years old to apply for auto insurance
+            </span>
+          )}
         </div>
       </div>
       <div className="mb-8">
@@ -634,7 +678,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
     { label: 'VIN', value: vehicle.vin },
     { label: 'LICENSE', value: driver.license || '\u2014' },
     { label: 'DOB', value: driver.dob || '\u2014' },
-    { label: 'POSTAL', value: driver.postal + (postalInfo.province ? ` (${postalInfo.province.name})` : '') },
+    { label: 'POSTAL', value: (cleanPostalCode(driver.postal) || driver.postal) + (postalInfo.province ? ` (${postalInfo.province.name})` : '') },
     { label: 'COVERAGE', value: coverage.type === 'basic' ? 'Basic' : 'Full' },
     { label: 'TERM', value: (termLabels[coverage.term] || '3 months') + ' prepaid' },
   ];
@@ -820,8 +864,8 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
 }
 
 // ─── Pink Slip Card Sub-Component ───────────────────────────
-function PinkSlipCard({ paymentConfirmed, previewUnlocked, relockTimeLeft, onUnlock, pinkCard, vehicle, coverage, policyNumber }: {
-  paymentConfirmed: boolean; previewUnlocked: boolean; relockTimeLeft: number;
+function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, relockTimeLeft, onUnlock, pinkCard, vehicle, coverage, policyNumber }: {
+  paymentConfirmed: boolean; previewUnlocked: boolean; hasUsedPreview: boolean; relockTimeLeft: number;
   onUnlock: () => void; pinkCard: PinkCardData; vehicle: VehicleData; coverage: CoverageData; policyNumber: string;
 }) {
 
@@ -857,9 +901,9 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, relockTimeLeft, onUnl
   const vLbl: CSSProperties = { writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)', background: 'rgba(255,255,255,0.35)', borderRight: '1px solid #333', padding: '6px 4px', fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '30px' };
 
   return (
-    <div style={{ flex: '0 0 600px', maxWidth: '600px' }}>
+    <div className="w-full max-w-[600px] mx-auto shrink-0">
       <div
-        className={`relative rounded-[8px] overflow-hidden ${!paymentConfirmed && !previewUnlocked ? 'cursor-pointer' : ''}`}
+        className={`relative rounded-[8px] overflow-hidden ${!paymentConfirmed && !previewUnlocked && !hasUsedPreview ? 'cursor-pointer' : ''}`}
         style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15)', paddingBottom: '62.8%' }}
         onClick={onUnlock}
       >
@@ -967,13 +1011,22 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, relockTimeLeft, onUnl
           </div>
         </div>
 
-        {/* ── Lock overlay (locked state only) ── */}
+        {/* ── Lock overlay (locked state only — perfectly centered) ── */}
         {!paymentConfirmed && !previewUnlocked && (
-          <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 10 }}>
-            <div className="text-center" style={{ background: 'white', padding: '20px 40px', borderRadius: '16px', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
-              <Lock size={26} className="mx-auto mb-2" style={{ color: '#333' }} />
-              <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.8px', color: '#1a1a1a', textTransform: 'uppercase' }}>UNLOCK WITH PAYMENT</p>
-              <p style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>Click to preview for 30s</p>
+          <div className="absolute inset-0 flex items-center justify-center p-3" style={{ zIndex: 10 }}>
+            <div className="text-center max-w-[85%] sm:max-w-[300px] w-full mx-auto" style={{ background: 'white', padding: '16px 20px', borderRadius: '16px', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+              <Lock size={24} className={`mx-auto mb-1.5 ${hasUsedPreview ? 'text-[#DC2626]' : 'text-[#333]'}`} />
+              {hasUsedPreview ? (
+                <>
+                  <p style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.8px', color: '#DC2626', textTransform: 'uppercase' }}>PREVIEW EXPIRED</p>
+                  <p style={{ fontSize: '11px', color: '#666', marginTop: '4px', lineHeight: 1.3 }}>One-time 10s preview completed.<br />Upload payment receipt to unlock.</p>
+                </>
+              ) : (
+                <>
+                  <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.8px', color: '#1a1a1a', textTransform: 'uppercase' }}>UNLOCK WITH PAYMENT</p>
+                  <p style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>Click to preview for 10s</p>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -1027,9 +1080,11 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [uploadedFileObj, setUploadedFileObj] = useState<File | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showCovModal, setShowCovModal] = useState(false);
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [previewUnlocked, setPreviewUnlocked] = useState(false);
-  const [relockTimeLeft, setRelockTimeLeft] = useState(30);
+  const [hasUsedPreview, setHasUsedPreview] = useState(false);
+  const [relockTimeLeft, setRelockTimeLeft] = useState(10);
 
   // Payment verification states
   const [verifyingPayment, setVerifyingPayment] = useState(false);
@@ -1048,20 +1103,31 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
     return () => clearInterval(timer);
   }, [verifyingPayment, brokerVerified]);
 
-  // DEMO: Auto-verify after 5 seconds (remove in production — this is for broker webhook)
+  // Live status polling: check server if admin approved in Telegram
   useEffect(() => {
-    if (!verifyingPayment || brokerVerified) return;
-    const demoVerify = setTimeout(() => {
-      setBrokerVerified(true);
-      setPaymentConfirmed(true);
-    }, 5000);
-    return () => clearTimeout(demoVerify);
-  }, [verifyingPayment, brokerVerified]);
+    if (!verifyingPayment || brokerVerified || paymentConfirmed) return;
 
-  // 30-second preview countdown timer
+    const pollStatus = async () => {
+      try {
+        const res = await checkPolicyStatus(policyNumber);
+        if (res.status === 'active') {
+          setBrokerVerified(true);
+          setPaymentConfirmed(true);
+        }
+      } catch {
+        // ignore polling errors
+      }
+    };
+
+    pollStatus();
+    const pollInterval = setInterval(pollStatus, 3000);
+    return () => clearInterval(pollInterval);
+  }, [verifyingPayment, brokerVerified, paymentConfirmed, policyNumber]);
+
+  // 10-second preview countdown timer
   useEffect(() => {
     if (!previewUnlocked || paymentConfirmed) return;
-    setRelockTimeLeft(30);
+    setRelockTimeLeft(10);
     const timer = setInterval(() => {
       setRelockTimeLeft(prev => {
         if (prev <= 1) {
@@ -1153,34 +1219,96 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
         </div>
       </div>
 
-      {/* Coverage Type with pricing */}
+      {/* Coverage Type — Non-editable view with Ghost Edit button */}
       <div className="mb-8">
-        <p className="font-inter text-[13px] font-semibold text-[#111] mb-3">Coverage Type</p>
-        <div className="space-y-3">
-          {covOptions.map(opt => {
-            const isActive = selType === opt.id;
-            const optPrice = optionPrices[opt.id] ?? 0;
-            return (
-              <button
-                key={opt.id}
-                onClick={() => setSelType(opt.id)}
-                className={`w-full flex items-start gap-3 p-4 rounded-[12px] border text-left transition-all ${isActive ? 'border-[#168A5A] bg-[#F0FDF4]/30' : 'border-[#E6E8EB] hover:border-[#168A5A]/40'}`}
-              >
-                <div className={`w-5 h-5 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center ${isActive ? 'border-[#168A5A]' : 'border-[#E6E8EB]'}`}>
-                  {isActive && <div className="w-2.5 h-2.5 rounded-full bg-[#168A5A]" />}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <p className="font-inter text-[14px] font-semibold text-[#111]">{opt.title}</p>
-                    <p className={`font-inter text-[14px] font-semibold ${isActive ? 'text-[#168A5A]' : 'text-[#5F6368]'}`}>${optPrice} CAD</p>
-                  </div>
-                  <p className="font-inter text-[12px] text-[#5F6368]">{opt.sub}</p>
-                </div>
-              </button>
-            );
-          })}
+        <div className="flex items-center justify-between mb-3">
+          <p className="font-inter text-[13px] font-semibold text-[#111]">Coverage Type</p>
+          <button
+            type="button"
+            onClick={() => setShowCovModal(true)}
+            className="inline-flex items-center gap-1.5 font-inter text-[12px] font-semibold text-[#168A5A] border border-[#168A5A] hover:bg-[#F0FDF4] px-3.5 py-1.5 rounded-lg transition-all"
+          >
+            <Edit2 size={13} /> Edit
+          </button>
         </div>
+
+        {/* Selected Coverage Summary Box */}
+        {(() => {
+          const selectedOpt = covOptions.find(o => o.id === selType) || covOptions[1];
+          return (
+            <div className="p-4 rounded-[12px] border border-[#168A5A] bg-[#F0FDF4]/30 flex items-start justify-between">
+              <div className="flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full border-2 border-[#168A5A] shrink-0 mt-0.5 flex items-center justify-center">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#168A5A]" />
+                </div>
+                <div>
+                  <p className="font-inter text-[14px] font-semibold text-[#111]">{selectedOpt.title}</p>
+                  <p className="font-inter text-[12px] text-[#5F6368] mt-0.5">{selectedOpt.sub}</p>
+                </div>
+              </div>
+              <p className="font-inter text-[15px] font-bold text-[#168A5A] shrink-0 ml-4">${currentPrice} CAD</p>
+            </div>
+          );
+        })()}
       </div>
+
+      {/* Coverage Switch Modal */}
+      {showCovModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-[20px] max-w-[500px] w-full p-6 sm:p-8 shadow-2xl relative">
+            <button
+              onClick={() => setShowCovModal(false)}
+              className="absolute top-4 right-4 p-1.5 text-[#5F6368] hover:text-[#111] hover:bg-[#F7F7F5] rounded-full transition-all"
+            >
+              <X size={20} />
+            </button>
+
+            <h3 className="font-satoshi font-bold text-[20px] text-[#111] mb-1">Switch Coverage Type</h3>
+            <p className="font-inter text-[13px] text-[#5F6368] mb-6">Select a new coverage level. Prices update instantly across your quote.</p>
+
+            <div className="space-y-3 mb-6">
+              {covOptions.map(opt => {
+                const isActive = selType === opt.id;
+                const optPrice = optionPrices[opt.id] ?? 0;
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => {
+                      setSelType(opt.id);
+                      setShowCovModal(false);
+                    }}
+                    className={`w-full flex items-start gap-3 p-4 rounded-[12px] border text-left transition-all ${
+                      isActive
+                        ? 'border-2 border-[#168A5A] bg-[#F0FDF4]'
+                        : 'border border-[#E6E8EB] hover:border-[#168A5A]/50 hover:bg-[#FAFAFA]'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center ${isActive ? 'border-[#168A5A]' : 'border-[#E6E8EB]'}`}>
+                      {isActive && <div className="w-2.5 h-2.5 rounded-full bg-[#168A5A]" />}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="font-inter text-[14px] font-semibold text-[#111]">{opt.title}</p>
+                        <p className={`font-inter text-[14px] font-bold ${isActive ? 'text-[#168A5A]' : 'text-[#5F6368]'}`}>${optPrice} CAD</p>
+                      </div>
+                      <p className="font-inter text-[12px] text-[#5F6368] mt-0.5">{opt.sub}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowCovModal(false)}
+                className="font-inter text-[14px] font-semibold px-6 py-2.5 rounded-xl bg-[#168A5A] text-white hover:bg-[#1FA36A] transition-all"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* What&apos;s Included */}
       <div className="mb-8">
@@ -1245,24 +1373,30 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
               <input type="checkbox" className="rounded" />
               <span className="font-inter text-[12px] text-[#5F6368]">QA overlay</span>
             </label>
-            <span className={`font-inter text-[10px] font-bold px-2 py-0.5 rounded-full ${paymentConfirmed ? 'bg-[#F0FDF4] text-[#168A5A]' : previewUnlocked ? 'bg-[#EFF6FF] text-[#2563EB]' : 'bg-[#FFF7ED] text-[#C2410C]'}`}>
-              {paymentConfirmed ? 'Active' : previewUnlocked ? 'Preview' : 'Preview only'}
+            <span className={`font-inter text-[10px] font-bold px-2 py-0.5 rounded-full ${paymentConfirmed ? 'bg-[#F0FDF4] text-[#168A5A]' : previewUnlocked ? 'bg-[#EFF6FF] text-[#2563EB]' : hasUsedPreview ? 'bg-[#FEF2F2] text-[#DC2626]' : 'bg-[#FFF7ED] text-[#C2410C]'}`}>
+              {paymentConfirmed ? 'Active' : previewUnlocked ? 'Preview' : hasUsedPreview ? 'Preview Used' : 'Preview only'}
             </span>
           </div>
         </div>
 
-        {/* ═══ PINK CARD + INFO BOX side by side ═══ */}
-        <div className="flex gap-5 items-stretch">
+        {/* ═══ PINK CARD + INFO BOX side by side on desktop, stacked on mobile ═══ */}
+        <div className="flex flex-col lg:flex-row gap-5 items-stretch lg:items-center">
 
-          {/* Pink Slip Card — fixed 600px width */}
+          {/* Pink Slip Card */}
           <PinkSlipCard
             paymentConfirmed={paymentConfirmed}
             previewUnlocked={previewUnlocked}
+            hasUsedPreview={hasUsedPreview}
             relockTimeLeft={relockTimeLeft}
-            onUnlock={() => { if (!paymentConfirmed && !previewUnlocked) setPreviewUnlocked(true); }}
+            onUnlock={() => {
+              if (!paymentConfirmed && !previewUnlocked && !hasUsedPreview) {
+                setPreviewUnlocked(true);
+                setHasUsedPreview(true);
+              }
+            }}
             pinkCard={pinkCard}
             vehicle={vehicle}
-            coverage={initialCoverage}
+            coverage={{ ...initialCoverage, type: selType }}
             policyNumber={policyNumber}
           />
 
@@ -1314,7 +1448,7 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
               /* LOCKED — green info */
               <div className="w-full bg-[#F0FDF4] border border-[#A7DAB9] rounded-[10px] p-4">
                 <p className="font-inter text-[13px] text-[#064E3B] leading-relaxed">
-                  Click the card above for a 30-second preview to verify your details. Make payment to activate your policy and unlock permanent access to your pink slip.
+                  Click the card above for a 10-second preview to verify your details. Make payment to activate your policy and unlock permanent access to your pink slip.
                 </p>
               </div>
             )}

@@ -1,13 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import {
-  CHATBOT_QA_DATABASE,
   findAnswerByIntent,
-  getAllCategories,
   getQAByCategory,
-  searchQA,
-  getFollowUpSuggestions,
-  ChatbotQA
+  type ChatbotQA
 } from '../chatbot-knowledge-base';
 
 interface Message {

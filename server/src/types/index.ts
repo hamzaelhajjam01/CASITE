@@ -38,6 +38,26 @@ export interface CoverageRowDoc {
   updated_at: Date;
 }
 
+export interface PolicyDoc {
+  _id?: ObjectId;
+  policy_number: string;
+  status: 'pending' | 'active' | 'rejected';
+  amount: number;
+  coverage_type: string;
+  term: string;
+  deductible: string;
+  vin: string;
+  vehicle: string;
+  license_class: string;
+  dob: string;
+  postal: string;
+  receipt_name: string;
+  telegram_message_id?: number;
+  telegram_chat_id?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 // ─── API response shapes ──────────────────────────────────────────
 
 export interface PackageResponse {

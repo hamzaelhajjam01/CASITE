@@ -19,5 +19,9 @@ export async function createIndexes(): Promise<void> {
   await db.collection('coverage_rows').createIndex({ sort_order: 1 });
   await db.collection('coverage_rows').createIndex({ is_active: 1 });
 
+  // policies — unique policy_number
+  await db.collection('policies').createIndex({ policy_number: 1 }, { unique: true });
+  await db.collection('policies').createIndex({ status: 1 });
+
   console.log('✓ MongoDB indexes created');
 }

@@ -57,6 +57,12 @@ export async function notifyPayment(payload: PaymentNotifyPayload): Promise<void
   // Fire-and-forget — don't throw, never block the user flow
 }
 
+export async function checkPolicyStatus(policyNumber: string): Promise<{ status: 'pending' | 'active' | 'rejected' }> {
+  const res = await fetch(`${BASE}/notify/status/${policyNumber}`);
+  if (!res.ok) return { status: 'pending' };
+  return res.json();
+}
+
 export async function fetchSettings(): Promise<SiteSettings> {
   const res = await fetch(`${BASE}/settings`);
   if (!res.ok) throw new Error('Failed to load settings');

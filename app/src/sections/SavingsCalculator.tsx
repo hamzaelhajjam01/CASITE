@@ -209,9 +209,12 @@ export default function SavingsCalculator() {
 
             {/* CTA */}
             <div>
-              <button className="w-full bg-white text-[#081826] font-inter text-[15px] font-semibold py-4 rounded-[12px] hover:bg-[#F7F7F5] transition-colors flex items-center justify-center gap-2">
+              <a
+                href="#quote"
+                className="w-full bg-white text-[#081826] font-inter text-[15px] font-semibold py-4 rounded-[12px] hover:bg-[#F7F7F5] transition-colors flex items-center justify-center gap-2"
+              >
                 <Sparkles size={16} /> Lock in this rate
-              </button>
+              </a>
               <p className="mt-3 font-inter text-[11px] text-white/40 text-center leading-relaxed">
                 Estimate only. Final rate depends on driver profile, vehicle, and broker review.
               </p>
