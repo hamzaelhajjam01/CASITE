@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3002/api';
+const BASE = import.meta.env.VITE_API_URL ?? '/api';
 
 export interface PackageData {
   id: string;
