@@ -366,10 +366,50 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
     }
   };
 
-  const licenseCards = [{ id: 'G', title: 'G', sub: 'Full license' }, { id: 'G2', title: 'G2', sub: 'Probationary \u2014 1+ year driving' }, { id: 'G1', title: 'G1', sub: 'Beginner \u2014 supervised only' }];
+  const getLicenseCards = (prov: string) => {
+    switch (prov) {
+      case 'BC':
+        return [
+          { id: 'G', title: 'Class 5', sub: 'Full passenger license' },
+          { id: 'G2', title: 'Class 7', sub: 'Novice (N)' },
+          { id: 'G1', title: 'Class 7L', sub: 'Learner (L)' },
+          { id: 'COMMERCIAL', title: 'Class 4', sub: 'Taxi / limo / small bus / rideshare' },
+        ];
+      case 'ON':
+        return [
+          { id: 'G', title: 'G', sub: 'Full passenger license' },
+          { id: 'G2', title: 'G2', sub: 'Probationary \u2014 1+ year driving' },
+          { id: 'G1', title: 'G1', sub: 'Beginner \u2014 supervised only' },
+          { id: 'COMMERCIAL', title: 'Class F / CZ', sub: 'Taxi / shuttle / small bus' },
+        ];
+      case 'AB':
+        return [
+          { id: 'G', title: 'Class 5 Full', sub: 'Full passenger license' },
+          { id: 'G2', title: 'Class 5 GDL', sub: 'Probationary \u2014 1+ year driving' },
+          { id: 'G1', title: 'Class 7', sub: 'Learner \u2014 supervised only' },
+          { id: 'COMMERCIAL', title: 'Class 4', sub: 'Taxi / limo / small bus / rideshare' },
+        ];
+      case 'QC':
+        return [
+          { id: 'G', title: 'Class 5 Full', sub: 'Permis de conduire' },
+          { id: 'G2', title: 'Probationary', sub: 'Permis probatoire' },
+          { id: 'G1', title: 'Learner', sub: 'Permis d\'apprenti' },
+          { id: 'COMMERCIAL', title: 'Class 4C', sub: 'Taxi / limousine / rideshare' },
+        ];
+      default:
+        return [
+          { id: 'G', title: 'Full License', sub: 'Full unrestricted license' },
+          { id: 'G2', title: 'Probationary', sub: 'Novice \u2014 1+ year driving' },
+          { id: 'G1', title: 'Learner / Beginner', sub: 'Supervised driving only' },
+          { id: 'COMMERCIAL', title: 'Commercial Class 4', sub: 'Taxi / limo / rideshare' },
+        ];
+    }
+  };
+
+  const licenseCards = getLicenseCards(driver.province);
 
   return (
-    <div className="bg-white rounded-[20px] p-8 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+    <div className="bg-white rounded-[20px] p-6 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
       <div className="mb-8">
         <h3 className="font-satoshi font-semibold text-[#111] text-[22px] mb-1">A few quick questions</h3>
         <p className="font-inter text-[#5F6368] text-[14px]">Each answer unlocks the next &mdash; license classes shown will match your province.</p>
@@ -383,10 +423,19 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
           <div className="h-full bg-[#168A5A] rounded-full transition-all duration-500" style={{ width: `${([driver.postal, driver.license, driver.dob && dobValid].filter(Boolean).length / 3) * 100}%` }} />
         </div>
       </div>
-      {/* Q1 Postal */}
-      <div className="mb-8">
+
+      {/* Q1 Postal Boxed Card */}
+      <div className="border border-[#E6E8EB] rounded-[16px] p-6 mb-6">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-[#111] flex items-center justify-center shrink-0"><span className="font-inter text-[13px] font-bold text-white">1</span></div>
+          {postalValid ? (
+            <div className="w-8 h-8 rounded-full bg-[#168A5A] flex items-center justify-center shrink-0">
+              <Check size={16} className="text-white" strokeWidth={3} />
+            </div>
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-[#111] flex items-center justify-center shrink-0">
+              <span className="font-inter text-[13px] font-bold text-white">1</span>
+            </div>
+          )}
           <h4 className="font-inter text-[15px] font-semibold text-[#111]">What&apos;s your postal code?</h4>
         </div>
         <div className="ml-11">
@@ -423,34 +472,48 @@ function Step2Driver({ driver, setDriver, onNext, onBack }: { driver: DriverData
           )}
         </div>
       </div>
-      {/* Q2 License */}
-      <div className={`mb-8 transition-all duration-500 ${postalValid ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none'}`}>
+
+      {/* Q2 License Boxed Card */}
+      <div className={`border border-[#E6E8EB] rounded-[16px] p-6 mb-6 transition-all duration-500 ${postalValid ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none'}`}>
         <div className="flex items-center gap-3 mb-3">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${postalValid ? 'bg-[#111]' : 'bg-[#E6E8EB]'}`}>
-            <span className={`font-inter text-[13px] font-bold ${postalValid ? 'text-white' : 'text-[#9AA0A6]'}`}>2</span>
-          </div>
-          <h4 className="font-inter text-[15px] font-semibold text-[#111]">Which {driver.province === 'ON' ? 'Ontario' : ''} license do you hold?</h4>
+          {licenseValid ? (
+            <div className="w-8 h-8 rounded-full bg-[#168A5A] flex items-center justify-center shrink-0">
+              <Check size={16} className="text-white" strokeWidth={3} />
+            </div>
+          ) : (
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${postalValid ? 'bg-[#111]' : 'bg-[#E6E8EB]'}`}>
+              <span className={`font-inter text-[13px] font-bold ${postalValid ? 'text-white' : 'text-[#9AA0A6]'}`}>2</span>
+            </div>
+          )}
+          <h4 className="font-inter text-[15px] font-semibold text-[#111]">Which {postalValidation.province ? postalValidation.province.name : ''} license do you hold?</h4>
         </div>
-        <div className="ml-11 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="ml-11 grid grid-cols-1 sm:grid-cols-2 gap-3">
           {licenseCards.map(card => {
             const isActive = driver.license === card.id;
             return (
               <button key={card.id} onClick={() => setDriver({ license: card.id })}
                 className={`relative p-4 rounded-[12px] border text-left transition-all duration-200 ${isActive ? 'border-2 border-[#168A5A] bg-[#F0FDF4]/30' : 'border border-[#E6E8EB] hover:border-[#168A5A]/40'}`}>
                 {isActive && <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#168A5A] flex items-center justify-center"><Check size={12} className="text-white" strokeWidth={3} /></div>}
-                <p className={`font-inter text-[18px] font-bold ${isActive ? 'text-[#168A5A]' : 'text-[#111]'}`}>{card.title}</p>
+                <p className={`font-inter text-[16px] font-bold ${isActive ? 'text-[#168A5A]' : 'text-[#111]'}`}>{card.title}</p>
                 <p className="font-inter text-[12px] text-[#5F6368] mt-1">{card.sub}</p>
               </button>
             );
           })}
         </div>
       </div>
-      {/* Q3 DOB */}
-      <div className={`mb-8 transition-all duration-500 ${licenseValid ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none'}`}>
+
+      {/* Q3 DOB Boxed Card */}
+      <div className={`border border-[#E6E8EB] rounded-[16px] p-6 mb-6 transition-all duration-500 ${licenseValid ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none'}`}>
         <div className="flex items-center gap-3 mb-3">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${licenseValid ? 'bg-[#111]' : 'bg-[#E6E8EB]'}`}>
-            <span className={`font-inter text-[13px] font-bold ${licenseValid ? 'text-white' : 'text-[#9AA0A6]'}`}>3</span>
-          </div>
+          {dobValid ? (
+            <div className="w-8 h-8 rounded-full bg-[#168A5A] flex items-center justify-center shrink-0">
+              <Check size={16} className="text-white" strokeWidth={3} />
+            </div>
+          ) : (
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${licenseValid ? 'bg-[#111]' : 'bg-[#E6E8EB]'}`}>
+              <span className={`font-inter text-[13px] font-bold ${licenseValid ? 'text-white' : 'text-[#9AA0A6]'}`}>3</span>
+            </div>
+          )}
           <h4 className="font-inter text-[15px] font-semibold text-[#111]">What&apos;s your date of birth? (Must be 18+)</h4>
         </div>
         <div className="ml-11">
