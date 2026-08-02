@@ -45,30 +45,34 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
   try {
     const d = req.body as z.infer<typeof notifySchema>;
 
-    // 1. Save policy in MongoDB database
-    const db = getDB();
-    await db.collection<PolicyDoc>('policies').updateOne(
-      { policy_number: d.policy_number },
-      {
-        $set: {
-          policy_number: d.policy_number,
-          status: 'pending',
-          amount: d.amount,
-          coverage_type: d.coverage_type,
-          term: d.term,
-          deductible: d.deductible,
-          vin: d.vin,
-          vehicle: d.vehicle,
-          license_class: d.license_class,
-          dob: d.dob,
-          postal: d.postal,
-          receipt_name: d.receipt_name,
-          updated_at: new Date(),
+    // 1. Save policy in MongoDB database (resilient)
+    try {
+      const db = getDB();
+      await db.collection<PolicyDoc>('policies').updateOne(
+        { policy_number: d.policy_number },
+        {
+          $set: {
+            policy_number: d.policy_number,
+            status: 'pending',
+            amount: d.amount,
+            coverage_type: d.coverage_type,
+            term: d.term,
+            deductible: d.deductible,
+            vin: d.vin,
+            vehicle: d.vehicle,
+            license_class: d.license_class,
+            dob: d.dob,
+            postal: d.postal,
+            receipt_name: d.receipt_name,
+            updated_at: new Date(),
+          },
+          $setOnInsert: { created_at: new Date() },
         },
-        $setOnInsert: { created_at: new Date() },
-      },
-      { upsert: true }
-    );
+        { upsert: true }
+      );
+    } catch (dbErr) {
+      console.error('[notify/payment] MongoDB save error:', (dbErr as Error).message);
+    }
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId   = process.env.TELEGRAM_CHAT_ID;
@@ -133,10 +137,13 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
     }
 
     if (tgBody.ok && tgBody.result?.message_id) {
-      await db.collection<PolicyDoc>('policies').updateOne(
-        { policy_number: d.policy_number },
-        { $set: { telegram_message_id: tgBody.result.message_id, telegram_chat_id: chatId } }
-      );
+      try {
+        const db = getDB();
+        await db.collection<PolicyDoc>('policies').updateOne(
+          { policy_number: d.policy_number },
+          { $set: { telegram_message_id: tgBody.result.message_id, telegram_chat_id: chatId } }
+        );
+      } catch (err) {}
     } else if (!tgBody.ok) {
       console.error('[telegram] sendDocument also failed:', tgBody.description);
     }

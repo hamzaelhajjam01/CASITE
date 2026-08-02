@@ -13,7 +13,7 @@ export async function connectDB(): Promise<Db> {
     throw new Error('MONGODB_URI is not set in environment variables');
   }
 
-  client = new MongoClient(uri, { tls: true, tlsAllowInvalidCertificates: false });
+  client = new MongoClient(uri);
   await client.connect();
   db = client.db(dbName);
 
