@@ -957,10 +957,11 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
   const vinDisplay = (vehicle.vin || '4EN6AAA82G1000278').toUpperCase();
 
   // Cell styles — left padding 12px on text columns
-  const thBase: CSSProperties = { border: '1px solid #333', padding: '4px 3px', fontSize: '8px', textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center', lineHeight: 1.2, background: 'rgba(255,255,255,0.25)' };
-  const tdBase: CSSProperties = { border: '1px solid #333', padding: '5px 3px', fontSize: '10px', fontWeight: 'bold', textAlign: 'center', color: '#1a1a1a' };
-  const thLeft: CSSProperties = { ...thBase, padding: '4px 3px 4px 12px', textAlign: 'left' };
-  const tdLeft: CSSProperties = { ...tdBase, padding: '5px 3px 5px 12px', textAlign: 'left' };
+  // Cell styles — left padding 8px on text columns
+  const thBase: CSSProperties = { border: '1px solid #333', padding: '3px 2px', fontSize: '7.5px', textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center', verticalAlign: 'middle', lineHeight: 1.1, background: 'rgba(255,255,255,0.25)' };
+  const tdBase: CSSProperties = { border: '1px solid #333', padding: '4px 2px', fontSize: '9.5px', fontWeight: 'bold', textAlign: 'center', verticalAlign: 'middle', color: '#1a1a1a' };
+  const thLeft: CSSProperties = { ...thBase, padding: '3px 2px 3px 8px', textAlign: 'left' };
+  const tdLeft: CSSProperties = { ...tdBase, padding: '4px 2px 4px 8px', textAlign: 'left' };
 
   return (
     <div className="w-full max-w-[600px] mx-auto shrink-0">
@@ -994,7 +995,7 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
               </div>
               {/* Timer pill (preview mode only) */}
               {!paymentConfirmed && previewUnlocked && (
-                <div className="absolute flex items-center gap-1.5" style={{ top: '8px', right: '12px', background: '#2a2a2a', color: '#f97316', padding: '3px 10px', borderRadius: '14px', fontSize: '10px', fontWeight: 600 }}>
+                <div data-html2canvas-ignore="true" className="absolute flex items-center gap-1.5" style={{ top: '8px', right: '12px', background: '#2a2a2a', color: '#f97316', padding: '3px 10px', borderRadius: '14px', fontSize: '10px', fontWeight: 600 }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
                   Relocks in {relockTimeLeft}s
                 </div>
@@ -1009,30 +1010,32 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
             {/* Agency section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div className="w-[30px] shrink-0 border-r border-[#333] bg-white/35 relative overflow-hidden flex items-center justify-center">
-                <div className="flex items-center gap-1.5 transform -rotate-90 whitespace-nowrap text-[#1a1a1a]">
-                  <span className="text-[8px] font-bold uppercase tracking-[0.5px]">AGENCY</span>
-                  <span className="text-[7px] font-bold uppercase opacity-70">AGENCE</span>
-                </div>
+              <div style={{ width: '26px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
+                <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" transform="rotate(-90 13 25)" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif">
+                    AGENCY <tspan fontSize="6" opacity="0.75">AGENCE</tspan>
+                  </text>
+                </svg>
               </div>
-              <div style={{ padding: '10px 14px 10px 20px', flex: 1 }}>
-                <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '3px', textTransform: 'uppercase' }}>TD Insurance Direct Agency Inc.</div>
-                <div style={{ fontSize: '11px', color: '#1a1a1a', lineHeight: 1.4, textTransform: 'uppercase' }}>101 McNabb Street, 2nd Floor, Markham, ON L3R 4H8</div>
+              <div style={{ padding: '8px 14px 8px 20px', flex: 1 }}>
+                <div style={{ fontSize: '12.5px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '2px', textTransform: 'uppercase' }}>TD Insurance Direct Agency Inc.</div>
+                <div style={{ fontSize: '10.5px', color: '#1a1a1a', lineHeight: 1.3, textTransform: 'uppercase' }}>101 McNabb Street, 2nd Floor, Markham, ON L3R 4H8</div>
               </div>
             </div>
 
             {/* Insured section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div className="w-[30px] shrink-0 border-r border-[#333] bg-white/35 relative overflow-hidden flex items-center justify-center">
-                <div className="flex items-center gap-1.5 transform -rotate-90 whitespace-nowrap text-[#1a1a1a]">
-                  <span className="text-[8px] font-bold uppercase tracking-[0.5px]">INSURED</span>
-                  <span className="text-[7px] font-bold uppercase opacity-70">ASSUR&Eacute;-E</span>
-                </div>
+              <div style={{ width: '26px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
+                <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" transform="rotate(-90 13 30)" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif">
+                    INSURED <tspan fontSize="6" opacity="0.75">ASSUR&Eacute;-E</tspan>
+                  </text>
+                </svg>
               </div>
-              <div style={{ padding: '10px 14px 10px 20px', flex: 1 }}>
-                <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '3px', textTransform: 'uppercase' }}>{insuredName}</div>
-                <div style={{ fontSize: '11px', color: '#1a1a1a', lineHeight: 1.4, textTransform: 'uppercase' }}>{insuredStreet}</div>
-                <div style={{ fontSize: '11px', color: '#1a1a1a', lineHeight: 1.4, textTransform: 'uppercase' }}>{insuredCity}</div>
+              <div style={{ padding: '8px 14px 8px 20px', flex: 1 }}>
+                <div style={{ fontSize: '12.5px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '2px', textTransform: 'uppercase' }}>{insuredName}</div>
+                <div style={{ fontSize: '10.5px', color: '#1a1a1a', lineHeight: 1.3, textTransform: 'uppercase' }}>{insuredStreet}</div>
+                <div style={{ fontSize: '10.5px', color: '#1a1a1a', lineHeight: 1.3, textTransform: 'uppercase' }}>{insuredCity}</div>
               </div>
             </div>
 
@@ -1040,12 +1043,21 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
             <table className="shrink-0" style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th style={{ ...thLeft, width: '20%' }}>POLICY No<br /><small style={{ fontSize: '7px', display: 'block', marginTop: '1px' }}>No DE POLICE</small></th>
+                  <th style={{ ...thLeft, width: '20%' }}>
+                    <div>POLICY NO</div>
+                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>NO DE POLICE</div>
+                  </th>
                   <th style={{ ...thBase, width: '8%' }}>Y/A</th>
                   <th style={{ ...thBase, width: '7%' }}>M</th>
                   <th style={{ ...thBase, width: '7%' }}>D/J</th>
-                  <th style={{ ...thLeft, width: '16%' }}>EFFECTIVE DATE<br /><small style={{ fontSize: '7px', display: 'block', marginTop: '1px' }}>DATE D&apos;EFFET</small></th>
-                  <th style={{ ...thLeft, width: '16%' }}>EXPIRY DATE<br /><small style={{ fontSize: '7px', display: 'block', marginTop: '1px' }}>EXPIRATION</small></th>
+                  <th style={{ ...thLeft, width: '16%' }}>
+                    <div>EFFECTIVE DATE</div>
+                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>DATE D&apos;EFFET</div>
+                  </th>
+                  <th style={{ ...thLeft, width: '16%' }}>
+                    <div>EXPIRY DATE</div>
+                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>EXPIRATION</div>
+                  </th>
                   <th style={{ ...thBase, width: '8%' }}>Y/A</th>
                   <th style={{ ...thBase, width: '7%' }}>M</th>
                   <th style={{ ...thBase, width: '7%' }}>D/J</th>
@@ -1167,11 +1179,12 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
 
       const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(cardElement, {
-        scale: 3,
+        scale: 4,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
+        windowWidth: 1200,
       });
       const link = document.createElement('a');
       link.download = `PolarGuard_Pink_Slip_${policyNumber}.png`;
