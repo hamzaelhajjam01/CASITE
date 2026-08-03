@@ -958,9 +958,9 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
   // Cell styles — left padding 12px on text columns
   // Cell styles — left padding 8px on text columns
-  const thBase: CSSProperties = { border: '1px solid #333', padding: '3px 2px', fontSize: '7.5px', textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center', verticalAlign: 'middle', lineHeight: 1.1, background: 'rgba(255,255,255,0.25)' };
+  const thBase: CSSProperties = { border: '1px solid #333', padding: '2px 2px', fontSize: '7.5px', textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center', verticalAlign: 'top', lineHeight: 1.0, background: 'rgba(255,255,255,0.25)', height: '24px' };
   const tdBase: CSSProperties = { border: '1px solid #333', padding: '4px 2px', fontSize: '9.5px', fontWeight: 'bold', textAlign: 'center', verticalAlign: 'middle', color: '#1a1a1a' };
-  const thLeft: CSSProperties = { ...thBase, padding: '3px 2px 3px 8px', textAlign: 'left' };
+  const thLeft: CSSProperties = { ...thBase, padding: '2px 2px 2px 8px', textAlign: 'left' };
   const tdLeft: CSSProperties = { ...tdBase, padding: '4px 2px 4px 8px', textAlign: 'left' };
 
   return (
@@ -1046,23 +1046,41 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
               <thead>
                 <tr>
                   <th style={{ ...thLeft, width: '20%' }}>
-                    <div>POLICY NO</div>
-                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>NO DE POLICE</div>
+                    <div style={{ lineHeight: '1.0', paddingTop: '1px' }}>
+                      <div style={{ fontSize: '7px', fontWeight: 'bold' }}>POLICY NO</div>
+                      <div style={{ fontSize: '5.8px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>NO DE POLICE</div>
+                    </div>
                   </th>
-                  <th style={{ ...thBase, width: '8%' }}>Y/A</th>
-                  <th style={{ ...thBase, width: '7%' }}>M</th>
-                  <th style={{ ...thBase, width: '7%' }}>D/J</th>
+                  <th style={{ ...thBase, width: '8%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>Y/A</div>
+                  </th>
+                  <th style={{ ...thBase, width: '7%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>M</div>
+                  </th>
+                  <th style={{ ...thBase, width: '7%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>D/J</div>
+                  </th>
                   <th style={{ ...thLeft, width: '16%' }}>
-                    <div>EFFECTIVE DATE</div>
-                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>DATE D&apos;EFFET</div>
+                    <div style={{ lineHeight: '1.0', paddingTop: '1px' }}>
+                      <div style={{ fontSize: '7px', fontWeight: 'bold' }}>EFFECTIVE DATE</div>
+                      <div style={{ fontSize: '5.8px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>DATE D&apos;EFFET</div>
+                    </div>
                   </th>
                   <th style={{ ...thLeft, width: '16%' }}>
-                    <div>EXPIRY DATE</div>
-                    <div style={{ fontSize: '6.5px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>EXPIRATION</div>
+                    <div style={{ lineHeight: '1.0', paddingTop: '1px' }}>
+                      <div style={{ fontSize: '7px', fontWeight: 'bold' }}>EXPIRY DATE</div>
+                      <div style={{ fontSize: '5.8px', fontWeight: 'normal', marginTop: '1px', opacity: 0.85 }}>EXPIRATION</div>
+                    </div>
                   </th>
-                  <th style={{ ...thBase, width: '8%' }}>Y/A</th>
-                  <th style={{ ...thBase, width: '7%' }}>M</th>
-                  <th style={{ ...thBase, width: '7%' }}>D/J</th>
+                  <th style={{ ...thBase, width: '8%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>Y/A</div>
+                  </th>
+                  <th style={{ ...thBase, width: '7%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>M</div>
+                  </th>
+                  <th style={{ ...thBase, width: '7%' }}>
+                    <div style={{ lineHeight: '1.0', paddingTop: '4px', fontSize: '7.5px' }}>D/J</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
