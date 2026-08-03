@@ -1010,11 +1010,12 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
             {/* Agency section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div style={{ width: '26px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
+              <div style={{ width: '24px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
                 <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" transform="rotate(-90 13 25)" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif">
-                    AGENCY <tspan fontSize="6" opacity="0.75">AGENCE</tspan>
-                  </text>
+                  <g transform="translate(12, 22) rotate(90)">
+                    <text textAnchor="middle" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif" letterSpacing="0.3">AGENCY</text>
+                    <text y="8" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontWeight="bold" fontFamily="Times New Roman, serif" opacity="0.8">AGENCE</text>
+                  </g>
                 </svg>
               </div>
               <div style={{ padding: '8px 14px 8px 20px', flex: 1 }}>
@@ -1025,11 +1026,12 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
             {/* Insured section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div style={{ width: '26px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
+              <div style={{ width: '24px', borderRight: '1px solid #333', background: 'rgba(255,255,255,0.35)', position: 'relative', overflow: 'hidden' }} className="shrink-0">
                 <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" transform="rotate(-90 13 30)" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif">
-                    INSURED <tspan fontSize="6" opacity="0.75">ASSUR&Eacute;-E</tspan>
-                  </text>
+                  <g transform="translate(12, 30) rotate(90)">
+                    <text textAnchor="middle" fill="#1a1a1a" fontSize="7.5" fontWeight="bold" fontFamily="Times New Roman, serif" letterSpacing="0.3">INSURED</text>
+                    <text y="8" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontWeight="bold" fontFamily="Times New Roman, serif" opacity="0.8">ASSUR&Eacute;-E</text>
+                  </g>
                 </svg>
               </div>
               <div style={{ padding: '8px 14px 8px 20px', flex: 1 }}>
