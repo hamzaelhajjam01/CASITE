@@ -582,7 +582,7 @@ function SettingsTab() {
             value={form.company_name}
             onChange={e => setForm({ ...form, company_name: e.target.value })}
             className="w-full px-4 py-3 border border-[#E6E8EB] rounded-[10px] font-inter text-[14px] outline-none focus:border-[#168A5A] transition-colors bg-[#FAFAFA] focus:bg-white"
-            placeholder="KAYIRA ENTERPRISES LLC"
+            placeholder="PolarCover ENTERPRISES LLC"
           />
           <p className="font-inter text-[12px] text-[#9AA0A6] mt-1.5">Displayed in the "E-Transfer to" card and the recipient name copy field.</p>
         </div>
