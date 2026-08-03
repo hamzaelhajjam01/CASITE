@@ -966,6 +966,7 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
   return (
     <div className="w-full max-w-[600px] mx-auto shrink-0">
       <div
+        id="active-pink-slip-card"
         className={`relative rounded-[8px] overflow-hidden ${!paymentConfirmed && !previewUnlocked && !hasUsedPreview ? 'cursor-pointer' : ''}`}
         style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15)', paddingBottom: '62.8%' }}
         onClick={onUnlock}
@@ -1153,6 +1154,32 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
   const [verifyingPayment, setVerifyingPayment] = useState(false);
   const [brokerVerified, setBrokerVerified] = useState(false);
   const [verificationTimeLeft, setVerificationTimeLeft] = useState(60 * 60); // 1 hour in seconds
+  const [isGeneratingCard, setIsGeneratingCard] = useState(false);
+
+  const handleDownloadPinkCard = async () => {
+    setIsGeneratingCard(true);
+    try {
+      const cardElement = document.getElementById('active-pink-slip-card');
+      if (!cardElement) throw new Error('Card element not found');
+
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(cardElement, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+      });
+      const link = document.createElement('a');
+      link.download = `PolarGuard_Pink_Slip_${policyNumber}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Failed to generate customized pink slip card image:', err);
+    } finally {
+      setIsGeneratingCard(false);
+    }
+  };
 
   // 1-hour verification countdown timer
   useEffect(() => {
@@ -1485,13 +1512,14 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
                     <p className="font-inter text-[13px] font-medium text-[#111]">Pink Slip active</p>
                     <p className="font-inter text-[12px] text-[#5F6368]">Policy issued and ready for download</p>
                   </div>
-                  <a
-                    href="/images/pink_slip_2967667624.png"
-                    download="PolarGuard_Pink_Slip.png"
-                    className="ml-auto font-inter text-[12px] font-semibold text-[#168A5A] border border-[#168A5A] px-4 py-2 rounded-lg hover:bg-[#168A5A] hover:text-white transition-all"
+                  <button
+                    onClick={handleDownloadPinkCard}
+                    disabled={isGeneratingCard}
+                    className="ml-auto font-inter text-[12px] font-semibold text-[#168A5A] border border-[#168A5A] px-4 py-2 rounded-lg hover:bg-[#168A5A] hover:text-white transition-all disabled:opacity-50 flex items-center gap-1.5"
                   >
-                    Download
-                  </a>
+                    {isGeneratingCard ? <Loader2 size={14} className="animate-spin" /> : null}
+                    {isGeneratingCard ? 'Generating...' : 'Download'}
+                  </button>
                 </div>
               </div>
             ) : previewUnlocked ? (
@@ -1677,13 +1705,14 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
             </div>
           </div>
 
-          <a
-            href="/images/pink_slip_2967667624.png"
-            download="PolarGuard_Pink_Slip.png"
-            className="w-full font-inter text-[16px] font-semibold h-[52px] rounded-[12px] bg-[#168A5A] hover:bg-[#15803d] text-white flex items-center justify-center gap-2 transition-all"
+          <button
+            onClick={handleDownloadPinkCard}
+            disabled={isGeneratingCard}
+            className="w-full font-inter text-[16px] font-semibold h-[52px] rounded-[12px] bg-[#168A5A] hover:bg-[#15803d] text-white flex items-center justify-center gap-2 transition-all disabled:opacity-50"
           >
-            Download your pink card
-          </a>
+            {isGeneratingCard ? <Loader2 size={18} className="animate-spin" /> : null}
+            {isGeneratingCard ? 'Generating your pink card...' : 'Download your pink card'}
+          </button>
         </div>
       )}
 
