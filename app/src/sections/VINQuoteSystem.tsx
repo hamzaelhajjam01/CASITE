@@ -1770,7 +1770,7 @@ export default function VINQuoteSystem() {
   const [view, setView] = useState<'wizard' | 'preview' | 'activate'>('wizard');
   const [vehicle, setVehicle] = useState<VehicleData>({ vin: '', year: '', make: '', model: '' });
   const [driver, setDriver] = useState<DriverData>({ license: '', dob: '', postal: '', province: '' });
-  const [coverage, setCoverage] = useState<CoverageData>({ term: '3m', type: 'full', deductible: '500' });
+  const [coverage, setCoverage] = useState<CoverageData>({ term: '3m', type: 'basic', deductible: '500' });
   const [extraVehicles, setExtraVehicles] = useState<ExtraVehicle[]>([]);
   const [pinkCard, setPinkCard] = useState<PinkCardData>({ fullName: '', street: '', city: '' });
   const [policyNumber] = useState(() => `PG${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`);
