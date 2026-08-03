@@ -86,7 +86,9 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="tel:+15799877798"
+                    href="https://wa.me/15799877798"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"
                   >
                     <Phone size={14} strokeWidth={2} />
