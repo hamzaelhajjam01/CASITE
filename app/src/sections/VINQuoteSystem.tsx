@@ -961,7 +961,6 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
   const tdBase: CSSProperties = { border: '1px solid #333', padding: '5px 3px', fontSize: '10px', fontWeight: 'bold', textAlign: 'center', color: '#1a1a1a' };
   const thLeft: CSSProperties = { ...thBase, padding: '4px 3px 4px 12px', textAlign: 'left' };
   const tdLeft: CSSProperties = { ...tdBase, padding: '5px 3px 5px 12px', textAlign: 'left' };
-  const vLbl: CSSProperties = { writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)', background: 'rgba(255,255,255,0.35)', borderRight: '1px solid #333', padding: '6px 4px', fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '30px' };
 
   return (
     <div className="w-full max-w-[600px] mx-auto shrink-0">
@@ -1002,7 +1001,7 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
               )}
               {/* Active badge (paid only) */}
               {paymentConfirmed && (
-                <div className="absolute" style={{ top: '8px', right: '12px', background: '#168A5A', color: 'white', padding: '3px 10px', borderRadius: '14px', fontSize: '10px', fontWeight: 'bold' }}>
+                <div data-html2canvas-ignore="true" className="absolute" style={{ top: '8px', right: '12px', background: '#168A5A', color: 'white', padding: '3px 10px', borderRadius: '14px', fontSize: '10px', fontWeight: 'bold' }}>
                   Active
                 </div>
               )}
@@ -1010,9 +1009,11 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
             {/* Agency section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div style={vLbl}>
-                <span>AGENCY</span>
-                <span style={{ fontSize: '7px', opacity: 0.7, marginTop: '2px' }}>AGENCE</span>
+              <div className="w-[30px] shrink-0 border-r border-[#333] bg-white/35 relative overflow-hidden flex items-center justify-center">
+                <div className="flex items-center gap-1.5 transform -rotate-90 whitespace-nowrap text-[#1a1a1a]">
+                  <span className="text-[8px] font-bold uppercase tracking-[0.5px]">AGENCY</span>
+                  <span className="text-[7px] font-bold uppercase opacity-70">AGENCE</span>
+                </div>
               </div>
               <div style={{ padding: '10px 14px 10px 20px', flex: 1 }}>
                 <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '3px', textTransform: 'uppercase' }}>TD Insurance Direct Agency Inc.</div>
@@ -1022,9 +1023,11 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
 
             {/* Insured section */}
             <div className="flex shrink-0" style={{ borderBottom: '1px solid #333', background: 'rgba(255,255,255,0.15)' }}>
-              <div style={vLbl}>
-                <span>INSURED</span>
-                <span style={{ fontSize: '7px', opacity: 0.7, marginTop: '2px' }}>ASSUR&Eacute;-E</span>
+              <div className="w-[30px] shrink-0 border-r border-[#333] bg-white/35 relative overflow-hidden flex items-center justify-center">
+                <div className="flex items-center gap-1.5 transform -rotate-90 whitespace-nowrap text-[#1a1a1a]">
+                  <span className="text-[8px] font-bold uppercase tracking-[0.5px]">INSURED</span>
+                  <span className="text-[7px] font-bold uppercase opacity-70">ASSUR&Eacute;-E</span>
+                </div>
               </div>
               <div style={{ padding: '10px 14px 10px 20px', flex: 1 }}>
                 <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '3px', textTransform: 'uppercase' }}>{insuredName}</div>
