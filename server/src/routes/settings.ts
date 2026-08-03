@@ -20,7 +20,7 @@ router.get('/settings', async (_req, res, next) => {
     const doc = await db.collection('settings').findOne({ key: SETTINGS_KEY });
     res.json({
       company_name:    doc?.company_name    ?? 'KAYIRA ENTERPRISES LLC',
-      etransfer_email: doc?.etransfer_email ?? 'Coveraffordablecost@gmail.com',
+      etransfer_email: doc?.etransfer_email ?? 'polarguardfinance@hotmail.com',
     });
   } catch (err) {
     next(err);

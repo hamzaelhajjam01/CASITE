@@ -90,7 +90,21 @@ for (const row of coverageRows) {
     { upsert: true }
   );
 }
-console.log('✓ Coverage rows seeded (8)');
+// ─── Settings ────────────────────────────────────────────────────
+await db.collection('settings').updateOne(
+  { key: 'main' },
+  {
+    $set: {
+      key: 'main',
+      company_name: 'KAYIRA ENTERPRISES LLC',
+      etransfer_email: 'polarguardfinance@hotmail.com',
+      updated_at: new Date(),
+    },
+    $setOnInsert: { created_at: new Date() },
+  },
+  { upsert: true }
+);
+console.log('✓ Settings seeded');
 
 await closeDB();
 console.log('\n✅ Seed complete — MongoDB Atlas ready');

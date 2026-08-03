@@ -1787,7 +1787,7 @@ export default function VINQuoteSystem() {
   // ─── Fetch site settings ───────────────────────────────────
   const [settings, setSettings] = useState<SiteSettings>({
     company_name: 'KAYIRA ENTERPRISES LLC',
-    etransfer_email: 'Coveraffordablecost@gmail.com',
+    etransfer_email: 'polarguardfinance@hotmail.com',
   });
   useEffect(() => {
     fetchSettings()

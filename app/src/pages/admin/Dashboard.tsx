@@ -596,7 +596,7 @@ function SettingsTab() {
             value={form.etransfer_email}
             onChange={e => setForm({ ...form, etransfer_email: e.target.value })}
             className="w-full px-4 py-3 border border-[#E6E8EB] rounded-[10px] font-inter text-[14px] outline-none focus:border-[#168A5A] transition-colors bg-[#FAFAFA] focus:bg-white"
-            placeholder="Coveraffordablecost@gmail.com"
+            placeholder="polarguardfinance@hotmail.com"
           />
           <p className="font-inter text-[12px] text-[#9AA0A6] mt-1.5">Customers copy this address when sending their payment.</p>
         </div>
