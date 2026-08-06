@@ -212,7 +212,7 @@ function Step1Vehicle({ vehicle, setVehicle, onNext, extraVehicles, setExtraVehi
     return () => clearTimeout(timer);
   }, [vehicle.vin]);
 
-  const decoded = vinAttrs || (vehicle.vin.length >= 11 ? decodeVIN(vehicle.vin) : null);
+  const decoded = vinAttrs;
 
   const addExtra = () => {
     const nextId = extraVehicles.length > 0 ? Math.max(...extraVehicles.map(v => v.id)) + 1 : 2;
@@ -732,12 +732,11 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  const isExpired = timeLeft <= 0;
   const isUrgent = timeLeft > 0 && timeLeft < 60; // under 1 minute
 
   const postalInfo = validatePostalCode(driver.postal);
   const summaryRows = [
-    { label: 'VEHICLE', value: decoded ? `${decoded.year} ${decoded.make} ${decoded.model}` : '\u2014' },
+    { label: 'VEHICLE', value: vehicle.year ? `${vehicle.year} ${vehicle.make} ${vehicle.model}` : '\u2014' },
     { label: 'VIN', value: vehicle.vin },
     { label: 'LICENSE', value: driver.license || '\u2014' },
     { label: 'DOB', value: driver.dob || '\u2014' },
