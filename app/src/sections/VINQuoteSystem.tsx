@@ -199,20 +199,39 @@ function Step1Vehicle({ vehicle, setVehicle, onNext, extraVehicles, setExtraVehi
             make: result.attributes.make,
             model: result.attributes.model,
           });
+        } else if (result.error && result.error.includes('unavailable')) {
+          const fallback = decodeVIN(vin);
+          if (fallback) {
+            setVinStatus('warning');
+            setVinError('API service unavailable. Using standard vehicle lookup.');
+            setVinAttrs(fallback);
+            setVehicle({ year: fallback.year, make: fallback.make, model: fallback.model });
+          } else {
+            setVinStatus('invalid');
+            setVinError(result.error);
+          }
         } else {
           setVinStatus('invalid');
           setVinError(result.error || 'Invalid VIN');
         }
       } catch {
-        setVinStatus('warning');
-        setVinError('Verification unavailable. Proceeding manually.');
+        const fallback = decodeVIN(vin);
+        if (fallback) {
+          setVinStatus('warning');
+          setVinError('Verification service offline. Proceeding with standard lookup.');
+          setVinAttrs(fallback);
+          setVehicle({ year: fallback.year, make: fallback.make, model: fallback.model });
+        } else {
+          setVinStatus('invalid');
+          setVinError('Verification unavailable.');
+        }
       }
     }, 500);
 
     return () => clearTimeout(timer);
   }, [vehicle.vin]);
 
-  const decoded = vinAttrs;
+  const decoded = vinAttrs || (vehicle.vin.length >= 17 ? decodeVIN(vehicle.vin) : null);
 
   const addExtra = () => {
     const nextId = extraVehicles.length > 0 ? Math.max(...extraVehicles.map(v => v.id)) + 1 : 2;

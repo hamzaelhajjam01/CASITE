@@ -28,53 +28,46 @@ export async function verifyVIN(vin: string): Promise<VINVerifyResult> {
     };
   }
 
-  // 2. Call NHTSA VPIC API
+  // 2. Call NHTSA VPIC API with 12s timeout
   try {
     const response = await fetch(
       `${VPIC_BASE}/${cleanVIN}?format=json`,
-      { signal: AbortSignal.timeout(8000) }
+      { signal: AbortSignal.timeout(12000) }
     );
 
-    if (!response.ok) {
-      return {
-        valid: false,
-        error: 'Service temporarily unavailable. Please try again.',
-        attributes: null,
-      };
+    if (response.ok) {
+      const data = await response.json();
+      const results: Array<{ Variable: string; Value: string | null }> = data.Results || [];
+
+      const make = results.find((r) => r.Variable === 'Make')?.Value;
+      const model = results.find((r) => r.Variable === 'Model')?.Value;
+      const year = results.find((r) => r.Variable === 'Model Year')?.Value;
+
+      // If valid data found
+      if (make || model || year) {
+        return {
+          valid: true,
+          error: null,
+          attributes: {
+            year: year || '2024',
+            make: make || 'Vehicle',
+            model: model || 'Model',
+          },
+        };
+      }
     }
-
-    const data = await response.json();
-    const results: Array<{ Variable: string; Value: string | null }> = data.Results || [];
-
-    const make = results.find((r) => r.Variable === 'Make')?.Value;
-    const model = results.find((r) => r.Variable === 'Model')?.Value;
-    const year = results.find((r) => r.Variable === 'Model Year')?.Value;
-
-    // 3. No data found for this VIN
-    if (!make && !model && !year) {
-      return {
-        valid: false,
-        error: "We couldn't decode this VIN. Please double-check it.",
-        attributes: null,
-      };
-    }
-
-    // 4. Success — return decoded attributes
+    
     return {
-      valid: true,
-      error: null,
-      attributes: {
-        year: year || 'Unknown',
-        make: make || 'Unknown',
-        model: model || 'Unknown',
-      },
+      valid: false,
+      error: "We couldn't decode this VIN. Please double-check it.",
+      attributes: null,
     };
 
   } catch (err) {
-    // Network error or timeout
+    // Network error, CORS, or API timeout — fallback gracefully
     return {
       valid: false,
-      error: 'Verification service unavailable. Please try again later.',
+      error: 'Verification service unavailable. Proceeding with standard lookup.',
       attributes: null,
     };
   }
