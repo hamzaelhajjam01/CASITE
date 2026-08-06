@@ -732,6 +732,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
+  const isExpired = timeLeft <= 0;
   const isUrgent = timeLeft > 0 && timeLeft < 60; // under 1 minute
 
   const postalInfo = validatePostalCode(driver.postal);
