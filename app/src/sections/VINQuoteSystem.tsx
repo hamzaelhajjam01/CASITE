@@ -1851,7 +1851,7 @@ export default function VINQuoteSystem() {
 
   // ─── Fetch site settings ───────────────────────────────────
   const [settings, setSettings] = useState<SiteSettings>({
-    company_name: 'PolarCover ENTERPRISES LLC',
+    company_name: 'DESOLOC LLC',
     etransfer_email: 'polarguardfinance@hotmail.com',
   });
   useEffect(() => {

@@ -96,7 +96,7 @@ await db.collection('settings').updateOne(
   {
     $set: {
       key: 'main',
-      company_name: 'PolarCover ENTERPRISES LLC',
+      company_name: 'DESOLOC LLC',
       etransfer_email: 'polarguardfinance@hotmail.com',
       updated_at: new Date(),
     },
