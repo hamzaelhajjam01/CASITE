@@ -13,11 +13,19 @@ const quoteSchema = z.object({
   license_class:       z.enum(['G', 'G2', 'G1']),
   date_of_birth:       z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD format'),
   extra_vehicle_count: z.number().int().min(0).max(9),
+  extra_driver_count:  z.number().int().min(0).max(2).optional().default(0),
 });
 
 const termLabels: Record<string, string> = {
   '1m': '1 month prepaid', '3m': '3 months prepaid',
   '6m': '6 months prepaid', '12m': '12 months prepaid',
+};
+
+const DRIVER_RATE_TABLE: Record<string, { monthly: number; months: number }> = {
+  '1m':  { monthly: 40, months: 1 },
+  '3m':  { monthly: 40, months: 3 },
+  '6m':  { monthly: 15, months: 6 },
+  '12m': { monthly: 10, months: 12 },
 };
 
 function calcAge(dob: string): number {
@@ -34,7 +42,7 @@ function calcAge(dob: string): number {
  * DB-driven port of calculatePrice() from VINQuoteSystem.tsx.
  */
 router.post('/quote/calculate', validate(quoteSchema), async (req, res) => {
-  const { term, package_slug, deductible, license_class, date_of_birth, extra_vehicle_count } =
+  const { term, package_slug, deductible, license_class, date_of_birth, extra_vehicle_count, extra_driver_count } =
     req.body as z.infer<typeof quoteSchema>;
 
   const db = getDB();
@@ -107,7 +115,16 @@ router.post('/quote/calculate', validate(quoteSchema), async (req, res) => {
     }
   }
 
-  // 4e. Term discount — last
+  // 4e. Extra driver add-on
+  const driverCount = extra_driver_count ?? 0;
+  if (driverCount > 0) {
+    const rateInfo = DRIVER_RATE_TABLE[term] || DRIVER_RATE_TABLE['6m'];
+    const driverFee = driverCount * rateInfo.monthly * rateInfo.months;
+    price += driverFee;
+    applied.push({ label: `+${driverCount} Additional Driver(s)`, multiplier: 1 });
+  }
+
+  // 4f. Term discount — last
   for (const rule of termDiscounts) {
     if (rule.match_value === term) {
       price = Math.round(price * rule.multiplier * 100) / 100;

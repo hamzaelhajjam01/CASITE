@@ -1,5 +1,6 @@
-import { Phone, MessageCircle, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '../components/ChatbotWidget';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 
 // ─── Column Data ────────────────────────────────────────────
 const productLinks = [
@@ -91,7 +92,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"
                   >
-                    <Phone size={14} strokeWidth={2} />
+                    <WhatsAppIcon className="w-3.5 h-3.5 fill-[#168A5A]" />
                     +1 (579) 987-7798
                   </a>
                 </li>
@@ -102,7 +103,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"
                   >
-                    <MessageCircle size={14} strokeWidth={2} />
+                    <WhatsAppIcon className="w-3.5 h-3.5 fill-[#168A5A]" />
                     WhatsApp support
                   </a>
                 </li>

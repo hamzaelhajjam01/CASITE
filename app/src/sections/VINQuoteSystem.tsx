@@ -10,9 +10,16 @@ import { fetchPackages, fetchSettings, calculateQuote, notifyPayment, checkPolic
 // ─── Types ──────────────────────────────────────────────────
 interface VehicleData { vin: string; year: string; make: string; model: string; }
 interface DriverData { license: string; dob: string; postal: string; province: string; }
-interface CoverageData { term: string; type: string; deductible: string; }
+interface CoverageData { term: string; type: string; deductible: string; extraDrivers?: number; }
 interface ExtraVehicle { id: number; vin: string; decoded: { year: string; make: string; model: string } | null; }
-interface PinkCardData { fullName: string; street: string; city: string; }
+interface PinkCardData { fullName: string; street: string; city: string; additionalDrivers?: string; }
+
+const DRIVER_RATE_TABLE: Record<string, { monthly: number; months: number; label: string }> = {
+  '1m':  { monthly: 40, months: 1,  label: '1 month' },
+  '3m':  { monthly: 40, months: 3,  label: '3 months' },
+  '6m':  { monthly: 15, months: 6,  label: '6 months' },
+  '12m': { monthly: 10, months: 12, label: '12 months' },
+};
 
 // ─── Pricing Tables (fallback — overridden by API data) ─────
 const FALLBACK_PRICES: Record<string, { basic: number; full: number }> = {
@@ -113,6 +120,7 @@ function calculatePrice(
   term: string, type: string, deductible: string, license: string, dob: string,
   extraVehicles: ExtraVehicle[],
   basePrices: Record<string, { basic: number; full: number }> = FALLBACK_PRICES,
+  extraDrivers: number = 0,
 ) {
   const bp = basePrices[term] || basePrices['3m'];
   let price = type === 'basic' ? bp.basic : bp.full;
@@ -131,6 +139,10 @@ function calculatePrice(
     const combined = price * (activeExtras.length + 1);
     price = Math.round(combined * 0.8);
   }
+  const rateInfo = DRIVER_RATE_TABLE[term] || DRIVER_RATE_TABLE['6m'];
+  const driverFee = (extraDrivers || 0) * (rateInfo.monthly * rateInfo.months);
+  price += driverFee;
+
   return { price, original: type === 'basic' ? bp.basic : bp.full, label: `${termLabels[term] || '3 months'} prepaid` };
 }
 
@@ -589,13 +601,14 @@ function Step3Coverage({ coverage, setCoverage, onBack, onViewQuote, basePrices,
   useEffect(() => {
     const dob = driver.dob || '1990-01-01';
     const extraCount = extraVehicles.filter(v => v.decoded).length;
+    const extraDrivers = coverage.extraDrivers || 0;
     Promise.all([
-      calculateQuote({ term: coverage.term, package_slug: 'basic', deductible: coverage.deductible, license_class: driver.license || 'G', date_of_birth: dob, extra_vehicle_count: extraCount }),
-      calculateQuote({ term: coverage.term, package_slug: 'full', deductible: coverage.deductible, license_class: driver.license || 'G', date_of_birth: dob, extra_vehicle_count: extraCount }),
+      calculateQuote({ term: coverage.term, package_slug: 'basic', deductible: coverage.deductible, license_class: driver.license || 'G', date_of_birth: dob, extra_vehicle_count: extraCount, extra_driver_count: extraDrivers }),
+      calculateQuote({ term: coverage.term, package_slug: 'full', deductible: coverage.deductible, license_class: driver.license || 'G', date_of_birth: dob, extra_vehicle_count: extraCount, extra_driver_count: extraDrivers }),
     ]).then(([basicRes, fullRes]) => {
       setApiPrices({ basic: Math.round(basicRes.final_price), full: Math.round(fullRes.final_price) });
     }).catch(() => {});
-  }, [coverage.term, coverage.deductible, driver.license, driver.dob, extraVehicles.length]);
+  }, [coverage.term, coverage.deductible, coverage.extraDrivers, driver.license, driver.dob, extraVehicles.length]);
 
   const displayPrices = apiPrices ?? { basic: bp.basic, full: bp.full };
   const basicPrice = displayPrices.basic;
@@ -610,6 +623,9 @@ function Step3Coverage({ coverage, setCoverage, onBack, onViewQuote, basePrices,
 
   const basicChecks = ['Third-party liability', 'Accident benefits', 'Direct Compensation Property Damage', 'Uninsured automobile coverage'];
   const fullChecks = [...basicChecks, 'Collision coverage', 'Comprehensive coverage', 'Theft, fire, vandalism, hail protection'];
+
+  const currentDriverRate = DRIVER_RATE_TABLE[coverage.term] || DRIVER_RATE_TABLE['6m'];
+  const selectedExtraDrivers = coverage.extraDrivers ?? 0;
 
   return (
     <div className="bg-white rounded-[20px] p-8 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
@@ -638,6 +654,71 @@ function Step3Coverage({ coverage, setCoverage, onBack, onViewQuote, basePrices,
             <p className="font-inter text-[13px] text-[#7C2D12] leading-relaxed">Ideal for car registration &amp; plate renewal. Short-term coverage is priced ~41% higher per month than the 3-month plan &mdash; but it&apos;s the fastest way to get a valid pink card for ServiceOntario or your provincial registry.</p>
           </div>
         )}
+      </div>
+
+      {/* ADDITIONAL DRIVERS · OPTIONAL Card */}
+      <div className="border border-[#E6E8EB] rounded-[16px] p-6 mb-8 bg-white">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-inter text-[11px] font-bold uppercase tracking-[0.1em] text-[#168A5A]">
+            ADDITIONAL DRIVERS &middot; OPTIONAL
+          </span>
+        </div>
+        <h4 className="font-satoshi font-semibold text-[#111] text-[18px] sm:text-[20px] mb-1">
+          Add a spouse, family member or roommate
+        </h4>
+        <p className="font-inter text-[13px] text-[#5F6368] mb-5">
+          Each extra driver on your policy is <strong className="text-[#111] font-semibold">${currentDriverRate.monthly}/month</strong> on the <strong className="text-[#111] font-semibold">{currentDriverRate.label}</strong> plan. Up to 2 extra drivers.
+        </p>
+
+        {/* 3 Selectable Buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          {[
+            { count: 0, title: 'Just me', sub: 'No add-on' },
+            { count: 1, title: '+1 driver', sub: `+$${currentDriverRate.monthly * currentDriverRate.months} for ${currentDriverRate.label}` },
+            { count: 2, title: '+2 drivers', sub: `+$${currentDriverRate.monthly * currentDriverRate.months * 2} for ${currentDriverRate.label}` },
+          ].map(opt => {
+            const isActive = selectedExtraDrivers === opt.count;
+            return (
+              <button
+                key={opt.count}
+                type="button"
+                onClick={() => setCoverage({ extraDrivers: opt.count })}
+                className={`p-4 rounded-[14px] border text-center transition-all duration-200 ${
+                  isActive
+                    ? 'border-2 border-[#168A5A] bg-[#F0FDF4]/40 shadow-sm'
+                    : 'border-[#E6E8EB] hover:border-[#168A5A]/40 bg-white'
+                }`}
+              >
+                <p className={`font-inter text-[15px] font-bold ${isActive ? 'text-[#168A5A]' : 'text-[#111]'}`}>
+                  {opt.title}
+                </p>
+                <p className="font-inter text-[12px] text-[#5F6368] mt-1">{opt.sub}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Rate breakdown box */}
+        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[12px] p-4 font-inter text-[12.5px] text-[#475569]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-[#94A3B8]">&bull;</span>
+              <span>1 month plan &mdash; <strong className="text-[#0F172A] font-semibold">$40/mo</strong> per driver</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#94A3B8]">&bull;</span>
+              <span>3 month plan &mdash; <strong className="text-[#0F172A] font-semibold">$40/mo</strong> per driver</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#94A3B8]">&bull;</span>
+              <span>6 month plan &mdash; <strong className="text-[#0F172A] font-semibold">$15/mo</strong> per driver</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#94A3B8]">&bull;</span>
+              <span>12 month plan &mdash; <strong className="text-[#0F172A] font-semibold">$10/mo</strong> per driver</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="mb-8">
@@ -720,6 +801,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
       license_class: (driver.license || 'G') as 'G'|'G2'|'G1',
       date_of_birth: dob,
       extra_vehicle_count: extraVehicles.filter(v => v.decoded).length,
+      extra_driver_count: coverage.extraDrivers || 0,
     }).then(result => {
       setApiPrice(result.final_price);
       setApiLabel(result.term_label);
@@ -728,7 +810,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
     });
   }, [coverage, driver, extraVehicles]);
 
-  const localPrice = calculatePrice(coverage.term, coverage.type, coverage.deductible, driver.license, driver.dob, extraVehicles, basePrices);
+  const localPrice = calculatePrice(coverage.term, coverage.type, coverage.deductible, driver.license, driver.dob, extraVehicles, basePrices, coverage.extraDrivers || 0);
   const price = {
     price: apiPrice ?? localPrice.price,
     original: localPrice.original,
@@ -761,6 +843,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
     { label: 'LICENSE', value: driver.license || '\u2014' },
     { label: 'DOB', value: driver.dob || '\u2014' },
     { label: 'POSTAL', value: (cleanPostalCode(driver.postal) || driver.postal) + (postalInfo.province ? ` (${postalInfo.province.name})` : '') },
+    { label: 'ADDITIONAL DRIVERS', value: (coverage.extraDrivers ?? 0) === 0 ? 'Just me (0 extra drivers)' : `+${coverage.extraDrivers} extra driver${coverage.extraDrivers! > 1 ? 's' : ''}` },
     { label: 'COVERAGE', value: coverage.type === 'basic' ? 'Basic' : 'Full' },
     { label: 'TERM', value: (termLabels[coverage.term] || '3 months') + ' prepaid' },
   ];
@@ -965,7 +1048,9 @@ function PinkSlipCard({ paymentConfirmed, previewUnlocked, hasUsedPreview, reloc
   const expDay = String(exp.getDate()).padStart(2, '0');
 
   // Dynamic insured info from pink card form
-  const insuredName = (pinkCard.fullName || 'JOHN A. SMITH').toUpperCase();
+  const primaryName = (pinkCard.fullName || 'JOHN A. SMITH').toUpperCase();
+  const additionalNames = pinkCard.additionalDrivers ? ` & ${pinkCard.additionalDrivers.toUpperCase()}` : '';
+  const insuredName = `${primaryName}${additionalNames}`;
   const insuredStreet = (pinkCard.street || '123 MAIN STREET').toUpperCase();
   const insuredCity = pinkCard.city
     ? `${pinkCard.city.toUpperCase()}, ON`
@@ -1161,7 +1246,7 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
   const [selType, setSelType] = useState(initialCoverage.type);
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>(() => {
     // Seed with local fallback immediately so UI isn't empty
-    const local = calculatePrice(initialCoverage.term, 'full', initialCoverage.deductible, driver.license, driver.dob, extraVehicles, basePrices);
+    const local = calculatePrice(initialCoverage.term, 'full', initialCoverage.deductible, driver.license, driver.dob, extraVehicles, basePrices, initialCoverage.extraDrivers || 0);
     const COV_MULT: Record<string, number> = { basic: 0.60, full: 1.0, commercial: 1.35 };
     return {
       basic: Math.round(local.price * COV_MULT.basic),
@@ -1184,13 +1269,14 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
           license_class: driver.license,
           date_of_birth: dob,
           extra_vehicle_count: extraVehicles.length,
+          extra_driver_count: initialCoverage.extraDrivers || 0,
         });
         return [type, Math.round(result.final_price * COV_MULT[type])] as [string, number];
       })
     ).then(entries => {
       setOptionPrices(Object.fromEntries(entries));
     }).catch(() => { /* keep local fallback */ });
-  }, [initialCoverage.term, initialCoverage.deductible, driver.license, driver.dob, extraVehicles.length]);
+  }, [initialCoverage.term, initialCoverage.deductible, initialCoverage.extraDrivers, driver.license, driver.dob, extraVehicles.length]);
 
   const currentPrice = optionPrices[selType] ?? 0;
   const [copiedField, setCopiedField] = useState('');
@@ -1794,10 +1880,11 @@ function LiveSummaryPanel({ vehicle, driver, coverage, extraVehicles, view, base
       license_class: (driver.license || 'G') as 'G'|'G2'|'G1',
       date_of_birth: dob,
       extra_vehicle_count: extraVehicles.filter(v => v.decoded).length,
+      extra_driver_count: coverage.extraDrivers || 0,
     }).then(r => setApiPrice(r.final_price)).catch(() => {});
   }, [coverage, driver, extraVehicles]);
 
-  const localPrice = calculatePrice(coverage.term, coverage.type, coverage.deductible, driver.license, driver.dob, extraVehicles, basePrices);
+  const localPrice = calculatePrice(coverage.term, coverage.type, coverage.deductible, driver.license, driver.dob, extraVehicles, basePrices, coverage.extraDrivers || 0);
   const price = { ...localPrice, price: apiPrice ?? localPrice.price };
 
   const verifiedExtras = extraVehicles.filter(v => v.decoded);
@@ -1812,6 +1899,7 @@ function LiveSummaryPanel({ vehicle, driver, coverage, extraVehicles, view, base
     { label: 'LICENSE', value: driver.license || null },
     { label: 'DOB', value: driver.dob || null },
     { label: 'POSTAL', value: driver.postal ? `${driver.postal}${driver.province ? ` (${POSTAL_PROVINCE_MAP[driver.province[0]]?.name || driver.province})` : ''}` : null },
+    { label: 'ADDITIONAL DRIVERS', value: (coverage.extraDrivers ?? 0) === 0 ? 'Just me' : `+${coverage.extraDrivers} extra driver${coverage.extraDrivers! > 1 ? 's' : ''}` },
     { label: 'COVERAGE', value: coverage.type ? (coverage.type === 'basic' ? 'Basic' : 'Full') : null },
     { label: 'TERM', value: coverage.term ? `${termLabels[coverage.term]}${view === 'preview' || view === 'activate' ? ' prepaid' : ''}` : null },
   ];
@@ -1854,7 +1942,7 @@ export default function VINQuoteSystem() {
   const [view, setView] = useState<'wizard' | 'preview' | 'activate'>('wizard');
   const [vehicle, setVehicle] = useState<VehicleData>({ vin: '', year: '', make: '', model: '' });
   const [driver, setDriver] = useState<DriverData>({ license: '', dob: '', postal: '', province: '' });
-  const [coverage, setCoverage] = useState<CoverageData>({ term: '3m', type: 'basic', deductible: '500' });
+  const [coverage, setCoverage] = useState<CoverageData>({ term: '6m', type: 'full', deductible: '1000', extraDrivers: 0 });
   const [extraVehicles, setExtraVehicles] = useState<ExtraVehicle[]>([]);
   const [pinkCard, setPinkCard] = useState<PinkCardData>({ fullName: '', street: '', city: '' });
   const [policyNumber] = useState(() => `PG${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`);
@@ -1877,6 +1965,28 @@ export default function VINQuoteSystem() {
     fetchSettings()
       .then(s => setSettings(s))
       .catch(() => { /* keep fallback */ });
+  }, []);
+
+  // ─── Listen for in-chat quote population event ──────────────
+  useEffect(() => {
+    const handlePopulate = (e: CustomEvent) => {
+      const d = e.detail;
+      if (!d) return;
+
+      if (d.vehicle) setVehicle(p => ({ ...p, ...d.vehicle }));
+      if (d.driver) setDriver(p => ({ ...p, ...d.driver }));
+      if (d.coverage) setCoverage(p => ({ ...p, ...d.coverage }));
+      if (d.pinkCard) setPinkCard(p => ({ ...p, ...d.pinkCard }));
+
+      if (d.view) setView(d.view);
+
+      setTimeout(() => {
+        document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    };
+
+    window.addEventListener('populate-pink-card-quote' as any, handlePopulate);
+    return () => window.removeEventListener('populate-pink-card-quote' as any, handlePopulate);
   }, []);
 
   const uv = (v: Partial<VehicleData>) => setVehicle(p => ({ ...p, ...v }));

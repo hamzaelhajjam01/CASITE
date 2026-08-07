@@ -82,6 +82,7 @@ export async function calculateQuote(payload: {
   license_class: string;
   date_of_birth: string;
   extra_vehicle_count: number;
+  extra_driver_count?: number;
 }): Promise<QuoteResult> {
   const res = await fetch(`${BASE}/quote/calculate`, {
     method: 'POST',

@@ -10,6 +10,7 @@ import coverageRouter from './routes/coverage.js';
 import quoteRouter    from './routes/quote.js';
 import settingsRouter from './routes/settings.js';
 import notifyRouter  from './routes/notify.js';
+import chatRouter    from './routes/chat.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api',       quoteRouter);     // POST /api/quote/calculate
 app.use('/api',       settingsRouter);  // GET  /api/settings
 app.use('/api/admin', settingsRouter);  // PUT  /api/admin/settings
 app.use('/api/notify', notifyRouter);  // POST /api/notify/payment
+app.use('/api',       chatRouter);    // POST /api/chat
 
 // ─── Global error handler ─────────────────────────────────────────
 app.use((

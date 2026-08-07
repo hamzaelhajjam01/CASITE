@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 
 // ─── Nav Links mapped to section IDs ────────────────────────
 interface NavLink {
@@ -104,13 +106,14 @@ export default function Navbar() {
             href="https://wa.me/15799877798"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-inter text-[14px] font-medium px-5 py-2.5 rounded-full text-[#168A5A] border border-[#E6E8EB] hover:border-[#168A5A] hover:bg-[#F0FDF4] transition-all duration-300"
+            className="inline-flex items-center gap-2 font-inter text-[14px] font-semibold px-5 py-2.5 rounded-full text-white bg-[#168A5A] hover:bg-[#13784E] shadow-[0_2px_10px_rgba(22,138,90,0.2)] transition-all duration-300 shrink-0 whitespace-nowrap"
           >
-            <Phone size={16} strokeWidth={2} /> +1 (579) 987-7798
+            <WhatsAppIcon className="w-4 h-4 fill-white text-white shrink-0 aspect-square" />
+            <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
           </a>
           <a
             href="#quote"
-            className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#168A5A] text-white hover:bg-[#1FA36A] shadow-[0_2px_12px_rgba(22,138,90,0.25)] transition-all duration-300 hover:scale-[1.02]"
+            className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#111] text-white hover:bg-[#222] transition-all duration-300 shrink-0 whitespace-nowrap"
           >
             Get My Pink Slip
           </a>
@@ -149,14 +152,15 @@ export default function Navbar() {
                 href="https://wa.me/15799877798"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 font-inter text-[14px] font-medium text-[#168A5A] px-5 py-2.5 rounded-full border border-[#E6E8EB] hover:bg-[#F0FDF4] text-center"
+                className="inline-flex items-center justify-center gap-2 font-inter text-[14px] font-semibold text-white bg-[#168A5A] hover:bg-[#13784E] px-5 py-2.5 rounded-full text-center shrink-0 whitespace-nowrap"
                 onClick={handleMobileClick}
               >
-                <Phone size={16} strokeWidth={2} /> +1 (579) 987-7798
+                <WhatsAppIcon className="w-4 h-4 fill-white text-white shrink-0 aspect-square" />
+                <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
               </a>
               <a
                 href="#quote"
-                className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#168A5A] text-white text-center hover:bg-[#1FA36A]"
+                className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#111] text-white text-center hover:bg-[#222]"
                 onClick={handleMobileClick}
               >
                 Get My Pink Slip

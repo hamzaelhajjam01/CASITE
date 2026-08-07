@@ -20,6 +20,15 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
   // ═══════════════════════════════════════════════════════════════════
 
   {
+    id: 'about-scam',
+    category: 'About PolarGuard',
+    intents: ['scam', 'is this a scam', 'is polarguard legit', 'is it real', 'fake', 'fraud', 'trust', 'is polarguard real', 'skeptical', 'legit', 'scam?'],
+    question: 'Is PolarGuard Insurance a scam or legitimate?',
+    answer: `PolarGuard Insurance is 100% legitimate and operating in partnership with DESOLOC LLC under written authorization by TD General Insurance Company. Every policy issues an official Canadian Motor Vehicle Liability Card (TD Pink Card) recognized at ServiceOntario, Service Alberta, ICBC, SAAQ, and across Canada. You can verify your broker or speak directly with our team on WhatsApp at +1 (579) 987-7798 anytime.`,
+    followUp: ['Who underwrites PolarGuard?', 'How does payment work?', 'Get a quote']
+  },
+
+  {
     id: 'about-1',
     category: 'About PolarGuard',
     intents: ['who are you', 'what is polarguard', 'about polarguard', 'tell me about you', 'who underwrites', 'is this real insurance', 'td insurance', 'who is the underwriter', 'is polarguard the insurer'],
@@ -1248,35 +1257,49 @@ This is separate from your deductible — you'd still pay your deductible on the
 
 Safe driving pays off — literally. It's included automatically, no extra cost or enrollment needed.`,
     followUp: ['What is a deductible?', 'What is Accident Forgiveness?', 'Get a quote']
-  }
+  },
+  {
+    id: 'pay-monthly',
+    category: 'Payment & Delivery',
+    intents: ['can i pay monthly', 'pay monthly', 'monthly payment', 'monthly billing', 'is it monthly', 'monthly option', 'do you charge monthly', 'monthly rate'],
+    question: 'Can I pay monthly?',
+    answer: `PolarGuard policies are single one-time prepaid term plans (1, 3, 6, or 12 months) paid upfront via Interac e-Transfer. We do not do monthly automatic debit withdrawals, so you are 100% covered for your full term with zero risk of unexpected monthly charges, NSF penalties, or missed payment cancellations!`,
+    followUp: ['How does Interac e-Transfer work?', 'What coverage tiers do you have?', 'Start my quote']
+  },
 ];
 
-// ═══════════════════════════════════════════════════════════════════
-// UTILITY FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════
-
-/**
- * Find an answer by intent matching.
- *
- * Uses best-match scoring rather than "first array entry wins": every QA
- * entry is checked, and the one with the highest total score is returned.
- * Score per matched intent phrase = (word count)^2, so longer/more specific
- * phrases (e.g. "out of pocket") outrank short generic ones (e.g. "how much")
- * even if the generic one appears earlier in the database.
- */
 export function findAnswerByIntent(userInput: string): ChatbotQA | null {
-  const normalizedInput = ' ' + userInput.toLowerCase().trim().replace(/[?!.,’']/g, '') + ' ';
+  const normalizedInput = userInput.toLowerCase().trim().replace(/[?!.,’']/g, '');
+  if (!normalizedInput) return null;
+
+  // 1. Direct intent exact phrase match
+  for (const qa of CHATBOT_QA_DATABASE) {
+    for (const intent of qa.intents) {
+      const normIntent = intent.toLowerCase();
+      if (normalizedInput === normIntent || normalizedInput.includes(normIntent)) {
+        return qa;
+      }
+    }
+  }
+
+  // 2. Token overlap scoring for longer queries
+  const inputTokens = normalizedInput
+    .split(/\s+/)
+    .filter(t => t.length >= 3 && !['what', 'where', 'when', 'with', 'this', 'that', 'from', 'have', 'your', 'will', 'have', 'been', 'were', 'does', 'would', 'about', 'some', 'can'].includes(t));
 
   let bestMatch: ChatbotQA | null = null;
   let bestScore = 0;
 
   for (const qa of CHATBOT_QA_DATABASE) {
     let score = 0;
-    for (const intent of qa.intents) {
-      const normalizedIntent = intent.toLowerCase();
-      if (normalizedInput.includes(normalizedIntent)) {
-        const wordCount = normalizedIntent.split(' ').length;
-        score += wordCount * wordCount;
+    for (const token of inputTokens) {
+      for (const intent of qa.intents) {
+        if (intent.toLowerCase().includes(token)) {
+          score += 5;
+        }
+      }
+      if (qa.question.toLowerCase().includes(token)) {
+        score += 3;
       }
     }
     if (score > bestScore) {
@@ -1285,7 +1308,11 @@ export function findAnswerByIntent(userInput: string): ChatbotQA | null {
     }
   }
 
-  return bestMatch;
+  if (bestScore >= 5 && bestMatch) {
+    return bestMatch;
+  }
+
+  return null;
 }
 
 /**
