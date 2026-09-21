@@ -22,7 +22,7 @@ const packages: PackageDoc[] = [
     name: 'Basic',
     description: 'Essential coverage with third-party liability and provincial minimums. Perfect for plate renewal and short-term needs.',
     is_active: true,
-    prices: { '1m': 226, '3m': 481, '6m': 818, '12m': 1444 },
+    prices: { '3m': 570, '6m': 1080, '12m': 2040 },
     created_at: new Date(),
     updated_at: new Date(),
   },
@@ -31,7 +31,7 @@ const packages: PackageDoc[] = [
     name: 'Full',
     description: 'Comprehensive protection including collision, comprehensive, glass, and loss of use. Recommended for everyday drivers.',
     is_active: true,
-    prices: { '1m': 339, '3m': 722, '6m': 1227, '12m': 2166 },
+    prices: { '3m': 720, '6m': 1350, '12m': 2520 },
     created_at: new Date(),
     updated_at: new Date(),
   },
@@ -49,15 +49,7 @@ console.log('✓ Packages seeded (2)');
 
 // ─── Pricing Rules ────────────────────────────────────────────────
 const rules: PricingRuleDoc[] = [
-  { rule_key: 'deductible_1000',   label: '$1,000 Deductible Discount',   rule_type: 'multiplier',    context: 'deductible',    match_value: '1000', multiplier: 0.90, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'license_G2',        label: 'G2 License Surcharge',         rule_type: 'multiplier',    context: 'license',       match_value: 'G2',   multiplier: 1.05, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'license_G1',        label: 'G1 License Surcharge',         rule_type: 'multiplier',    context: 'license',       match_value: 'G1',   multiplier: 1.15, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'age_under_25',      label: 'Under 25 Surcharge',           rule_type: 'multiplier',    context: 'age',           match_value: '<25',  multiplier: 1.30, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'age_under_30',      label: 'Under 30 Surcharge',           rule_type: 'multiplier',    context: 'age',           match_value: '<30',  multiplier: 1.10, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'age_65_plus',       label: '65+ Surcharge',                rule_type: 'multiplier',    context: 'age',           match_value: '>=65', multiplier: 1.05, is_active: true, created_at: new Date(), updated_at: new Date() },
   { rule_key: 'multi_vehicle',     label: 'Multi-Vehicle Bulk Discount',  rule_type: 'multiplier',    context: 'multi_vehicle', match_value: null,   multiplier: 0.80, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'term_discount_6m',  label: 'Prepaid 6-Month Discount',     rule_type: 'term_discount', context: 'term',          match_value: '6m',   multiplier: 0.85, is_active: true, created_at: new Date(), updated_at: new Date() },
-  { rule_key: 'term_discount_12m', label: 'Prepaid 12-Month Discount',    rule_type: 'term_discount', context: 'term',          match_value: '12m',  multiplier: 0.75, is_active: true, created_at: new Date(), updated_at: new Date() },
 ];
 
 for (const rule of rules) {

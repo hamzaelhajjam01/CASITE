@@ -11,11 +11,12 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { label: 'Coverage', href: '#coverage', sectionId: 'coverage' },
-  { label: 'About', href: '#why-polarguard', sectionId: 'why-polarguard' },
-  { label: 'Testimonials', href: '#testimonials', sectionId: 'testimonials' },
-  { label: 'FAQ', href: '#faq', sectionId: 'faq' },
-  { label: 'Contact', href: '#footer', sectionId: 'footer' },
+  { label: 'Get a Quote', href: '/quote', sectionId: 'quote' },
+  { label: 'Coverage', href: '/#coverage', sectionId: 'coverage' },
+  { label: 'About', href: '/#why-polarguard', sectionId: 'why-polarguard' },
+  { label: 'Testimonials', href: '/#testimonials', sectionId: 'testimonials' },
+  { label: 'FAQ', href: '/#faq', sectionId: 'faq' },
+  { label: 'Contact', href: '/#footer', sectionId: 'footer' },
 ];
 
 // ─── Component ──────────────────────────────────────────────
@@ -66,7 +67,7 @@ export default function Navbar() {
     >
       <div className="max-w-container mx-auto w-full px-6 lg:px-12 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center shrink-0">
+        <a href="/" className="flex items-center shrink-0">
           <img
             src="/images/logo-dark.png?v=2"
             alt="PolarGuard Insurance"
@@ -112,7 +113,7 @@ export default function Navbar() {
             <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
           </a>
           <a
-            href="#quote"
+            href="/quote"
             className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#111] text-white hover:bg-[#222] transition-all duration-300 shrink-0 whitespace-nowrap"
           >
             Get My Pink Slip
@@ -159,7 +160,7 @@ export default function Navbar() {
                 <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
               </a>
               <a
-                href="#quote"
+                href="/quote"
                 className="font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg bg-[#111] text-white text-center hover:bg-[#222]"
                 onClick={handleMobileClick}
               >

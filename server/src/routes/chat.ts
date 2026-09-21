@@ -78,7 +78,7 @@ router.post('/chat', async (req, res, next) => {
           });
         }
 
-        const modelsToTry = ['gemini-2.0-flash-lite', 'gemini-2.0-flash', 'gemini-2.5-flash'];
+        const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-flash-latest', 'gemini-3.5-flash', 'gemini-flash-lite-latest'];
 
         for (const modelName of modelsToTry) {
           try {
@@ -112,15 +112,20 @@ router.post('/chat', async (req, res, next) => {
     }
 
     if (!replyText) {
-      res.status(503).json({
-        error: 'AI Provider is temporarily unavailable. Please verify API key credits.',
+      res.json({
+        text: "I apologize, but I am unable to retrieve that information right now. For instant assistance, our licensed brokerage support team is available live on WhatsApp at +1 (579) 987-7798!",
+        fallback: true,
       });
       return;
     }
 
     res.json({ text: replyText });
   } catch (err) {
-    next(err);
+    console.error('[chat-route] Error:', err);
+    res.json({
+      text: "I apologize, but our support chat system is temporarily experiencing technical difficulties. For instant support, please message our licensed broker team directly on WhatsApp at +1 (579) 987-7798!",
+      fallback: true,
+    });
   }
 });
 

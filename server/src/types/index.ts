@@ -41,7 +41,7 @@ export interface CoverageRowDoc {
 export interface PolicyDoc {
   _id?: ObjectId;
   policy_number: string;
-  status: 'pending' | 'active' | 'rejected';
+  status: 'pending' | 'active' | 'rejected' | 'quote_submitted';
   amount: number;
   coverage_type: string;
   term: string;
@@ -51,7 +51,20 @@ export interface PolicyDoc {
   license_class: string;
   dob: string;
   postal: string;
-  receipt_name: string;
+  street?: string;
+  city?: string;
+  province?: string;
+  receipt_name?: string;
+  customer_name?: string;
+  customer_email?: string;
+  customer_phone?: string;
+  additional_drivers?: string;
+  billing_frequency?: string;
+  due_today?: number;
+  total_price?: number;
+  monthly_price?: number;
+  ref_num?: string;
+  quote_pdf_path?: string;
   telegram_message_id?: number;
   telegram_chat_id?: string;
   created_at: Date;
@@ -103,6 +116,7 @@ export interface QuoteRequest {
 export interface QuoteResponse {
   base_price: number;
   final_price: number;
+  monthly_price?: number;
   applied_rules: { label: string; multiplier: number }[];
   term_label: string;
   package_name: string;

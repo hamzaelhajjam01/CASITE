@@ -4,10 +4,10 @@ import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 
 // ─── Column Data ────────────────────────────────────────────
 const productLinks = [
-  { label: 'Get a quote', href: '#quote' },
-  { label: 'Coverage', href: '#coverage' },
-  { label: 'Benefits', href: '#why-polarguard' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Get a quote', href: '/quote' },
+  { label: 'Coverage', href: '/#coverage' },
+  { label: 'Benefits', href: '/#why-polarguard' },
+  { label: 'FAQ', href: '/#faq' },
 ];
 
 const legalLinks = [

@@ -8,9 +8,10 @@ app/dist/
 app/dist-ssr/
 server/dist/
 
-# ─── Local databases ─────────────────────────────────────────────
+# ─── Local databases & storage ────────────────────────────────────
 server/*.db
 server/*.db-journal
+server/storage/
 
 # ─── Environment / secrets ───────────────────────────────────────
 .env

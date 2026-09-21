@@ -23,6 +23,7 @@ export interface CoverageRowData {
 export interface QuoteResult {
   base_price: number;
   final_price: number;
+  monthly_price?: number;
   applied_rules: { label: string; multiplier: number }[];
   term_label: string;
   package_name: string;
@@ -34,18 +35,26 @@ export interface SiteSettings {
 }
 
 export interface PaymentNotifyPayload {
-  policy_number:  string;
-  amount:         number;
-  coverage_type:  string;
-  term:           string;
-  deductible:     string;
-  vin:            string;
-  vehicle:        string;
-  license_class:  string;
-  dob:            string;
-  postal:         string;
-  receipt_base64: string;
-  receipt_name:   string;
+  policy_number:      string;
+  amount:             number;
+  coverage_type:      string;
+  term:               string;
+  deductible:         string;
+  vin:                string;
+  vehicle:            string;
+  license_class:      string;
+  dob:                string;
+  postal:             string;
+  street?:            string;
+  city?:              string;
+  province?:          string;
+  receipt_base64:     string;
+  receipt_name:       string;
+  customer_name?:     string;
+  customer_email?:    string;
+  customer_phone?:    string;
+  additional_drivers?: string;
+  billing_frequency?: 'full' | 'monthly';
 }
 
 export async function notifyPayment(payload: PaymentNotifyPayload): Promise<void> {
@@ -95,3 +104,43 @@ export async function calculateQuote(payload: {
   }
   return res.json();
 }
+
+export interface QuoteSubmitPayload {
+  policy_number: string;
+  ref_num?: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+  license_class?: string;
+  dob?: string;
+  postal?: string;
+  province?: string;
+  street?: string;
+  city?: string;
+  vehicle: string;
+  vin: string;
+  extra_vehicles?: string[];
+  coverage_type: 'basic' | 'full';
+  term: '1m' | '3m' | '6m' | '12m';
+  term_label?: string;
+  deductible: '500' | '1000';
+  billing_frequency: 'full' | 'monthly';
+  due_today: number;
+  total_price: number;
+  monthly_price: number;
+  additional_drivers?: string;
+}
+
+export async function submitQuote(payload: QuoteSubmitPayload): Promise<{ ok: boolean; email_sent: boolean; policy_number: string; ref_num: string }> {
+  const res = await fetch(`${BASE}/quote/submit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as { error?: string }).error || 'Quote submission failed');
+  }
+  return res.json();
+}
+

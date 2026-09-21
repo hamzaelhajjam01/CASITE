@@ -53,7 +53,7 @@ export default function StickyMobileCTA() {
             </p>
           </div>
           <a
-            href="#quote"
+            href="/quote"
             className="shrink-0 inline-flex items-center gap-1.5 bg-pg-accent text-white font-inter text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-pg-accent-secondary transition-all active:scale-95 shadow-[0_2px_12px_rgba(22,138,90,0.3)]"
           >
             Start

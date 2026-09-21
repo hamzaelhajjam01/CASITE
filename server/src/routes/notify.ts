@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { validate } from '../middleware/validate.js';
 import { getDB } from '../db/client.js';
 import type { PolicyDoc } from '../types/index.js';
+import { sendApprovalEmail, sendPaymentReceivedEmail } from '../services/emailService.js';
+import { generatePinkCardPDF } from '../services/pdfService.js';
 
 const router = Router();
 
@@ -13,6 +15,11 @@ const notifySchema = z.object({
   coverage_type:  z.string(),
   term:           z.string(),
   deductible:     z.string(),
+  customer_name:      z.string().optional(),
+  customer_email:     z.string().optional(),
+  customer_phone:     z.string().optional(),
+  additional_drivers: z.string().optional(),
+  billing_frequency:  z.string().optional(),
   // Vehicle
   vin:            z.string(),
   vehicle:        z.string(),
@@ -20,6 +27,9 @@ const notifySchema = z.object({
   license_class:  z.string(),
   dob:            z.string(),
   postal:         z.string(),
+  street:         z.string().optional(),
+  city:           z.string().optional(),
+  province:       z.string().optional(),
   // Screenshot as base64
   receipt_base64: z.string(),        // "data:image/png;base64,..."
   receipt_name:   z.string(),
@@ -58,11 +68,19 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
             coverage_type: d.coverage_type,
             term: d.term,
             deductible: d.deductible,
+            customer_name: d.customer_name,
+            customer_email: d.customer_email,
+            customer_phone: d.customer_phone,
+            additional_drivers: d.additional_drivers,
+            billing_frequency: d.billing_frequency || 'full',
             vin: d.vin,
             vehicle: d.vehicle,
             license_class: d.license_class,
             dob: d.dob,
             postal: d.postal,
+            street: d.street,
+            city: d.city,
+            province: d.province,
             receipt_name: d.receipt_name,
             updated_at: new Date(),
           },
@@ -72,6 +90,19 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
       );
     } catch (dbErr) {
       console.error('[notify/payment] MongoDB save error:', (dbErr as Error).message);
+    }
+
+    // Fire confirmation email to customer asynchronously if email provided
+    if (d.customer_email) {
+      sendPaymentReceivedEmail(
+        d.customer_email,
+        d.customer_name || 'Valued Customer',
+        d.policy_number,
+        d.amount,
+        d.vehicle
+      ).catch(err => {
+        console.error('[notify/payment] Failed to dispatch automated email:', (err as Error).message);
+      });
     }
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -88,7 +119,12 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
       `📋 *New Payment Submission*`,
       ``,
       `*Policy:* \`${d.policy_number}\``,
-      `*Amount:* $${d.amount} CAD`,
+      d.customer_name ? `*Customer:* ${d.customer_name}` : null,
+      d.customer_email ? `*Email:* ${d.customer_email}` : null,
+      d.customer_phone ? `*Phone:* ${d.customer_phone}` : null,
+      d.additional_drivers ? `*Additional Drivers:* ${d.additional_drivers}` : null,
+      `*Payment Plan:* ${d.billing_frequency === 'monthly' ? '📅 Monthly Installments (Month 1)' : '🛡️ Full Term Prepaid'}`,
+      `*Amount:* $${d.amount} CAD ${d.billing_frequency === 'monthly' ? '(Month 1 Payment)' : '(Full Term)'}`,
       `*Coverage:* ${d.coverage_type} — ${d.term}`,
       `*Deductible:* $${d.deductible}`,
       ``,
@@ -98,9 +134,10 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
       `*License:* ${d.license_class}`,
       `*DOB:* ${d.dob}`,
       `*Postal:* ${d.postal}`,
+      d.street ? `*Address:* ${d.street}, ${d.city || ''} ${d.postal}` : null,
       ``,
       `*Status:* ⏳ Pending Admin Verification`,
-    ].join('\n');
+    ].filter(Boolean).join('\n');
 
     // 3. Convert base64 image to Buffer
     const base64Data = d.receipt_base64.replace(/^data:[^;]+;base64,/, '');
@@ -182,6 +219,34 @@ router.post('/telegram-webhook', async (req, res) => {
         { policy_number: policyNumber },
         { $set: { status: newStatus, updated_at: new Date() } }
       );
+
+      // 1a. If approved and customer has an email on file, dispatch confirmation email with dynamic 2-page Pink Card
+      if (isApprove && policy.customer_email) {
+        generatePinkCardPDF({
+          policyNumber: policy.policy_number,
+          customerName: policy.customer_name || 'Customer',
+          additionalDrivers: policy.additional_drivers,
+          street: (policy as any).street,
+          city: (policy as any).city,
+          postal: policy.postal,
+          vehicle: policy.vehicle || '2021 HONDA CR-V',
+          vin: policy.vin || '',
+          effectiveDate: policy.created_at || new Date(),
+          term: policy.term || '12m',
+        })
+          .then((pinkCardPath) => {
+            return sendApprovalEmail(
+              policy.customer_email!,
+              policy.customer_name || 'Customer',
+              policyNumber,
+              pinkCardPath || undefined
+            );
+          })
+          .then((success) => {
+            if (success) console.log(`[telegram-webhook] 2-Page Pink Card email sent successfully to ${policy.customer_email}`);
+          })
+          .catch((err) => console.error('[telegram-webhook] Failed sending email:', (err as Error).message));
+      }
     }
 
     // 1. Send feedback pop-up to admin in Telegram
@@ -220,6 +285,45 @@ router.post('/telegram-webhook', async (req, res) => {
     }
   } catch (err) {
     console.error('[telegram-webhook] Error handling update:', err);
+  }
+});
+
+// ─── POST /api/notify/resend-approval/:policyNumber (resends dynamic 2-page pink card) ──
+router.post('/resend-approval/:policyNumber', async (req, res, next) => {
+  try {
+    const db = getDB();
+    const policy = await db.collection<PolicyDoc>('policies').findOne({
+      $or: [{ policy_number: req.params.policyNumber }, { ref_num: req.params.policyNumber }],
+    });
+
+    if (!policy || !policy.customer_email) {
+      res.status(404).json({ error: 'Policy or customer email not found' });
+      return;
+    }
+
+    const pinkCardPath = await generatePinkCardPDF({
+      policyNumber: policy.policy_number,
+      customerName: policy.customer_name || 'Customer',
+      additionalDrivers: policy.additional_drivers,
+      street: (policy as any).street,
+      city: (policy as any).city,
+      postal: policy.postal,
+      vehicle: policy.vehicle || '2021 HONDA CR-V',
+      vin: policy.vin || '',
+      effectiveDate: policy.created_at || new Date(),
+      term: policy.term || '12m',
+    });
+
+    const sent = await sendApprovalEmail(
+      policy.customer_email,
+      policy.customer_name || 'Customer',
+      policy.policy_number,
+      pinkCardPath || undefined
+    );
+
+    res.json({ ok: sent, pink_card_path: pinkCardPath });
+  } catch (err) {
+    next(err);
   }
 });
 

@@ -88,7 +88,7 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
 • Deductible — $500 or $1,000
 • Vehicle, driver profile, and postal code/province
 
-Example (3-month prepaid term): Basic coverage around $481, Full coverage around $722 — paid once, no monthly billing. Get your exact quote in under 5 minutes by entering your VIN.`,
+Example (3-month term): Basic coverage around $481, Full coverage around $722 — available as a single one-time payment or in equal monthly installments via Interac e-Transfer. Get your exact quote in under 3 minutes at /quote by entering your VIN.`,
     followUp: ['Get a quote', 'What coverage options are available?', 'Can I customize my coverage?']
   },
 
@@ -811,7 +811,7 @@ Ready to file a claim?`,
    • 6 months — save 15% vs. paying month-to-month at the 3-month rate
    • 12 months — save 25%, our best value
 
-You pay once for the full term — no monthly billing, no long-term contract.
+Choose between paying once for the full term (with built-in discounts) or equal monthly installments via Interac e-Transfer — no bank auto-debit withdrawals, no credit check, and no $48 NSF penalty fees.
 
 🔄 RENEWAL OPTIONS:
 
@@ -1263,8 +1263,8 @@ Safe driving pays off — literally. It's included automatically, no extra cost 
     category: 'Payment & Delivery',
     intents: ['can i pay monthly', 'pay monthly', 'monthly payment', 'monthly billing', 'is it monthly', 'monthly option', 'do you charge monthly', 'monthly rate'],
     question: 'Can I pay monthly?',
-    answer: `PolarGuard policies are single one-time prepaid term plans (1, 3, 6, or 12 months) paid upfront via Interac e-Transfer. We do not do monthly automatic debit withdrawals, so you are 100% covered for your full term with zero risk of unexpected monthly charges, NSF penalties, or missed payment cancellations!`,
-    followUp: ['How does Interac e-Transfer work?', 'What coverage tiers do you have?', 'Start my quote']
+    answer: `Yes, absolutely! You can choose Monthly Installments directly on our quote page at /quote. You simply pay Month 1 today via Interac e-Transfer to activate your official TD Pink Card immediately, and send the remaining equal monthly installments by e-Transfer. There are no credit checks, no bank auto-debit withdrawals, and no risk of NSF penalty fees!`,
+    followUp: ['How does Interac e-Transfer work?', 'What coverage tiers do you have?', 'Get a quote']
   },
 ];
 
