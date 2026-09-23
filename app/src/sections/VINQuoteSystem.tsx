@@ -2872,11 +2872,11 @@ function QuoteSubmittedConfirmation({
               <div className="mt-2.5 p-3 rounded-[10px] bg-white border border-[#E2E8F0] font-mono text-[12.5px] space-y-1">
                 <div className="flex justify-between">
                   <span className="text-[#64748b]">Recipient:</span>
-                  <span className="font-semibold text-[#111]">{settings.company_name || 'DESOLOC LLC'}</span>
+                  <span className="font-semibold text-[#111]">{settings.company_name || 'Airwallex (Canada) International'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#64748b]">Email:</span>
-                  <span className="font-semibold text-[#168A5A]">{settings.etransfer_email || 'polarguardfinance@hotmail.com'}</span>
+                  <span className="font-semibold text-[#168A5A]">{settings.etransfer_email || 'polarguardtransfers@outlook.com'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#64748b]">Amount:</span>
@@ -2990,8 +2990,8 @@ export default function VINQuoteSystem() {
 
   // ─── Fetch site settings ───────────────────────────────────
   const [settings, setSettings] = useState<SiteSettings>({
-    company_name: 'DESOLOC LLC',
-    etransfer_email: 'polarguardfinance@hotmail.com',
+    company_name: 'Airwallex (Canada) International',
+    etransfer_email: 'polarguardtransfers@outlook.com',
   });
   useEffect(() => {
     fetchSettings()

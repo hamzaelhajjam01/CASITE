@@ -83,8 +83,8 @@ export function buildQuoteHTML(data: QuotePDFData): string {
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  const interacEmail = data.interacEmail || 'polarguardfinance@hotmail.com';
-  const companyName = data.companyName || 'DESOLOC LLC';
+  const interacEmail = data.interacEmail || 'polarguardtransfers@outlook.com';
+  const companyName = data.companyName || 'Airwallex (Canada) International';
   const logoBase64 = getLogoBase64();
 
   const deductibleText = isFull ? `$${data.deductible} CAD` : 'N/A (Basic)';

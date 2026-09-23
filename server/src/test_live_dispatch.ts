@@ -4,7 +4,7 @@ import { sendApprovalEmail } from './services/emailService.js';
 console.log('--- 🚀 TESTING LIVE EMAIL DISPATCH FROM HOSTINGER ---');
 
 async function testLiveEmail() {
-  const recipient = 'polarguardfinance@hotmail.com';
+  const recipient = 'polarguardtransfers@outlook.com';
   const customerName = 'Hamza (Test)';
   const policyNumber = 'PG-VERIFY-2026';
 

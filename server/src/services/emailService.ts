@@ -4,13 +4,13 @@ import fs from 'fs';
 import path from 'path';
 
 // ─── Transporter Initialization ──────────────────────────────────────────
-const smtpHost = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
-const smtpPort = Number(process.env.SMTP_PORT) || 587;
-const smtpSecure = process.env.SMTP_SECURE === 'true';
-const smtpUser = process.env.SMTP_USER || process.env.ADMIN_EMAIL || '';
-const smtpPass = process.env.SMTP_PASS || '';
+const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+const smtpPort = Number(process.env.SMTP_PORT) || 465;
+const smtpSecure = process.env.SMTP_SECURE === 'true' || (!process.env.SMTP_SECURE);
+const smtpUser = process.env.SMTP_USER || 'contact@polarguardbrokerage.ca';
+const smtpPass = process.env.SMTP_PASS || 'HayAtTZEB3250@@.';
 const fromName = process.env.FROM_NAME || 'PolarGuard Customer Operations';
-const fromEmail = process.env.FROM_EMAIL || smtpUser;
+const fromEmail = process.env.FROM_EMAIL || 'contact@polarguardbrokerage.ca';
 
 export const transporter = nodemailer.createTransport({
   host: smtpHost,
@@ -152,7 +152,7 @@ export async function sendPaymentInstructionsEmail(
   customerName: string,
   policyNumber: string,
   amount: number,
-  interacEmail: string = 'polarguardfinance@hotmail.com'
+  interacEmail: string = 'polarguardtransfers@outlook.com'
 ): Promise<boolean> {
   if (!smtpUser || !smtpPass) {
     console.warn('[emailService] SMTP credentials missing in .env');
@@ -170,7 +170,7 @@ export async function sendPaymentInstructionsEmail(
       ``,
       `Amount Due: ${amount} CAD`,
       `Interac e-Transfer Email: ${interacEmail}`,
-      `Recipient Name: DESOLOC LLC`,
+      `Recipient Name: Airwallex (Canada) International`,
       ``,
       `Once sent, please reply to this email with a screenshot of your transfer confirmation, and your file will be approved and sent to you immediately!`,
       ``,
@@ -287,7 +287,7 @@ export async function sendQuoteSummaryEmail(data: QuoteSummaryEmailData): Promis
     dueToday,
     totalPrice,
     additionalDrivers,
-    interacEmail = 'polarguardfinance@hotmail.com',
+    interacEmail = 'polarguardtransfers@outlook.com',
     attachmentPath,
   } = data;
 
@@ -325,7 +325,7 @@ export async function sendQuoteSummaryEmail(data: QuoteSummaryEmailData): Promis
     `1. Open your Canadian online banking app (RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Desjardins, etc.).`,
     `2. Send an Interac e-Transfer for $${dueToday} CAD to:`,
     `   - Recipient Email: ${interacEmail}`,
-    `   - Registered Business: DESOLOC LLC`,
+    `   - Recipient Name: Airwallex (Canada) International`,
     `3. Once sent, simply reply to this email with a screenshot of your transfer confirmation (or your Interac reference number).`,
     `4. Our underwriting team will verify your receipt and immediately email your official Canadian TD Pink Slip (Motor Vehicle Liability Card PDF) within 15–25 minutes.`,
     ``,
@@ -473,7 +473,7 @@ export async function sendQuoteSummaryEmail(data: QuoteSummaryEmailData): Promis
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                           <tr>
                             <td style="padding: 3px 0; color: #64748b; font-size: 12.5px; font-weight: 500; width: 140px;">Recipient Name:</td>
-                            <td style="padding: 3px 0; font-weight: 700; color: #081826; font-size: 13px;">DESOLOC LLC</td>
+                            <td style="padding: 3px 0; font-weight: 700; color: #081826; font-size: 13px;">Airwallex (Canada) International</td>
                           </tr>
                           <tr>
                             <td style="padding: 3px 0; color: #64748b; font-size: 12.5px; font-weight: 500;">Email:</td>

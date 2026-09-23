@@ -88,8 +88,8 @@ await db.collection('settings').updateOne(
   {
     $set: {
       key: 'main',
-      company_name: 'DESOLOC LLC',
-      etransfer_email: 'polarguardfinance@hotmail.com',
+      company_name: 'Airwallex (Canada) International',
+      etransfer_email: 'polarguardtransfers@outlook.com',
       updated_at: new Date(),
     },
     $setOnInsert: { created_at: new Date() },

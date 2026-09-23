@@ -11,8 +11,6 @@ import quoteRouter    from './routes/quote.js';
 import settingsRouter from './routes/settings.js';
 import notifyRouter  from './routes/notify.js';
 import chatRouter    from './routes/chat.js';
-import { startIMAPListener } from './services/imapService.js';
-import { startTelegramListener } from './services/telegramListener.js';
 
 const app = express();
 
@@ -72,6 +70,8 @@ async function start() {
     try {
       await connectDB();
       await createIndexes();
+      const { startIMAPListener } = await import('./services/imapService.js');
+      const { startTelegramListener } = await import('./services/telegramListener.js');
       startIMAPListener();
       startTelegramListener();
     } catch (err) {
