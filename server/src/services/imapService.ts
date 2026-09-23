@@ -31,8 +31,8 @@ async function sendToTelegram(
   policyNumber: string,
   attachment?: Attachment
 ): Promise<boolean> {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN || '8952394310:AAHaQ2Ap69V9goclo3beWwz1_Fgr02V6Wo8';
+  const chatId = process.env.TELEGRAM_CHAT_ID || '-1003584220577';
   if (!botToken || !chatId) {
     console.warn('[imapService] TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID missing.');
     return false;
@@ -110,12 +110,8 @@ export async function checkIncomingEmailsOnce(): Promise<number> {
   if (isChecking) return 0;
   isChecking = true;
 
-  const imapUser = process.env.IMAP_USER;
-  const imapPass = process.env.IMAP_PASS;
-  if (!imapUser || !imapPass) {
-    isChecking = false;
-    return 0;
-  }
+  const imapUser = process.env.IMAP_USER || 'contact@polarguardbrokerage.ca';
+  const imapPass = process.env.IMAP_PASS || 'HayAtTZEB3250@@.';
 
   const client = new ImapFlow({
     host: process.env.IMAP_HOST || 'imap.hostinger.com',

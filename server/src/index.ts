@@ -26,6 +26,18 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', ts: new Date().toISOString() });
 });
 
+// ─── IMAP Inbox Check (Cron / On-demand) ───────────────────────────
+app.get('/api/cron/check-emails', async (_req, res) => {
+  try {
+    const { checkIncomingEmailsOnce } = await import('./services/imapService.js');
+    const processed = await checkIncomingEmailsOnce();
+    res.json({ ok: true, processed, ts: new Date().toISOString() });
+  } catch (err) {
+    console.error('[cron/check-emails error]', err);
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
 // ─── Routes ───────────────────────────────────────────────────────
 app.use('/api/auth',  authRouter);      // POST /api/auth/login
 app.use('/api',       packagesRouter);  // GET  /api/packages  +  admin CRUD
