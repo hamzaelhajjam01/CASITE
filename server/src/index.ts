@@ -97,6 +97,14 @@ async function start() {
   connectWithRetry();
 }
 
+process.on('uncaughtException', (err) => {
+  console.warn('[process] Uncaught Exception caught (prevented crash):', (err as Error).message);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.warn('[process] Unhandled Rejection caught (prevented crash):', reason);
+});
+
 if (!process.env.VERCEL) {
   start().catch((err) => {
     console.error('Failed to start:', err);

@@ -121,6 +121,11 @@ export async function checkIncomingEmailsOnce(): Promise<number> {
     logger: false,
   });
 
+  // Prevent uncaught socket timeout / network error events from crashing the process
+  client.on('error', (err) => {
+    console.warn('[imapService] ImapFlow socket warning:', (err as Error).message);
+  });
+
   let processedCount = 0;
 
   try {
@@ -253,12 +258,17 @@ export async function checkIncomingEmailsOnce(): Promise<number> {
         }
       }
     } finally {
-      lock.release();
+      try { lock.release(); } catch {}
     }
 
-    await client.logout();
+    try {
+      await client.logout();
+    } catch {
+      try { client.close(); } catch {}
+    }
   } catch (err) {
     console.error('[imapService] IMAP connection/check error:', (err as Error).message);
+    try { client.close(); } catch {}
   } finally {
     isChecking = false;
   }
