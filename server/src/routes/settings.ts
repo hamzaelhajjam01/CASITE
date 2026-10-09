@@ -19,8 +19,8 @@ router.get('/settings', async (_req, res, next) => {
     const db  = getDB();
     const doc = await db.collection('settings').findOne({ key: SETTINGS_KEY });
     res.json({
-      company_name:    doc?.company_name    ?? 'Airwallex (Canada) International',
-      etransfer_email: doc?.etransfer_email ?? 'polarguardtransfers@outlook.com',
+      company_name:    doc?.company_name    ?? 'Moya enterprises LLC',
+      etransfer_email: doc?.etransfer_email ?? 'polardepartment@outlook.com',
     });
   } catch (err) {
     next(err);
