@@ -30,6 +30,7 @@ EMAIL="contact@Polarguardinsurance.com"
 BACKEND_PORT=3222
 SKIP_SSL=false
 APP_NAME="polarguard"
+INSTALL_DEPS=false
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$SCRIPT_DIR/app"
 SERVER_DIR="$SCRIPT_DIR/server"
@@ -42,6 +43,7 @@ while [[ $# -gt 0 ]]; do
     --backend-port)  BACKEND_PORT="$2";  shift 2 ;;
     --app-name)      APP_NAME="$2";      shift 2 ;;
     --skip-ssl)      SKIP_SSL=true;      shift   ;;
+    --install-deps)  INSTALL_DEPS=true;  shift   ;;
     *) error "Unknown argument: $1" ;;
   esac
 done
@@ -50,11 +52,19 @@ done
 [[ -z "$EMAIL"  ]] && error "Required: --email <admin@yourdomain.com>"
 [[ $EUID -ne 0  ]] && error "Run as root:  sudo bash deploy.sh ..."
 
+# Auto-install dependencies if requested or missing on fresh VPS
+if [[ "$INSTALL_DEPS" == true ]] || (! command -v nginx &>/dev/null || ! command -v certbot &>/dev/null || ! command -v pm2 &>/dev/null || ! command -v node &>/dev/null); then
+  if [[ -f "$SCRIPT_DIR/setup-hostbrr.sh" ]]; then
+    info "Missing prerequisites or --install-deps requested. Running setup-hostbrr.sh..."
+    bash "$SCRIPT_DIR/setup-hostbrr.sh"
+  fi
+fi
+
 # Quick sanity-check — fail early with a clear message
-command -v nginx   &>/dev/null || error "nginx not found. Install it first."
-command -v certbot &>/dev/null || error "certbot not found. Install it first."
+command -v nginx   &>/dev/null || error "nginx not found. Install it first (or run: sudo bash setup-hostbrr.sh)."
+command -v certbot &>/dev/null || error "certbot not found. Install it first (or run: sudo bash setup-hostbrr.sh)."
 command -v pm2     &>/dev/null || error "pm2 not found. Install it first (npm i -g pm2)."
-command -v node    &>/dev/null || error "node not found."
+command -v node    &>/dev/null || error "node not found. Install it first."
 
 DOMAIN_LOWER="${DOMAIN,,}"
 NGINX_CONF="/etc/nginx/sites-available/${DOMAIN}"
@@ -69,7 +79,7 @@ echo ""
 # ─── 1. Build frontend ───────────────────────────────────────────────────────
 info "Building frontend…"
 cd "$APP_DIR"
-npm ci --prefer-offline
+npm ci --include=dev --prefer-offline || npm install
 
 # Set VITE_API_URL for production — create or update the single line
 ENV_FILE="$APP_DIR/.env.production"
@@ -90,12 +100,22 @@ success "Frontend built → $APP_DIR/dist"
 # ─── 2. Build backend ────────────────────────────────────────────────────────
 info "Building backend…"
 cd "$SERVER_DIR"
-npm ci --prefer-offline
+npm ci --include=dev --prefer-offline || npm install
 npm run build
 success "Backend built → $SERVER_DIR/dist"
 
 # ─── 3. Update backend .env ──────────────────────────────────────────────────
 info "Updating server/.env for production…"
+
+if [[ ! -f "$SERVER_DIR/.env" ]]; then
+  if [[ -f "$SERVER_DIR/.env.example" ]]; then
+    cp "$SERVER_DIR/.env.example" "$SERVER_DIR/.env"
+    warn "Created $SERVER_DIR/.env from .env.example."
+  else
+    touch "$SERVER_DIR/.env"
+  fi
+  warn "⚠️  Make sure to verify MONGODB_URI and JWT_SECRET in $SERVER_DIR/.env"
+fi
 
 _set_env() {
   local key="$1" val="$2" file="$SERVER_DIR/.env"

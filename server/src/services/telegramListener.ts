@@ -165,7 +165,11 @@ async function handleCallbackQuery(callback: any, botToken: string): Promise<voi
  */
 export async function startTelegramListener(): Promise<void> {
   if (isListening) return;
-  const botToken = process.env.TELEGRAM_BOT_TOKEN || '8952394310:AAHaQ2Ap69V9goclo3beWwz1_Fgr02V6Wo8';
+  if (process.env.TELEGRAM_ENABLED !== 'true') {
+    console.log('[telegramListener] ⏸️ Telegram listener temporarily paused.');
+    return;
+  }
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
   if (!botToken) {
     console.warn('[telegramListener] TELEGRAM_BOT_TOKEN missing.');
     return;

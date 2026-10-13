@@ -31,8 +31,13 @@ async function sendToTelegram(
   policyNumber: string,
   attachment?: Attachment
 ): Promise<boolean> {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN || '8952394310:AAHaQ2Ap69V9goclo3beWwz1_Fgr02V6Wo8';
-  const chatId = process.env.TELEGRAM_CHAT_ID || '-1003584220577';
+  if (process.env.TELEGRAM_ENABLED !== 'true') {
+    console.log(`[imapService] ⏸️ Telegram notifications temporarily paused. Skipped forwarding for ${policyNumber}`);
+    return false;
+  }
+
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!botToken || !chatId) {
     console.warn('[imapService] TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID missing.');
     return false;

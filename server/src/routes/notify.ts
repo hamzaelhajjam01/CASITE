@@ -105,11 +105,14 @@ router.post('/payment', validate(notifySchema), async (req, res, next) => {
       });
     }
 
+    // Telegram notifications temporarily paused until explicitly activated
+    const isTelegramEnabled = process.env.TELEGRAM_ENABLED === 'true';
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId   = process.env.TELEGRAM_CHAT_ID;
 
-    if (!botToken || !chatId) {
-      // Telegram not configured — acknowledge anyway so frontend UX doesn't block
+    if (!isTelegramEnabled || !botToken || !chatId) {
+      console.log('[notify/payment] ⏸️ Telegram notifications temporarily paused.');
+      // Telegram paused or not configured — acknowledge so frontend UX doesn't block
       res.json({ ok: true, telegram: false });
       return;
     }
