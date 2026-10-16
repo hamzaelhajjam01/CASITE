@@ -59,11 +59,11 @@ export async function sendApprovalEmail(
       ``,
       `Thank you for choosing PolarGuard Insurance Brokerage (in association with TD Insurance).`,
       ``,
-      `If you need to make changes to your coverage or have any questions, our brokerage team is available 24/7. Simply reply to this email, email us at contact@polarguardbrokerage.ca, or reach us on WhatsApp at +1 (579) 987-7798 for instant support.`,
+      `If you need to make changes to your coverage or have any questions, our brokerage team is available 24/7. Simply reply to this email, email us at contact@polarguardbrokerage.ca, or reach us on WhatsApp at +1 (984) 378-9320 for instant support.`,
       ``,
       `Warm regards,`,
       `PolarGuard Underwriting & Operations`,
-      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (579) 987-7798`,
+      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (984) 378-9320`,
     ].join('\n'),
     html: `
 <!DOCTYPE html>
@@ -118,14 +118,14 @@ export async function sendApprovalEmail(
       </div>
 
       <p style="font-size: 13px; color: #64748b; margin-top: 24px; line-height: 1.5;">
-        If you need to make changes to your coverage or have any questions, our brokerage team is available 24/7. Simply reply to this email, reach us at <a href="mailto:contact@polarguardbrokerage.ca" style="color: #168A5A; text-decoration: none; font-weight: 600;">contact@polarguardbrokerage.ca</a>, or contact our team on WhatsApp at <a href="https://wa.me/15799877798" style="color: #168A5A; text-decoration: none; font-weight: 700;">+1 (579) 987-7798</a> for <strong>instant support</strong>.
+        If you need to make changes to your coverage or have any questions, our brokerage team is available 24/7. Simply reply to this email, reach us at <a href="mailto:contact@polarguardbrokerage.ca" style="color: #168A5A; text-decoration: none; font-weight: 600;">contact@polarguardbrokerage.ca</a>, or contact our team on WhatsApp at <a href="https://wa.me/19843789320" style="color: #168A5A; text-decoration: none; font-weight: 700;">+1 (984) 378-9320</a> for <strong>instant support</strong>.
       </p>
     </div>
 
     <div class="footer">
       <strong>PolarGuard Insurance Operations</strong><br>
       Underwritten by TD General Insurance Company · AMF Reg #504108 / RIBO Reg #10129<br>
-      Email: <a href="mailto:contact@polarguardbrokerage.ca" style="color: #94a3b8;">contact@polarguardbrokerage.ca</a> &nbsp;|&nbsp; WhatsApp (Instant Support): <a href="https://wa.me/15799877798" style="color: #168A5A; text-decoration: none; font-weight: 600;">+1 (579) 987-7798</a>
+      Email: <a href="mailto:contact@polarguardbrokerage.ca" style="color: #94a3b8;">contact@polarguardbrokerage.ca</a> &nbsp;|&nbsp; WhatsApp (Instant Support): <a href="https://wa.me/19843789320" style="color: #168A5A; text-decoration: none; font-weight: 600;">+1 (984) 378-9320</a>
     </div>
   </div>
 </body>
@@ -174,10 +174,10 @@ export async function sendPaymentInstructionsEmail(
       ``,
       `Once sent, please reply to this email with a screenshot of your transfer confirmation, and your file will be approved and sent to you immediately!`,
       ``,
-      `If you have any questions or need instant support, simply reply to this email, contact us at contact@polarguardbrokerage.ca, or reach our team on WhatsApp at +1 (579) 987-7798 for instant support.`,
+      `If you have any questions or need instant support, simply reply to this email, contact us at contact@polarguardbrokerage.ca, or reach our team on WhatsApp at +1 (984) 378-9320 for instant support.`,
       ``,
       `PolarGuard Operations`,
-      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (579) 987-7798`,
+      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (984) 378-9320`,
     ].join('\n'),
   };
 
@@ -223,11 +223,11 @@ export async function sendPaymentReceivedEmail(
       `A licensed insurance broker is currently reviewing and verifying your Interac e-Transfer receipt.`,
       `Once confirmed (typically within 15-25 minutes during business hours), your official TD Insurance pink card and full coverage documents will be issued and delivered directly to this email address.`,
       ``,
-      `If you have any questions or need to update your policy information, simply reply to this email, contact us at contact@polarguardbrokerage.ca, or reach our team on WhatsApp at +1 (579) 987-7798 for instant support.`,
+      `If you have any questions or need to update your policy information, simply reply to this email, contact us at contact@polarguardbrokerage.ca, or reach our team on WhatsApp at +1 (984) 378-9320 for instant support.`,
       ``,
       `Best regards,`,
       `PolarGuard Insurance Operations`,
-      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (579) 987-7798`,
+      `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (984) 378-9320`,
     ].join('\n'),
   };
 
@@ -330,11 +330,11 @@ export async function sendQuoteSummaryEmail(data: QuoteSummaryEmailData): Promis
     `4. Our underwriting team will verify your receipt and immediately email your official Canadian TD Pink Slip (Motor Vehicle Liability Card PDF) within 15–25 minutes.`,
     ``,
     `Please review the attached PDF document for your full schedule of coverages and terms.`,
-    `Need help or want to adjust details? Simply reply to this email, reach us at contact@polarguardbrokerage.ca, or contact us on WhatsApp at +1 (579) 987-7798 for instant support.`,
+    `Need help or want to adjust details? Simply reply to this email, reach us at contact@polarguardbrokerage.ca, or contact us on WhatsApp at +1 (984) 378-9320 for instant support.`,
     ``,
     `Warm regards,`,
     `PolarGuard Underwriting & Operations`,
-    `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (579) 987-7798`,
+    `Email: contact@polarguardbrokerage.ca | WhatsApp (Instant Support): +1 (984) 378-9320`,
   ].filter(Boolean).join('\n');
 
   const htmlBody = `
@@ -530,14 +530,14 @@ export async function sendQuoteSummaryEmail(data: QuoteSummaryEmailData): Promis
       </table>
 
       <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-top: 20px;">
-        Your detailed quote breakdown is attached as a PDF. Questions about your quote or need assistance with your transfer? Reply directly to this email, reach us at <a href="mailto:contact@polarguardbrokerage.ca" style="color: #168A5A; text-decoration: none; font-weight: 600;">contact@polarguardbrokerage.ca</a>, or contact our team on WhatsApp at <a href="https://wa.me/15799877798" style="color: #168A5A; text-decoration: none; font-weight: 700;">+1 (579) 987-7798</a> for <strong>instant support</strong>.
+        Your detailed quote breakdown is attached as a PDF. Questions about your quote or need assistance with your transfer? Reply directly to this email, reach us at <a href="mailto:contact@polarguardbrokerage.ca" style="color: #168A5A; text-decoration: none; font-weight: 600;">contact@polarguardbrokerage.ca</a>, or contact our team on WhatsApp at <a href="https://wa.me/19843789320" style="color: #168A5A; text-decoration: none; font-weight: 700;">+1 (984) 378-9320</a> for <strong>instant support</strong>.
       </p>
     </div>
 
     <div class="footer">
       <strong>PolarGuard Insurance Operations</strong><br>
       Licensed Canadian Auto Insurance Brokerage · In association with TD Insurance<br>
-      Email: <a href="mailto:contact@polarguardbrokerage.ca" style="color: #64748b;">contact@polarguardbrokerage.ca</a> &nbsp;|&nbsp; WhatsApp (Instant Support): <a href="https://wa.me/15799877798" style="color: #168A5A; text-decoration: none; font-weight: 600;">+1 (579) 987-7798</a>
+      Email: <a href="mailto:contact@polarguardbrokerage.ca" style="color: #64748b;">contact@polarguardbrokerage.ca</a> &nbsp;|&nbsp; WhatsApp (Instant Support): <a href="https://wa.me/19843789320" style="color: #168A5A; text-decoration: none; font-weight: 600;">+1 (984) 378-9320</a>
     </div>
   </div>
 </body>

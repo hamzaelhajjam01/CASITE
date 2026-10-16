@@ -87,18 +87,18 @@ export default function Footer() {
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="https://wa.me/15799877798"
+                    href="https://wa.me/19843789320"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"
                   >
                     <WhatsAppIcon className="w-3.5 h-3.5 fill-[#168A5A]" />
-                    +1 (579) 987-7798
+                    +1 (984) 378-9320
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/15799877798"
+                    href="https://wa.me/19843789320"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-inter text-[14px] text-[#9AA0A6] hover:text-white transition-colors"

@@ -115,13 +115,13 @@ export default function Quote() {
                 </p>
               </div>
               <a
-                href="https://wa.me/15799877798"
+                href="https://wa.me/19843789320"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-inter text-[13px] font-semibold text-white bg-[#168A5A] hover:bg-[#13784E] px-4 py-2.5 rounded-full shrink-0 shadow-sm transition-all"
               >
                 <WhatsAppIcon className="w-4 h-4 fill-white text-white shrink-0" />
-                <span>Chat with a Broker (+1 579 987-7798)</span>
+                <span>Chat with a Broker (+1 984 378-9320)</span>
               </a>
             </div>
           </div>

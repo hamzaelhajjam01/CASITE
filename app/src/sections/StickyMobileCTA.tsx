@@ -60,7 +60,7 @@ export default function StickyMobileCTA() {
             <ArrowRight size={14} />
           </a>
           <a
-            href="https://wa.me/15799877798"
+            href="https://wa.me/19843789320"
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 w-10 h-10 rounded-full bg-[#168A5A] hover:bg-[#13784E] text-white flex items-center justify-center transition-all active:scale-95 shadow-[0_2px_10px_rgba(22,138,90,0.25)]"

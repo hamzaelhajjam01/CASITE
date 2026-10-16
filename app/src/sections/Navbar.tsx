@@ -104,13 +104,13 @@ export default function Navbar() {
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="https://wa.me/15799877798"
+            href="https://wa.me/19843789320"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-inter text-[14px] font-semibold px-5 py-2.5 rounded-full text-white bg-[#168A5A] hover:bg-[#13784E] shadow-[0_2px_10px_rgba(22,138,90,0.2)] transition-all duration-300 shrink-0 whitespace-nowrap"
           >
             <WhatsAppIcon className="w-4 h-4 fill-white text-white shrink-0 aspect-square" />
-            <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
+            <span className="shrink-0 whitespace-nowrap">+1 (984) 378-9320</span>
           </a>
           <a
             href="/quote"
@@ -150,14 +150,14 @@ export default function Navbar() {
             })}
             <div className="flex flex-col gap-3 pt-4 border-t border-[#E6E8EB] mt-2">
               <a
-                href="https://wa.me/15799877798"
+                href="https://wa.me/19843789320"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 font-inter text-[14px] font-semibold text-white bg-[#168A5A] hover:bg-[#13784E] px-5 py-2.5 rounded-full text-center shrink-0 whitespace-nowrap"
                 onClick={handleMobileClick}
               >
                 <WhatsAppIcon className="w-4 h-4 fill-white text-white shrink-0 aspect-square" />
-                <span className="shrink-0 whitespace-nowrap">+1 (579) 987-7798</span>
+                <span className="shrink-0 whitespace-nowrap">+1 (984) 378-9320</span>
               </a>
               <a
                 href="/quote"

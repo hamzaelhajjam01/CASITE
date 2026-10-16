@@ -19,8 +19,8 @@ interface Message {
   isActivated?: boolean;
 }
 
-const WHATSAPP_URL = 'https://wa.me/15799877798';
-const WHATSAPP_PHONE = '+1 (579) 987-7798';
+const WHATSAPP_URL = 'https://wa.me/19843789320';
+const WHATSAPP_PHONE = '+1 (984) 378-9320';
 
 export default function ChatbotWidget() {
   const navigate = useNavigate();
@@ -206,8 +206,8 @@ Your e-Transfer receipt for Policy ${activePolicyNumber} has been verified by th
       "speak with",
       "real person",
       "human broker",
-      '579',
-      '987-7798',
+      '984',
+      '378-9320',
     ];
     const isFallbackIntent = fallbackKeywords.some(kw => lowerReply.includes(kw) || lowerUser.includes('human') || lowerUser.includes('agent') || lowerUser.includes('person'));
     if (isFallbackIntent || buttons.length === 0) {
@@ -391,7 +391,7 @@ Our brokerage team has received your proof of payment on Telegram. You can also 
               policyNumber: targetPolicy,
               actionButtons: [
                 {
-                  text: '💬 WhatsApp Instant Broker Support (+1 579 987-7798)',
+                  text: '💬 WhatsApp Instant Broker Support (+1 984 378-9320)',
                   payload: WHATSAPP_URL,
                   actionType: 'whatsapp',
                 },
@@ -412,7 +412,7 @@ Our brokerage team has received your proof of payment on Telegram. You can also 
             timestamp: new Date(),
             actionButtons: [
               {
-                text: '💬 Send on WhatsApp (+1 579 987-7798)',
+                text: '💬 Send on WhatsApp (+1 984 378-9320)',
                 payload: WHATSAPP_URL,
                 actionType: 'whatsapp',
               },

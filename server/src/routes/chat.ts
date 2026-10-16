@@ -113,7 +113,7 @@ router.post('/chat', async (req, res, next) => {
 
     if (!replyText) {
       res.json({
-        text: "I apologize, but I am unable to retrieve that information right now. For instant assistance, our licensed brokerage support team is available live on WhatsApp at +1 (579) 987-7798!",
+        text: "I apologize, but I am unable to retrieve that information right now. For instant assistance, our licensed brokerage support team is available live on WhatsApp at +1 (984) 378-9320!",
         fallback: true,
       });
       return;
@@ -123,7 +123,7 @@ router.post('/chat', async (req, res, next) => {
   } catch (err) {
     console.error('[chat-route] Error:', err);
     res.json({
-      text: "I apologize, but our support chat system is temporarily experiencing technical difficulties. For instant support, please message our licensed broker team directly on WhatsApp at +1 (579) 987-7798!",
+      text: "I apologize, but our support chat system is temporarily experiencing technical difficulties. For instant support, please message our licensed broker team directly on WhatsApp at +1 (984) 378-9320!",
       fallback: true,
     });
   }

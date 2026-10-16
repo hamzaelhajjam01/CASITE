@@ -9,7 +9,7 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     question: 'Do I pay monthly or can I split my payments?',
-    answer: 'Our website rates are structured as one-time prepaid terms (3, 6, or 12 months) — saving you 10%–20%, requiring no credit check, and avoiding monthly bank auto-debits or $48 NSF penalty fees. If you prefer to pay monthly or split your payment into convenient e-Transfer installments, you can arrange a customized schedule directly with our licensed broker on WhatsApp at +1 (579) 987-7798.',
+    answer: 'Our website rates are structured as one-time prepaid terms (3, 6, or 12 months) — saving you 10%–20%, requiring no credit check, and avoiding monthly bank auto-debits or $48 NSF penalty fees. If you prefer to pay monthly or split your payment into convenient e-Transfer installments, you can arrange a customized schedule directly with our licensed broker on WhatsApp at +1 (984) 378-9320.',
   },
   {
     question: "What's the difference between Basic and Full coverage in dollars?",
