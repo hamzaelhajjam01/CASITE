@@ -6,7 +6,7 @@ import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 const productLinks = [
   { label: 'Get a quote', href: '/quote' },
   { label: 'Coverage', href: '/#coverage' },
-  { label: 'Benefits', href: '/#why-polarguard' },
+  { label: 'Benefits', href: '/#why-PolarShield' },
   { label: 'FAQ', href: '/#faq' },
 ];
 
@@ -41,19 +41,30 @@ export default function Footer() {
               <a href="#" className="block mb-5">
                 <img
                   src="/images/logo-white.png?v=2"
-                  alt="PolarGuard Insurance"
+                  alt="PolarShield Insurance"
                   className="h-[44px] w-auto"
                 />
               </a>
 
               {/* Tagline */}
-              <p className="font-inter text-[#9AA0A6] text-[14px] leading-[1.7] max-w-[360px] mb-4">
-                Independent Canadian auto brokerage offering 3-month prepaid quote previews with same-day broker review.
+              <p className="font-inter text-[#9AA0A6] text-[14px] leading-[1.7] max-w-[380px] mb-3">
+                PolarShield Auto Insurance is operated by <strong className="text-white">Polaris Insurance &amp; Risk Management Services Inc.</strong>, a licensed brokerage registered with the <strong className="text-white">Registered Insurance Brokers of Ontario (RIBO Reg #10129)</strong>.
               </p>
 
-              {/* Disclaimer */}
-              <p className="font-inter text-[#9AA0A6]/60 text-[12px] leading-[1.6] max-w-[360px]">
-                PolarGuard Insurance operates independently and is not affiliated with any bank.
+              <div className="mb-4">
+                <a
+                  href="https://www.ribo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-[#A7DAB9] font-inter text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider transition-colors"
+                >
+                  Verify RIBO License on RIBO.com &rarr;
+                </a>
+              </div>
+
+              {/* Regulatory Disclosure */}
+              <p className="font-inter text-[#9AA0A6]/70 text-[12px] leading-[1.6] max-w-[380px]">
+                All policies are underwritten directly by <strong className="text-white/80">TD General Insurance Company</strong> (FSRA Insurer Code #216 in Ontario, regulated by AIRB in Alberta, Form SPF 1 in Nova Scotia) and administered via TD Insurance Direct Agency Inc.
               </p>
             </div>
 
@@ -137,7 +148,7 @@ export default function Footer() {
           <div className="max-w-container mx-auto px-6 lg:px-12 py-5">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <p className="font-inter text-[13px] text-[#9AA0A6]/60">
-                &copy; 2026 PolarGuard Insurance Inc. All rights reserved.
+                &copy; 2026 PolarShield Insurance Inc. All rights reserved.
               </p>
               <div className="flex items-center gap-6">
                 <a

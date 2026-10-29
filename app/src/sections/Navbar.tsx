@@ -13,7 +13,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Get a Quote', href: '/quote', sectionId: 'quote' },
   { label: 'Coverage', href: '/#coverage', sectionId: 'coverage' },
-  { label: 'About', href: '/#why-polarguard', sectionId: 'why-polarguard' },
+  { label: 'About', href: '/#why-PolarShield', sectionId: 'why-PolarShield' },
   { label: 'Testimonials', href: '/#testimonials', sectionId: 'testimonials' },
   { label: 'FAQ', href: '/#faq', sectionId: 'faq' },
   { label: 'Contact', href: '/#footer', sectionId: 'footer' },
@@ -66,14 +66,19 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-container mx-auto w-full px-6 lg:px-12 flex items-center justify-between">
-        {/* Logo */}
-        <a href="/" className="flex items-center shrink-0">
-          <img
-            src="/images/logo-dark.png?v=2"
-            alt="PolarGuard Insurance"
-            className="h-[44px] w-auto"
-          />
-        </a>
+        {/* Logo & Regulatory Badge */}
+        <div className="flex items-center gap-2.5">
+          <a href="/" className="flex items-center shrink-0">
+            <img
+              src="/images/logo-dark.png?v=2"
+              alt="PolarShield Insurance"
+              className="h-[44px] w-auto"
+            />
+          </a>
+          <span className="hidden xl:inline-flex items-center gap-1 bg-[#0F172A] text-white font-inter text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            RIBO #10129 &bull; TD Underwritten
+          </span>
+        </div>
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex items-center gap-1">

@@ -22,8 +22,8 @@ const costFeatures = [
   },
   {
     icon: Building2,
-    title: 'Backed by TD Insurance',
-    desc: 'We place your policy with TD Insurance, a major Canadian insurer, and a licensed broker reviews every application before activation.',
+    title: 'RIBO Licensed Brokerage & TD Underwritten',
+    desc: 'Polaris Insurance & Risk Management Services Inc. (RIBO Reg #10129) binds your policy directly with TD General Insurance Company (FSRA #216 in ON / AIRB in AB). Verifiable at www.ribo.com.',
   },
   {
     icon: Gauge,
@@ -44,7 +44,7 @@ interface TestimonialItem {
 
 const testimonials: TestimonialItem[] = [
   {
-    quote: 'My renewal came back at $214/month. PolarGuard placed me on a prepaid 12-month and I ended up paying $1,479 total — way less than what I was quoted anywhere else.',
+    quote: 'My renewal came back at $214/month. PolarShield placed me on a prepaid 12-month and I ended up paying $1,479 total — way less than what I was quoted anywhere else.',
     name: 'Amara O.',
     location: 'Scarborough, ON',
     driverType: 'Full G driver',
@@ -60,7 +60,7 @@ const testimonials: TestimonialItem[] = [
     avatar: '/images/avatar-daniyal.png',
   },
   {
-    quote: 'As a G1 I was getting refused everywhere. PolarGuard found me coverage in under an hour and the pink card was in my email the same day. The prepaid discount is real.',
+    quote: 'As a G1 I was getting refused everywhere. PolarShield found me coverage in under an hour and the pink card was in my email the same day. The prepaid discount is real.',
     name: 'Priya M.',
     location: 'Etobicoke, ON',
     driverType: 'New G1',
@@ -263,7 +263,7 @@ export default function TrustSocialProof() {
             Real customers. Real savings.
           </h2>
           <p className="mt-4 font-inter text-[#5F6368] text-[16px] leading-relaxed max-w-[600px] mx-auto">
-            Average client saves $487/year after switching to a PolarGuard-placed policy.
+            Average client saves $487/year after switching to a PolarShield-placed policy.
           </p>
         </div>
 
@@ -292,7 +292,7 @@ export default function TrustSocialProof() {
 
         {/* ─── Disclaimer ─── */}
         <p className="text-center font-inter text-[12px] text-[#9AA0A6] leading-relaxed">
-          Reviews reflect verified PolarGuard customers. Savings vary by driver profile, vehicle and location.
+          Reviews reflect verified PolarShield customers. Savings vary by driver profile, vehicle and location.
         </p>
 
       </div>

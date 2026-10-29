@@ -976,7 +976,7 @@ function Step3Coverage({ coverage, setCoverage, onBack, onSubmitQuote, isSubmitt
           Add a spouse, family member or secondary driver
         </h4>
         <p className="font-inter text-[13px] text-[#5F6368] mb-5">
-          Secondary licensed drivers are <strong className="text-[#168A5A] font-semibold">100% free ($0 add-on)</strong> on all PolarGuard terms. Each additional driver receives complete liability, accident benefits, and policy coverage with their name printed on the official pink card.
+          Secondary licensed drivers are <strong className="text-[#168A5A] font-semibold">100% free ($0 add-on)</strong> on all PolarShield terms. Each additional driver receives complete liability, accident benefits, and policy coverage with their name printed on the official pink card.
         </p>
 
         {/* 3 Selectable Buttons */}
@@ -1230,7 +1230,7 @@ function Step3Coverage({ coverage, setCoverage, onBack, onSubmitQuote, isSubmitt
 
       <div className="mb-8 bg-[#F0FDF4] border border-[#A7DAB9] rounded-[12px] p-5 flex items-start gap-3">
         <CheckCircle2 size={18} className="text-[#168A5A] shrink-0 mt-0.5" />
-        <p className="font-inter text-[13px] text-[#064E3B] leading-relaxed">Your policy will be issued under TD Insurance. PolarGuard places your coverage with TD General Insurance Company &mdash; a federally regulated Canadian insurer. You&apos;ll receive an official TD pink card after activation.</p>
+        <p className="font-inter text-[13px] text-[#064E3B] leading-relaxed">Your policy will be issued under TD Insurance. PolarShield places your coverage with TD General Insurance Company &mdash; a federally regulated Canadian insurer. You&apos;ll receive an official TD pink card after activation.</p>
       </div>
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-[#E6E8EB]">
@@ -1347,6 +1347,8 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
     : `+${coverage.extraDrivers} extra driver${coverage.extraDrivers! > 1 ? 's' : ''} (Free · $0)${additionalDriversNames ? ` — ${additionalDriversNames}` : ''}`;
 
   const summaryRows = [
+    { label: 'LICENSED BROKERAGE', value: 'Polaris Insurance & Risk Management Services Inc. (RIBO #10129)' },
+    { label: 'UNDERWRITING INSURER', value: 'TD General Insurance Company (FSRA #216 in ON / AIRB SPF 1 in AB)' },
     { label: 'VEHICLE', value: vehicle.year ? `${vehicle.year} ${vehicle.make} ${vehicle.model}` : '\u2014' },
     ...(extraVehicles.length > 0 ? [
       { label: 'EXTRA VEHICLES', value: `${extraVehicles.length} extra vehicle${extraVehicles.length > 1 ? 's' : ''} (20% Multi-Car Discount Applied)` }
@@ -1377,6 +1379,7 @@ function QuotePreview({ vehicle, driver, coverage, extraVehicles, pinkCard, setP
 
       {/* Badges */}
       <div className="flex flex-wrap gap-2 mb-2">
+        <span className="bg-[#0F172A] text-white font-inter text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">RIBO Licensed Brokerage #10129</span>
         <span className="bg-[#FFF7ED] text-[#C2410C] font-inter text-[11px] font-bold px-3 py-1 rounded-full">Application Review</span>
         <span className="bg-[#168A5A] text-white font-inter text-[11px] font-bold px-3 py-1 rounded-full">Vehicle Verified</span>
         <span className="bg-[#168A5A] text-white font-inter text-[11px] font-bold px-3 py-1 rounded-full">Quote Preview Generated</span>
@@ -1841,7 +1844,7 @@ function Step4Activate({ coverage: initialCoverage, driver, vehicle, extraVehicl
         windowWidth: 1200,
       });
       const link = document.createElement('a');
-      link.download = `PolarGuard_Pink_Slip_${policyNumber}.png`;
+      link.download = `PolarShield_Pink_Slip_${policyNumber}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -2855,7 +2858,7 @@ function QuoteSubmittedConfirmation({
             <div>
               <p className="font-inter text-[14px] font-semibold text-[#111]">Check Your Inbox (Quote PDF Attached)</p>
               <p className="font-inter text-[12.5px] text-[#5F6368] mt-0.5 leading-relaxed">
-                Open the confirmation email sent to <strong className="text-[#111]">{driver.email}</strong> from <span className="font-mono text-[12px] text-[#168A5A]">contact@polarguardbrokerage.ca</span>. Your official Automobile Insurance Quote document is attached as a PDF (<span className="font-mono text-[11.5px] text-[#111]">PolarGuard_Official_Quote_#{refNum}.pdf</span>) along with payment instructions.
+                Open the confirmation email sent to <strong className="text-[#111]">{driver.email}</strong> from <span className="font-mono text-[12px] text-[#168A5A]">contact@polarshieldbrokerage.ca</span>. Your official Automobile Insurance Quote document is attached as a PDF (<span className="font-mono text-[11.5px] text-[#111]">PolarShield_Official_Quote_#{refNum}.pdf</span>) along with payment instructions.
               </p>
             </div>
           </div>
@@ -3149,6 +3152,23 @@ export default function VINQuoteSystem() {
           <p className="mt-3 font-inter text-[#5F6368] text-[16px]">
             {view === 'submitted' ? 'Check your email inbox for your full breakdown and payment instructions.' : view === 'preview' ? 'Review your details before activation.' : view === 'activate' ? 'Complete payment to receive your pink card.' : 'Three short steps. Your details are reviewed before activation.'}
           </p>
+
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <span className="inline-flex items-center gap-1.5 bg-[#0F172A] text-white font-inter text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              RIBO Licensed Brokerage #10129
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-[#F0FDF4] text-[#168A5A] border border-[#A7DAB9] font-inter text-[11px] font-semibold px-3 py-1 rounded-full">
+              Underwritten by TD General Insurance Company (FSRA #216 &bull; AIRB)
+            </span>
+            <a
+              href="https://www.ribo.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#5F6368] hover:text-[#168A5A] font-inter text-[11px] font-medium underline transition-colors"
+            >
+              Verify on RIBO.com &rarr;
+            </a>
+          </div>
         </div>
 
         {view === 'wizard' && <ProgressBar currentStep={step} />}

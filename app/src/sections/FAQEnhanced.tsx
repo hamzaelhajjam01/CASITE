@@ -8,6 +8,30 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
+    question: 'Who underwrites PolarShield and how do I verify your RIBO brokerage license?',
+    answer: 'PolarShield Auto Insurance is operated by Polaris Insurance & Risk Management Services Inc., a licensed brokerage registered with the Registered Insurance Brokers of Ontario (RIBO Reg #10129). You can verify our brokerage directly on the official RIBO registry at www.ribo.com. All policies are underwritten directly by TD General Insurance Company (FSRA Code #216 in Ontario, regulated by AIRB under Form SPF 1 in Alberta, and SPF 1 in Nova Scotia), administered by TD Insurance Direct Agency Inc. in Markham.',
+  },
+  {
+    question: 'How fast do I get an official pink slip for ServiceOntario or Alberta Registry plate registration?',
+    answer: 'Once your vehicle VIN and driver details are submitted and payment is verified, your official 2-page Canadian TD Pink Slip is issued digitally in 15 to 25 minutes. It contains your exact VIN, policy number, and statutory coverage details, and is 100% legally recognized at all ServiceOntario centres, Alberta Registries, and by police roadside across Canada.',
+  },
+  {
+    question: 'Can I get insurance if I was previously cancelled for non-payment or had lapses?',
+    answer: 'Yes, 100%. Having a past cancellation for non-payment or insurance gap often triggers massive facility surcharges with standard brokers. Under our group affinity underwriting, short-term prepaid policies and month-to-month plans are approved without high-risk price penalties. Because you pay upfront via Interac e-Transfer, there are no bank NSF risks and past payment history does not disqualify you.',
+  },
+  {
+    question: 'Can I get temporary insurance for an In-Transit permit to move or sell a car in Alberta?',
+    answer: 'Yes. Alberta Registries require proof of active Alberta insurance (Form SPF 1) to issue In-Transit Permits or plates. We offer 30-day flat trials or month-to-month plans from $136/vehicle with our 20% multi-vehicle discount. You can register your car, drive legally between Calgary, Red Deer, or Edmonton, keep it active until sold, and cancel anytime with $0 cancellation fees.',
+  },
+  {
+    question: 'Is a digital pink slip on my smartphone legally valid in Ontario and Alberta?',
+    answer: 'Yes. Under the Ontario Compulsory Automobile Insurance Act and provincial regulatory standards in Alberta and Nova Scotia, electronic pink slips displayed on your smartphone are 100% legal for police roadside checks, plate renewals, and registry transfers. A high-resolution printable 2-page PDF is also provided for your glovebox.',
+  },
+  {
+    question: 'Can G2, GDL, foreign licence, or new immigrant drivers get covered?',
+    answer: 'Yes. We accept Ontario G2 and G licences, Alberta Class 5 GDL and full Class 5, Nova Scotia Class 5 and Class 6N learner motorcycle licences, and valid international/foreign licences without unfair surcharges.',
+  },
+  {
     question: 'Do I pay monthly or can I split my payments?',
     answer: 'Our website rates are structured as one-time prepaid terms (3, 6, or 12 months) — saving you 10%–20%, requiring no credit check, and avoiding monthly bank auto-debits or $48 NSF penalty fees. If you prefer to pay monthly or split your payment into convenient e-Transfer installments, you can arrange a customized schedule directly with our licensed broker on WhatsApp at +1 (984) 378-9320.',
   },

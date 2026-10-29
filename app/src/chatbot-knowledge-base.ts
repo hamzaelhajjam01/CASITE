@@ -1,5 +1,5 @@
 /**
- * PolarGuard Insurance - Comprehensive Chatbot Knowledge Base
+ * PolarShield Insurance - Comprehensive Chatbot Knowledge Base
  *
  * This file contains all possible customer questions and answers
  * organized by category. No LLM API required - all responses are predefined.
@@ -16,32 +16,68 @@ export interface ChatbotQA {
 
 export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
   // ═══════════════════════════════════════════════════════════════════
-  // CATEGORY 1: ABOUT POLARGUARD
+  // CATEGORY 1: ABOUT PolarShield
   // ═══════════════════════════════════════════════════════════════════
 
   {
     id: 'about-scam',
-    category: 'About PolarGuard',
-    intents: ['scam', 'is this a scam', 'is polarguard legit', 'is it real', 'fake', 'fraud', 'trust', 'is polarguard real', 'skeptical', 'legit', 'scam?'],
-    question: 'Is PolarGuard Insurance a scam or legitimate?',
-    answer: `PolarGuard Insurance is 100% legitimate and operating in partnership with DESOLOC LLC under written authorization by TD General Insurance Company. Every policy issues an official Canadian Motor Vehicle Liability Card (TD Pink Card) recognized at ServiceOntario, Service Alberta, ICBC, SAAQ, and across Canada. You can verify your broker or speak directly with our team on WhatsApp at +1 (984) 378-9320 anytime.`,
-    followUp: ['Who underwrites PolarGuard?', 'How does payment work?', 'Get a quote']
+    category: 'About PolarShield',
+    intents: ['scam', 'is this a scam', 'is PolarShield legit', 'is it real', 'fake', 'fraud', 'trust', 'is PolarShield real', 'skeptical', 'legit', 'scam?'],
+    question: 'Is PolarShield Insurance a scam or legitimate?',
+    answer: `PolarShield Insurance is 100% legitimate and operated by Polaris Insurance & Risk Management Services Inc., a licensed brokerage registered with the Registered Insurance Brokers of Ontario (RIBO Reg #10129). You can verify our brokerage directly on the official RIBO registry at www.ribo.com. All policies are underwritten directly by TD General Insurance Company (FSRA Code #216 in Ontario, regulated by AIRB in Alberta, Form SPF 1 in Nova Scotia) and administered via TD Insurance Direct Agency Inc. Every policyholder receives an official Canadian TD pink slip valid at ServiceOntario, Alberta Registries, and police roadside nationwide.`,
+    followUp: ['How do I verify your RIBO license?', 'Who underwrites PolarShield?', 'Get a quote']
+  },
+
+  {
+    id: 'about-ribo',
+    category: 'About PolarShield',
+    intents: ['ribo', 'ribo license', 'broker license', 'verify ribo', 'polaris insurance', 'is ribo registered', 'ribo registry', 'ribo.com', 'fsra', 'regulation'],
+    question: 'How do I verify your RIBO brokerage license and regulatory standing?',
+    answer: `You can independently verify our brokerage in 30 seconds on the official regulatory database of the Registered Insurance Brokers of Ontario at www.ribo.com under Polaris Insurance & Risk Management Services Inc. (RIBO Registration #10129). Furthermore, our underwriting carrier is TD General Insurance Company under FSRA Code #216 in Ontario and AIRB in Alberta. That full regulatory chain of authority is printed on your official TD pink slip.`,
+    followUp: ['Is PolarShield legit?', 'Who underwrites PolarShield?', 'Get a quote']
+  },
+
+  {
+    id: 'solution-non-payment',
+    category: 'Pink Slip Solutions',
+    intents: ['cancelled for non payment', 'non payment', 'missed payment', 'bad payment history', 'nsf', 'cancelled policy', 'refused insurance', 'rejected insurance'],
+    question: 'Can I get approved if I was previously cancelled for non-payment?',
+    answer: `Yes, 100%! Having a past non-payment cancellation or payment lapse with other insurers does NOT disqualify you. Under our senior underwriting group affinity program, short-term prepaid terms and month-to-month plans are approved without facility high-risk price penalties. Because you pay upfront via Interac e-Transfer, there is zero risk of NSF bank fees, and your official 2-page TD pink slip is issued right away.`,
+    followUp: ['How fast is pink slip delivery?', 'What are the payment options?', 'Get a quote']
+  },
+
+  {
+    id: 'solution-alberta-transit',
+    category: 'Pink Slip Solutions',
+    intents: ['in transit permit', 'transit permit', 'alberta transit', 'moving car', 'red deer', 'calgary', 'edmonton', 'sell my car', 'temporary permit'],
+    question: 'Can I get insurance for an In-Transit Permit or to move/sell a car in Alberta?',
+    answer: `Yes! Alberta Registries require proof of active Alberta automobile insurance (Standard Policy Form SPF 1) before they can issue an In-Transit Permit or plates. We offer 30-day flat trials or month-to-month plans starting at just $136/month per vehicle with our 20% multi-vehicle discount. You can register your car, drive legally across Alberta, keep it active until sold, and cancel anytime with exactly $0 cancellation fees.`,
+    followUp: ['What coverage do you offer?', 'How much does it cost?', 'Get a quote']
+  },
+
+  {
+    id: 'solution-digital-pink-slip',
+    category: 'Pink Slip Solutions',
+    intents: ['digital pink slip', 'electronic pink slip', 'phone pink slip', 'show on phone', 'police check', 'serviceontario digital', 'is digital legal'],
+    question: 'Is a digital electronic pink slip legally valid on my phone in Ontario and Alberta?',
+    answer: `Yes. Under Ontario's Compulsory Automobile Insurance Act regulations and approved provincial directives in Alberta and Nova Scotia, electronic pink slips displayed on your smartphone are 100% legal for police roadside checks and registry plate renewals. We deliver your official digital TD pink slip in 15 to 25 minutes, plus a printable 2-page PDF for your records.`,
+    followUp: ['How fast is pink slip delivery?', 'What are the coverage options?', 'Get a quote']
   },
 
   {
     id: 'about-1',
-    category: 'About PolarGuard',
-    intents: ['who are you', 'what is polarguard', 'about polarguard', 'tell me about you', 'who underwrites', 'is this real insurance', 'td insurance', 'who is the underwriter', 'is polarguard the insurer'],
-    question: 'Who is PolarGuard Insurance?',
-    answer: `PolarGuard Insurance is an independent Canadian auto brokerage specializing in prepaid VIN-based auto insurance. We're a licensed broker — your policy is actually underwritten by TD Insurance (TD General Insurance Company), a federally regulated Canadian insurer. You receive an official TD pink card as your proof of insurance, accepted at provincial registries across Canada. We offer 1, 3, 6, or 12-month prepaid terms, all reviewed and matched by a licensed broker before activation.`,
+    category: 'About PolarShield',
+    intents: ['who are you', 'what is PolarShield', 'about PolarShield', 'tell me about you', 'who underwrites', 'is this real insurance', 'td insurance', 'who is the underwriter', 'is PolarShield the insurer'],
+    question: 'Who is PolarShield Insurance?',
+    answer: `PolarShield Insurance is an independent Canadian auto brokerage specializing in prepaid VIN-based auto insurance. We're a licensed broker — your policy is actually underwritten by TD Insurance (TD General Insurance Company), a federally regulated Canadian insurer. You receive an official TD pink card as your proof of insurance, accepted at provincial registries across Canada. We offer 1, 3, 6, or 12-month prepaid terms, all reviewed and matched by a licensed broker before activation.`,
     followUp: ['What coverage do you offer?', 'How do I get a quote?', 'Who can get coverage?']
   },
 
   {
     id: 'about-2',
-    category: 'About PolarGuard',
+    category: 'About PolarShield',
     intents: ['what do you offer', 'what services', 'what can you do', 'products'],
-    question: 'What services does PolarGuard offer?',
+    question: 'What services does PolarShield offer?',
     answer: `We specialize in prepaid VIN-based auto insurance for Canadian drivers, underwritten by TD Insurance. Our services include:
 • Quick VIN-based quotes (under 5 minutes)
 • Flexible terms: 1, 3, 6, or 12 months prepaid (save 15% on 6 months, 25% on 12 months)
@@ -56,10 +92,10 @@ export const CHATBOT_QA_DATABASE: ChatbotQA[] = [
 
   {
     id: 'about-3',
-    category: 'About PolarGuard',
-    intents: ['why choose', 'why polarguard', 'what makes you different', 'benefits'],
-    question: 'Why should I choose PolarGuard?',
-    answer: `Here are the key reasons to choose PolarGuard:
+    category: 'About PolarShield',
+    intents: ['why choose', 'why PolarShield', 'what makes you different', 'benefits'],
+    question: 'Why should I choose PolarShield?',
+    answer: `Here are the key reasons to choose PolarShield:
 
 ✓ Fast: Get a quote in under 5 minutes, activate in 15-25 minutes after payment
 ✓ No Background Checks: Short-term (1-3 month) policies skip the driver history pull
@@ -97,7 +133,7 @@ Example (3-month term): Basic coverage around $481, Full coverage around $722 �
     category: 'Pricing & Quotes',
     intents: ['get a quote', 'quote me', 'how to quote', 'quote process', 'free quote'],
     question: 'How do I get a quote?',
-    answer: `Getting a quote from PolarGuard is simple:
+    answer: `Getting a quote from PolarShield is simple:
 
 1. Enter your 17-character VIN — we decode your vehicle automatically
 2. Add your license class (G/G2/G1), date of birth, and postal code
@@ -137,7 +173,7 @@ That's it! Getting to a quote preview takes under 5 minutes. Note: your quote pr
 • Comprehensive coverage
 • Deductible amount
 
-The good news: With PolarGuard, previous cancellations and lapses don't count against you!`,
+The good news: With PolarShield, previous cancellations and lapses don't count against you!`,
     followUp: ['Can I lower my premium?', 'What are deductibles?', 'What coverage do I need?']
   },
 
@@ -229,7 +265,7 @@ Both tiers also include Accident Forgiveness and a Disappearing Deductible.
 
 💡 KEY FACTS:
    • Legally required in every Canadian province
-   • PolarGuard offers $1,000,000 in liability on Basic and $2,000,000 on Full
+   • PolarShield offers $1,000,000 in liability on Basic and $2,000,000 on Full
    • Only covers damage YOU cause to others
    • Failure to carry it results in fines and license suspension
 
@@ -347,8 +383,8 @@ $1,000 DEDUCTIBLE:
     id: 'eligibility-1',
     category: 'Eligibility',
     intents: ['who can get coverage', 'am i eligible', 'can i qualify', 'requirements', 'how do i check my eligibility', 'check my eligibility'],
-    question: 'Who can get coverage from PolarGuard?',
-    answer: `PolarGuard serves most Canadian drivers!
+    question: 'Who can get coverage from PolarShield?',
+    answer: `PolarShield serves most Canadian drivers!
 
 ✅ YOU LIKELY QUALIFY IF:
    • You're 18+ years old with a valid driver's license (G/G2/G1 or equivalent)
@@ -385,7 +421,7 @@ Have questions about your specific situation? Chat with our broker!`,
     category: 'Eligibility',
     intents: ['young driver', 'new driver', 'teen driver', 'under 25', 'age requirement', 'years old', 'how old do i need to be', 'minimum age', 'is that ok', 'im 18', 'im 19', 'im 20'],
     question: 'Can young drivers get coverage?',
-    answer: `Yes! PolarGuard insures young drivers starting at age 18.
+    answer: `Yes! PolarShield insures young drivers starting at age 18.
 
 📋 FOR DRIVERS AGES 18-24:
    • You CAN get quotes and coverage
@@ -415,7 +451,7 @@ Ready to get your first quote? We make it easy!`,
     category: 'Eligibility',
     intents: ['bad driving record', 'previous claims', 'accidents', 'tickets'],
     question: 'Can I get coverage if I have a bad driving record?',
-    answer: `Great news! PolarGuard is specifically designed for drivers with challenging histories.
+    answer: `Great news! PolarShield is specifically designed for drivers with challenging histories.
 
 ✅ WE COVER DRIVERS WITH:
    • Previous at-fault accidents/claims
@@ -428,7 +464,7 @@ Ready to get your first quote? We make it easy!`,
    • DUI/DWI convictions (may apply)
 
 🎉 HERE'S THE BIG DIFFERENCE:
-   Most insurers charge massive premiums for these issues. PolarGuard:
+   Most insurers charge massive premiums for these issues. PolarShield:
 
    • Doesn't penalize you for previous cancellations
    • Doesn't penalize you for coverage gaps/lapses
@@ -444,10 +480,10 @@ Have a specific situation? Our brokers review applications daily and often find 
     category: 'Eligibility',
     intents: ['policy lapse', 'no insurance', 'gap in coverage', 'previous cancellation', 'lapse in insurance', 'insurance lapsed', 'lapsed', 'had a lapse', 'coverage lapsed'],
     question: 'Can I get coverage if I had a lapse in insurance?',
-    answer: `YES! This is one of the biggest advantages of choosing PolarGuard.
+    answer: `YES! This is one of the biggest advantages of choosing PolarShield.
 
-🎉 THE POLARGUARD DIFFERENCE:
-   Most insurers penalize you heavily for coverage gaps. PolarGuard doesn't.
+🎉 THE PolarShield DIFFERENCE:
+   Most insurers penalize you heavily for coverage gaps. PolarShield doesn't.
 
    We understand that life happens:
    • Couldn't afford insurance for a month
@@ -455,7 +491,7 @@ Have a specific situation? Our brokers review applications daily and often find 
    • Switched insurers and had a gap
    • Had a cancellation and reapplying
 
-💡 WITH POLARGUARD:
+💡 WITH PolarShield:
    ✓ Your policy lapse DOESN'T count against you
    ✓ We won't charge "lapses penalty" premiums
    ✓ You get clean slate pricing
@@ -477,8 +513,8 @@ Ready to close that gap and get back on the road legally?`,
     id: 'process-1',
     category: 'Process',
     intents: ['how does it work', 'process', 'steps', 'how do i start', 'how do i activate', 'how do i get started', 'get started'],
-    question: 'How does the PolarGuard process work?',
-    answer: `Getting insured with PolarGuard takes 3 simple steps:
+    question: 'How does the PolarShield process work?',
+    answer: `Getting insured with PolarShield takes 3 simple steps:
 
 ⏱️ TOTAL TIME: Under 5 minutes to a quote preview, 15-25 minutes to activation after payment
 
@@ -603,7 +639,7 @@ Start your quote now - we make it simple!`,
     category: 'Process',
     intents: ['how fast', 'how long', 'activation time', 'when can i drive', 'same day'],
     question: 'How quickly can I get coverage?',
-    answer: `PolarGuard is built for speed. Here's the real timeline:
+    answer: `PolarShield is built for speed. Here's the real timeline:
 
 ⚡ THE FAST TRACK:
 
@@ -661,7 +697,7 @@ Ready to apply? Get started now!`,
 📞 FILING THE CLAIM (Within 48 hours):
 
 CALL US IMMEDIATELY:
-   ☎️ PolarGuard Broker: +1 (984) 378-9320
+   ☎️ PolarShield Broker: +1 (984) 378-9320
    ☎️ Available: 24/7
    ☎️ Have ready: Policy number, driver license, claim details
 
@@ -803,7 +839,7 @@ Ready to file a claim?`,
     category: 'Policies',
     intents: ['term length', 'how long', 'policy length', 'coverage length', '3 month', 'how long is my policy', 'length of my policy', 'how long does my policy last', 'what happens after 3 months', 'how do i renew', 'renew my policy', 'renewal', 'can i renew'],
     question: 'How long is my insurance policy?',
-    answer: `PolarGuard offers flexible prepaid terms — you choose the length:
+    answer: `PolarShield offers flexible prepaid terms — you choose the length:
 
 📅 TERM OPTIONS:
    • 1 month — good for a quick plate renewal or short-term need (small surcharge, ~41% vs the 3-month rate)
@@ -853,7 +889,7 @@ Ready to pick your term and get started?`,
     category: 'Policies',
     intents: ['cancel policy', 'early cancellation', 'termination', 'stop insurance', 'cancel anytime', 'cancel my policy', 'how do i cancel', 'can i cancel', 'cancel whenever', 'want to cancel', 'pause coverage', 'pause my policy', 'can i pause'],
     question: 'Can I cancel my policy anytime?',
-    answer: `Yes! PolarGuard policies have no early cancellation penalties:
+    answer: `Yes! PolarShield policies have no early cancellation penalties:
 
 ✅ CANCELLATION FLEXIBILITY:
 
@@ -871,7 +907,7 @@ OPTION 1 - PHONE:
    • Confirmation emailed
 
 OPTION 2 - EMAIL:
-   📧 Email: support@polarguard.ca
+   📧 Email: support@PolarShield.ca
    • Subject: "Cancel Policy [Your Policy #]"
    • Confirm 24-48 hour processing
 
@@ -909,7 +945,7 @@ This is one of our biggest advantages!`,
     category: 'Policies',
     intents: ['discount', 'how to get discount', 'save money', 'discount codes', 'what else can i do to save', 'how else can i save'],
     question: 'What discounts are available?',
-    answer: `PolarGuard's biggest savings come from term length and bundling:
+    answer: `PolarShield's biggest savings come from term length and bundling:
 
 💰 AVAILABLE DISCOUNTS:
 
@@ -953,7 +989,7 @@ Get your quote and see your savings!`,
     id: 'support-1',
     category: 'Support',
     intents: ['phone number', 'contact us', 'how to reach', 'support hours', 'customer service', 'contact support', 'how do i contact support'],
-    question: 'How do I contact PolarGuard support?',
+    question: 'How do I contact PolarShield support?',
     answer: `Multiple ways to reach our team:
 
 ☎️ PHONE (Fastest):
@@ -962,7 +998,7 @@ Get your quote and see your savings!`,
    Saturdays: 10 AM - 4 PM MT
 
 📧 EMAIL:
-   support@polarguard.ca
+   support@PolarShield.ca
    Response time: 24-48 hours
 
 💬 LIVE CHAT (Website):
@@ -1022,12 +1058,12 @@ Have a question? Reach out - we're here to help!`,
 ✓ IF YOU WANT TO RENEW:
    1. Call: +1 (984) 378-9320
    2. Online: Policy management portal
-   3. Email: support@polarguard.ca
+   3. Email: support@PolarShield.ca
 
 ❌ IF YOU WANT TO CANCEL:
    1. Call: +1 (984) 378-9320
    2. Online: Policy management
-   3. Email: support@polarguard.ca
+   3. Email: support@PolarShield.ca
    → Easy process, no penalties!
 
 What can I help you with today?`,
@@ -1043,7 +1079,7 @@ What can I help you with today?`,
     category: 'General',
     intents: ['hello', 'hi there', 'hey there', ' hi ', 'good morning', 'good afternoon', 'howdy', ' yo '],
     question: 'Hi! How can I help you today?',
-    answer: `👋 Welcome to PolarGuard Insurance!
+    answer: `👋 Welcome to PolarShield Insurance!
 
 I can help with:
 • Getting a quote
@@ -1081,7 +1117,7 @@ What would you like to know? Or call us directly: +1 (984) 378-9320`,
 
 ⚠️ IMPORTANT: You must disclose accidents, tickets, claims, and cancellations honestly. Providing false information voids the policy — but honesty usually gets you a *better* rate, not a worse one.
 
-This is one of the biggest reasons drivers with credit issues or past problems choose PolarGuard.`,
+This is one of the biggest reasons drivers with credit issues or past problems choose PolarShield.`,
     followUp: ['Can I get coverage with a bad driving record?', 'What information do I need?', 'Get a quote']
   },
 
@@ -1141,7 +1177,7 @@ Have your loan or lease documents handy when you get your quote so we can add th
     category: 'Eligibility',
     intents: ['motorcycle', 'do you cover motorcycles', 'rv', 'atv', 'trailer', 'commercial vehicle', 'what vehicles do you cover'],
     question: 'What types of vehicles do you cover?',
-    answer: `PolarGuard focuses on personal auto insurance for:
+    answer: `PolarShield focuses on personal auto insurance for:
 
 ✅ WE COVER:
    • Sedans & coupes
@@ -1190,7 +1226,7 @@ If a payment just failed, don't wait — call us before it lapses so we can help
     id: 'support-3',
     category: 'Support',
     intents: ['is there an app', 'mobile app', 'do you have an app', 'download app'],
-    question: 'Is there a PolarGuard app?',
+    question: 'Is there a PolarShield app?',
     answer: `We don't have a dedicated mobile app right now — everything is handled through our website, which works great on mobile browsers.
 
 📱 FROM YOUR PHONE'S BROWSER YOU CAN:
@@ -1201,7 +1237,7 @@ If a payment just failed, don't wait — call us before it lapses so we can help
    ✓ File a claim
    ✓ Contact your broker
 
-Just visit polarguardbrokerage.ca from any phone, tablet, or computer — no download needed.`,
+Just visit polarshieldbrokerage.ca from any phone, tablet, or computer — no download needed.`,
     followUp: ['Get a quote', 'How do I contact support?', 'How do I file a claim?']
   },
 

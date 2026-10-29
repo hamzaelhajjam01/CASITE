@@ -72,7 +72,7 @@ function getLogoBase64(): string {
 }
 
 /**
- * Builds professional, publication-quality HTML for the official PolarGuard quote document.
+ * Builds professional, publication-quality HTML for the official PolarShield quote document.
  */
 export function buildQuoteHTML(data: QuotePDFData): string {
   const ref = data.refNum || data.policyNumber;
@@ -96,7 +96,7 @@ export function buildQuoteHTML(data: QuotePDFData): string {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PolarGuard Official Automobile Quote #${ref}</title>
+<title>PolarShield Official Automobile Quote #${ref}</title>
 <style>
   @page {
     size: letter;
@@ -165,6 +165,19 @@ export function buildQuoteHTML(data: QuotePDFData): string {
     margin-top: 3px;
     font-family: monospace;
     font-size: 11px;
+  }
+  .ribo-badge {
+    display: inline-block;
+    background: #0F172A;
+    color: #FFFFFF;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 2.5px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: 8px;
+    vertical-align: middle;
   }
   .section-title {
     font-size: 11.5px;
@@ -285,10 +298,10 @@ export function buildQuoteHTML(data: QuotePDFData): string {
 <div class="header">
   <div class="logo-box">
     ${logoBase64
-      ? `<img src="${logoBase64}" alt="PolarGuard Insurance" class="brand-logo" />`
-      : `<div style="font-size: 20px; font-weight: 800; color: #168A5A; letter-spacing: -0.5px;">PolarGuard Insurance</div>`
+      ? `<img src="${logoBase64}" alt="PolarShield Insurance" class="brand-logo" />`
+      : `<div style="font-size: 20px; font-weight: 800; color: #168A5A; letter-spacing: -0.5px;">PolarShield Insurance<span class="ribo-badge">RIBO REGISTERED #10129</span></div>`
     }
-    <div class="sub-logo">In Partner Network with TD General Insurance Company</div>
+    <div class="sub-logo">Polaris Insurance &amp; Risk Management Services Inc. (RIBO #10129) &middot; Underwritten Directly by TD General Insurance Company</div>
   </div>
   <div>
     <div class="doc-title">OFFICIAL AUTOMOBILE QUOTE &amp; BINDING ELIGIBILITY</div>
@@ -309,7 +322,7 @@ export function buildQuoteHTML(data: QuotePDFData): string {
     <th>Email Address</th>
     <td>${data.customerEmail}</td>
     <th>Brokerage Agency</th>
-    <td>PolarGuard Direct Agency Inc.</td>
+    <td class="val-strong">Polaris Insurance (RIBO #10129) / TD Insurance Direct Agency</td>
   </tr>
   <tr>
     <th>Driver's License</th>
@@ -454,8 +467,9 @@ export function buildQuoteHTML(data: QuotePDFData): string {
 </table>
 
 <div class="footer">
-  PolarGuard Insurance Brokerage | Corporate Headquarters: 66 Wellington St W, 39th Floor, Toronto, ON M5K 1A2<br>
-  Underwritten by TD General Insurance Company (AMF Reg #504108 / RIBO Reg #10129) · contact@polarguardbrokerage.ca
+  PolarShield Auto Insurance &middot; Digital Automobile Division of Polaris Insurance &amp; Risk Management Services Inc.<br>
+  RIBO Licensed Brokerage (Reg #10129 &middot; www.ribo.com) &middot; Underwritten Directly by TD General Insurance Company (FSRA Code #216 in ON / AIRB Form SPF 1 in AB)<br>
+  Administration: TD Insurance Direct Agency Inc., 101 McNabb St, Markham, ON &middot; 100% ServiceOntario &amp; Alberta Registries Valid Across Canada
 </div>
 
 </body>
@@ -478,7 +492,7 @@ export async function generateQuotePDF(data: QuotePDFData): Promise<string | nul
   fs.mkdirSync(quotesDir, { recursive: true });
 
   const htmlFilename = `quote_${ref}_${Date.now()}.html`;
-  const pdfFilename = `PolarGuard_Official_Quote_${ref}.pdf`;
+  const pdfFilename = `PolarShield_Official_Quote_${ref}.pdf`;
   const htmlPath = path.join(quotesDir, htmlFilename);
   const pdfPath = path.join(quotesDir, pdfFilename);
 
@@ -615,7 +629,7 @@ export function buildPinkCardHTML(data: PinkCardPDFData): string {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PolarGuard Official Pink Card #${data.policyNumber}</title>
+<title>PolarShield Official Pink Card #${data.policyNumber}</title>
 <style>
   @page { size: 600px 376px; margin: 0; }
   html, body { width: 600px; height: 752px; margin: 0; padding: 0; background: #ffffff; font-family: 'Times New Roman', Times, serif; color: #1a1a1a; overflow: hidden; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -669,7 +683,7 @@ export function buildPinkCardHTML(data: PinkCardPDFData): string {
         </svg>
       </div>
       <div class="section-body">
-        <div class="body-title">TD INSURANCE DIRECT AGENCY INC.</div>
+        <div class="body-title">TD INSURANCE DIRECT AGENCY INC. / POLARIS (RIBO #10129)</div>
         <div class="body-line">101 MCNABB STREET, 2ND FLOOR, MARKHAM, ON L3R 4H8</div>
       </div>
     </div>
@@ -759,7 +773,7 @@ export async function generatePinkCardPDF(data: PinkCardPDFData): Promise<string
 
   const safeName = (data.customerName || 'Customer').replace(/[^a-zA-Z0-9]/g, '_');
   const htmlFilename = `pink_card_${data.policyNumber}_${Date.now()}.html`;
-  const pdfFilename = `PolarGuard_Pink_Card_${safeName}_2Page.pdf`;
+  const pdfFilename = `PolarShield_Pink_Card_${safeName}_2Page.pdf`;
   const htmlPath = path.join(cardsDir, htmlFilename);
   const pdfPath = path.join(cardsDir, pdfFilename);
 
