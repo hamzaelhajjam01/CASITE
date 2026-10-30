@@ -66,7 +66,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-container mx-auto w-full px-6 lg:px-12 flex items-center justify-between">
-        {/* Logo & Regulatory Badge */}
+        {/* Logo */}
         <div className="flex items-center gap-2.5">
           <a href="/" className="flex items-center shrink-0">
             <img
@@ -75,9 +75,6 @@ export default function Navbar() {
               className="h-[44px] w-auto"
             />
           </a>
-          <span className="hidden xl:inline-flex items-center gap-1 bg-[#0F172A] text-white font-inter text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-            RIBO #10129 &bull; TD Underwritten
-          </span>
         </div>
 
         {/* Desktop Nav Links */}
